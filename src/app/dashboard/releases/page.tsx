@@ -103,12 +103,12 @@ export default function ReleasesPage() {
 
   const inp = (style = {}) => ({
     width: '100%', padding: '8px 12px',
-    background: '#1a1a1a', border: '0.5px solid #333',
-    borderRadius: '8px', color: '#fff', fontSize: '12px',
+    background: 'var(--bg-4)', border: '0.5px solid var(--border-3)',
+    borderRadius: '8px', color: 'var(--text)', fontSize: '12px',
     outline: 'none', ...style
   } as React.CSSProperties)
 
-  const lbl = { fontSize: '11px', color: '#666', display: 'block', marginBottom: '4px' } as React.CSSProperties
+  const lbl = { fontSize: '11px', color: 'var(--text-muted)', display: 'block', marginBottom: '4px' } as React.CSSProperties
 
   return (
     <div style={{ padding: '1.5rem', maxWidth: '1100px' }}>
@@ -117,7 +117,7 @@ export default function ReleasesPage() {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
         <div>
           <div style={{ fontSize: '18px', fontWeight: '500' }}>Release manager</div>
-          <div style={{ fontSize: '12px', color: '#555', marginTop: '2px' }}>{releases.length} total releases</div>
+          <div style={{ fontSize: '12px', color: 'var(--text-3)', marginTop: '2px' }}>{releases.length} total releases</div>
         </div>
         <div style={{ display: 'flex', gap: '8px' }}>
           <input
@@ -127,8 +127,8 @@ export default function ReleasesPage() {
             style={{ ...inp({ width: '200px' }) }}
           />
           <button onClick={() => { setForm(EMPTY); setEditId(null); setShowForm(!showForm) }} style={{
-            padding: '8px 16px', background: showForm ? '#333' : '#1D9E75',
-            border: 'none', borderRadius: '8px', color: '#fff',
+            padding: '8px 16px', background: showForm ? 'var(--border-3)' : '#1D9E75',
+            border: 'none', borderRadius: '8px', color: 'var(--text)',
             fontSize: '12px', fontWeight: '500', cursor: 'pointer'
           }}>
             {showForm ? 'Cancel' : '+ New release'}
@@ -139,7 +139,7 @@ export default function ReleasesPage() {
       {/* Form */}
       {showForm && (
         <div style={{
-          background: '#111', border: '0.5px solid #2a2a2a',
+          background: 'var(--bg-2)', border: '0.5px solid var(--border-2)',
           borderRadius: '12px', padding: '1.25rem', marginBottom: '1.25rem'
         }}>
           <div style={{ fontSize: '13px', fontWeight: '500', marginBottom: '1rem', color: '#1D9E75' }}>
@@ -237,23 +237,23 @@ export default function ReleasesPage() {
           </div>
 
           {error && (
-            <div style={{ padding: '8px 12px', background: '#2a0a0a', border: '0.5px solid #5a1a1a', borderRadius: '8px', fontSize: '12px', color: '#f08080', marginBottom: '12px' }}>
+            <div style={{ padding: '8px 12px', background: 'var(--red-bg)', border: '0.5px solid var(--red-border)', borderRadius: '8px', fontSize: '12px', color: '#f08080', marginBottom: '12px' }}>
               {error}
             </div>
           )}
 
           <div style={{ display: 'flex', gap: '8px' }}>
             <button onClick={save} disabled={saving} style={{
-              padding: '8px 20px', background: saving ? '#0a4a30' : '#1D9E75',
-              border: 'none', borderRadius: '8px', color: '#fff',
+              padding: '8px 20px', background: saving ? 'var(--green-dim)' : '#1D9E75',
+              border: 'none', borderRadius: '8px', color: 'var(--text)',
               fontSize: '12px', fontWeight: '500', cursor: 'pointer'
             }}>
               {saving ? 'Saving...' : editId ? 'Update release' : 'Create release'}
             </button>
             <button onClick={() => { setShowForm(false); setForm(EMPTY); setEditId(null) }} style={{
               padding: '8px 16px', background: 'transparent',
-              border: '0.5px solid #333', borderRadius: '8px',
-              color: '#666', fontSize: '12px', cursor: 'pointer'
+              border: '0.5px solid var(--border-3)', borderRadius: '8px',
+              color: 'var(--text-muted)', fontSize: '12px', cursor: 'pointer'
             }}>
               Cancel
             </button>
@@ -262,20 +262,20 @@ export default function ReleasesPage() {
       )}
 
       {/* Table */}
-      <div style={{ background: '#111', border: '0.5px solid #222', borderRadius: '12px', overflow: 'hidden' }}>
+      <div style={{ background: 'var(--bg-2)', border: '0.5px solid var(--border)', borderRadius: '12px', overflow: 'hidden' }}>
         {loading ? (
-          <div style={{ padding: '3rem', textAlign: 'center', color: '#555', fontSize: '12px' }}>Loading releases...</div>
+          <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-3)', fontSize: '12px' }}>Loading releases...</div>
         ) : filtered.length === 0 ? (
           <div style={{ padding: '3rem', textAlign: 'center' }}>
             <div style={{ fontSize: '13px', fontWeight: '500', color: '#1D9E75', marginBottom: '6px' }}>No releases yet</div>
-            <div style={{ fontSize: '12px', color: '#555' }}>Click "New release" to add your first release to the catalogue.</div>
+            <div style={{ fontSize: '12px', color: 'var(--text-3)' }}>Click "New release" to add your first release to the catalogue.</div>
           </div>
         ) : (
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
-              <tr style={{ borderBottom: '0.5px solid #222' }}>
+              <tr style={{ borderBottom: '0.5px solid var(--border)' }}>
                 {['Cat #', 'Release', 'Format', 'Tracks', 'Size', 'Promo window', 'Status', 'Heat', 'Actions'].map(h => (
-                  <th key={h} style={{ textAlign: 'left', padding: '10px 14px', fontSize: '10px', fontWeight: '500', letterSpacing: '0.06em', textTransform: 'uppercase', color: '#555' }}>{h}</th>
+                  <th key={h} style={{ textAlign: 'left', padding: '10px 14px', fontSize: '10px', fontWeight: '500', letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--text-3)' }}>{h}</th>
                 ))}
               </tr>
             </thead>
@@ -286,29 +286,29 @@ export default function ReleasesPage() {
                 const windowEnd = r.promo_window_end ? new Date(r.promo_window_end) : null
                 const daysLeft = windowEnd ? Math.ceil((windowEnd.getTime() - Date.now()) / 86400000) : null
                 return (
-                  <tr key={r.id} style={{ borderBottom: i < filtered.length - 1 ? '0.5px solid #1a1a1a' : 'none', transition: 'background 0.1s' }}
-                    onMouseEnter={e => (e.currentTarget.style.background = '#161616')}
+                  <tr key={r.id} style={{ borderBottom: i < filtered.length - 1 ? '0.5px solid var(--row-border)' : 'none', transition: 'background 0.1s' }}
+                    onMouseEnter={e => (e.currentTarget.style.background = 'var(--row-hover)')}
                     onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
                   >
-                    <td style={{ padding: '12px 14px', fontFamily: 'monospace', fontSize: '11px', color: '#555' }}>{r.catalogue_number}</td>
+                    <td style={{ padding: '12px 14px', fontFamily: 'monospace', fontSize: '11px', color: 'var(--text-3)' }}>{r.catalogue_number}</td>
                     <td style={{ padding: '12px 14px' }}>
-                      <div style={{ fontWeight: '500', color: '#fff' }}>{r.artist_name}</div>
-                      <div style={{ fontSize: '11px', color: '#666', marginTop: '1px' }}>{r.title}</div>
+                      <div style={{ fontWeight: '500', color: 'var(--text)' }}>{r.artist_name}</div>
+                      <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '1px' }}>{r.title}</div>
                     </td>
-                    <td style={{ padding: '12px 14px', fontSize: '12px', color: '#888' }}>{r.format}</td>
-                    <td style={{ padding: '12px 14px', fontSize: '12px', color: '#888' }}>{r.total_tracks}</td>
-                    <td style={{ padding: '12px 14px', fontSize: '12px', color: '#888' }}>{r.total_size_mb > 0 ? `${r.total_size_mb} MB` : '—'}</td>
+                    <td style={{ padding: '12px 14px', fontSize: '12px', color: 'var(--text-faint)' }}>{r.format}</td>
+                    <td style={{ padding: '12px 14px', fontSize: '12px', color: 'var(--text-faint)' }}>{r.total_tracks}</td>
+                    <td style={{ padding: '12px 14px', fontSize: '12px', color: 'var(--text-faint)' }}>{r.total_size_mb > 0 ? `${r.total_size_mb} MB` : '—'}</td>
                     <td style={{ padding: '12px 14px', fontSize: '11px' }}>
                       {r.promo_window_start && r.promo_window_end ? (
                         <div>
-                          <div style={{ color: '#888' }}>{new Date(r.promo_window_start).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })} — {new Date(r.promo_window_end).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</div>
+                          <div style={{ color: 'var(--text-faint)' }}>{new Date(r.promo_window_start).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })} — {new Date(r.promo_window_end).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</div>
                           {daysLeft !== null && (
-                            <div style={{ marginTop: '2px', color: daysLeft <= 3 ? '#f08080' : daysLeft <= 7 ? '#f5c842' : '#555' }}>
+                            <div style={{ marginTop: '2px', color: daysLeft <= 3 ? '#f08080' : daysLeft <= 7 ? '#f5c842' : 'var(--text-3)' }}>
                               {daysLeft > 0 ? `${daysLeft}d left` : 'Closed'}
                             </div>
                           )}
                         </div>
-                      ) : <span style={{ color: '#333' }}>—</span>}
+                      ) : <span style={{ color: 'var(--text-5)' }}>—</span>}
                     </td>
                     <td style={{ padding: '12px 14px' }}>
                       <span style={{ padding: '3px 8px', borderRadius: '20px', fontSize: '10px', fontWeight: '500', background: sc.bg, color: sc.color }}>
@@ -322,14 +322,14 @@ export default function ReleasesPage() {
                     </td>
                     <td style={{ padding: '12px 14px' }}>
                       <div style={{ display: 'flex', gap: '6px' }}>
-                        <button onClick={() => editRelease(r)} style={{ padding: '4px 10px', background: 'transparent', border: '0.5px solid #333', borderRadius: '6px', color: '#888', fontSize: '11px', cursor: 'pointer' }}>Edit</button>
+                        <button onClick={() => editRelease(r)} style={{ padding: '4px 10px', background: 'transparent', border: '0.5px solid var(--border-3)', borderRadius: '6px', color: 'var(--text-faint)', fontSize: '11px', cursor: 'pointer' }}>Edit</button>
                         {r.dropbox_folder_url && (
-                          <a href={r.dropbox_folder_url} target="_blank" rel="noreferrer" style={{ padding: '4px 10px', background: '#0a1e30', border: '0.5px solid #0a3a5a', borderRadius: '6px', color: '#7ab8f5', fontSize: '11px' }}>Dropbox</a>
+                          <a href={r.dropbox_folder_url} target="_blank" rel="noreferrer" style={{ padding: '4px 10px', background: 'var(--blue-bg)', border: '0.5px solid var(--blue-border)', borderRadius: '6px', color: '#7ab8f5', fontSize: '11px' }}>Dropbox</a>
                         )}
                         {r.soundcloud_playlist_url && (
-                          <a href={r.soundcloud_playlist_url} target="_blank" rel="noreferrer" style={{ padding: '4px 10px', background: '#1a0a00', border: '0.5px solid #3a1a00', borderRadius: '6px', color: '#ff7043', fontSize: '11px' }}>SC</a>
+                          <a href={r.soundcloud_playlist_url} target="_blank" rel="noreferrer" style={{ padding: '4px 10px', background: 'var(--orange-bg)', border: '0.5px solid var(--orange-border)', borderRadius: '6px', color: '#ff7043', fontSize: '11px' }}>SC</a>
                         )}
-                        <button onClick={() => deleteRelease(r.id)} style={{ padding: '4px 10px', background: 'transparent', border: '0.5px solid #2a1a1a', borderRadius: '6px', color: '#5a2a2a', fontSize: '11px', cursor: 'pointer' }}>Delete</button>
+                        <button onClick={() => deleteRelease(r.id)} style={{ padding: '4px 10px', background: 'transparent', border: '0.5px solid var(--red-muted-border)', borderRadius: '6px', color: 'var(--red-muted)', fontSize: '11px', cursor: 'pointer' }}>Delete</button>
                       </div>
                     </td>
                   </tr>

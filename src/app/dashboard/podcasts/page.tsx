@@ -114,12 +114,12 @@ export default function PodcastsPage() {
 
   const inp = (style = {}) => ({
     width: '100%', padding: '8px 12px',
-    background: '#1a1a1a', border: '0.5px solid #333',
-    borderRadius: '8px', color: '#fff', fontSize: '12px',
+    background: 'var(--bg-4)', border: '0.5px solid var(--border-3)',
+    borderRadius: '8px', color: 'var(--text)', fontSize: '12px',
     outline: 'none', ...style
   } as React.CSSProperties)
 
-  const lbl = { fontSize: '11px', color: '#666', display: 'block', marginBottom: '4px' } as React.CSSProperties
+  const lbl = { fontSize: '11px', color: 'var(--text-muted)', display: 'block', marginBottom: '4px' } as React.CSSProperties
 
   return (
     <div style={{ padding: '1.5rem', maxWidth: '1200px' }}>
@@ -128,7 +128,7 @@ export default function PodcastsPage() {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '10px' }}>
         <div>
           <div style={{ fontSize: '18px', fontWeight: '500' }}>Podcasts</div>
-          <div style={{ fontSize: '12px', color: '#555', marginTop: '2px' }}>
+          <div style={{ fontSize: '12px', color: 'var(--text-3)', marginTop: '2px' }}>
             {shows.length} shows · {episodes.length} episodes · {totalPlays.toLocaleString()} total plays
           </div>
         </div>
@@ -146,8 +146,8 @@ export default function PodcastsPage() {
             <option value="archived">Archived</option>
           </select>
           <button onClick={() => { setForm({ ...EMPTY_EPISODE, show_id: shows[0]?.id ?? '' }); setEditId(null); setShowForm(!showForm) }} style={{
-            padding: '8px 16px', background: showForm ? '#333' : '#1D9E75',
-            border: 'none', borderRadius: '8px', color: '#fff',
+            padding: '8px 16px', background: showForm ? 'var(--border-3)' : '#1D9E75',
+            border: 'none', borderRadius: '8px', color: 'var(--text)',
             fontSize: '12px', fontWeight: '500', cursor: 'pointer'
           }}>
             {showForm ? 'Cancel' : '+ New episode'}
@@ -164,32 +164,32 @@ export default function PodcastsPage() {
           return (
             <div key={s.id}
               style={{
-                background: isSelected ? '#161a16' : '#111', border: '0.5px solid #222',
+                background: isSelected ? 'var(--row-selected)' : 'var(--bg-2)', border: '0.5px solid var(--border)',
                 borderRadius: '10px', padding: '1rem', cursor: 'pointer', transition: 'background 0.1s'
               }}
               onClick={() => setSelectedShow(isSelected ? null : s)}
-              onMouseEnter={e => { if (!isSelected) e.currentTarget.style.background = '#161616' }}
-              onMouseLeave={e => { if (!isSelected) e.currentTarget.style.background = isSelected ? '#161a16' : '#111' }}
+              onMouseEnter={e => { if (!isSelected) e.currentTarget.style.background = 'var(--row-hover)' }}
+              onMouseLeave={e => { if (!isSelected) e.currentTarget.style.background = isSelected ? 'var(--row-selected)' : 'var(--bg-2)' }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
                 <div style={{
                   width: '8px', height: '8px', borderRadius: '50%',
-                  background: s.is_active ? '#1D9E75' : '#555'
+                  background: s.is_active ? '#1D9E75' : 'var(--text-3)'
                 }} />
                 <div style={{ fontWeight: '500', fontSize: '13px' }}>{s.name}</div>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
                 <div>
-                  <div style={{ fontSize: '10px', color: '#555' }}>Episodes</div>
+                  <div style={{ fontSize: '10px', color: 'var(--text-3)' }}>Episodes</div>
                   <div style={{ fontSize: '16px', fontWeight: '500', color: '#7ab8f5' }}>{showEps.length}</div>
                 </div>
                 <div>
-                  <div style={{ fontSize: '10px', color: '#555' }}>Plays</div>
+                  <div style={{ fontSize: '10px', color: 'var(--text-3)' }}>Plays</div>
                   <div style={{ fontSize: '16px', fontWeight: '500', color: '#4ecca3' }}>{showPlays.toLocaleString()}</div>
                 </div>
               </div>
               {s.description && (
-                <div style={{ fontSize: '11px', color: '#555', marginTop: '6px', lineHeight: '1.4' }}>{s.description}</div>
+                <div style={{ fontSize: '11px', color: 'var(--text-3)', marginTop: '6px', lineHeight: '1.4' }}>{s.description}</div>
               )}
             </div>
           )
@@ -198,13 +198,13 @@ export default function PodcastsPage() {
 
       {/* Show detail panel */}
       {selectedShow && (
-        <div style={{ background: '#111', border: '0.5px solid #222', borderRadius: '10px', padding: '1rem', marginBottom: '1.25rem' }}>
+        <div style={{ background: 'var(--bg-2)', border: '0.5px solid var(--border)', borderRadius: '10px', padding: '1rem', marginBottom: '1.25rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
             <div>
               <div style={{ fontWeight: '500', fontSize: '14px' }}>{selectedShow.name}</div>
-              {selectedShow.description && <div style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>{selectedShow.description}</div>}
+              {selectedShow.description && <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '4px' }}>{selectedShow.description}</div>}
             </div>
-            <button onClick={() => setSelectedShow(null)} style={{ background: 'transparent', border: 'none', color: '#555', fontSize: '16px', cursor: 'pointer' }}>×</button>
+            <button onClick={() => setSelectedShow(null)} style={{ background: 'transparent', border: 'none', color: 'var(--text-3)', fontSize: '16px', cursor: 'pointer' }}>×</button>
           </div>
           <div style={{ display: 'flex', gap: '12px', marginTop: '10px', fontSize: '12px' }}>
             {selectedShow.soundcloud_url && <a href={selectedShow.soundcloud_url} target="_blank" rel="noreferrer" style={{ color: '#ff7043' }}>SoundCloud</a>}
@@ -216,7 +216,7 @@ export default function PodcastsPage() {
 
       {/* Form */}
       {showForm && (
-        <div style={{ background: '#111', border: '0.5px solid #2a2a2a', borderRadius: '12px', padding: '1.25rem', marginBottom: '1.25rem' }}>
+        <div style={{ background: 'var(--bg-2)', border: '0.5px solid var(--border-2)', borderRadius: '12px', padding: '1.25rem', marginBottom: '1.25rem' }}>
           <div style={{ fontSize: '13px', fontWeight: '500', marginBottom: '1rem', color: '#1D9E75' }}>
             {editId ? 'Edit episode' : 'New episode'}
           </div>
@@ -274,32 +274,32 @@ export default function PodcastsPage() {
             </div>
           </div>
 
-          {error && <div style={{ padding: '8px 12px', background: '#2a0a0a', border: '0.5px solid #5a1a1a', borderRadius: '8px', fontSize: '12px', color: '#f08080', marginBottom: '12px' }}>{error}</div>}
+          {error && <div style={{ padding: '8px 12px', background: 'var(--red-bg)', border: '0.5px solid var(--red-border)', borderRadius: '8px', fontSize: '12px', color: '#f08080', marginBottom: '12px' }}>{error}</div>}
 
           <div style={{ display: 'flex', gap: '8px' }}>
-            <button onClick={save} disabled={saving} style={{ padding: '8px 20px', background: saving ? '#0a4a30' : '#1D9E75', border: 'none', borderRadius: '8px', color: '#fff', fontSize: '12px', fontWeight: '500', cursor: 'pointer' }}>
+            <button onClick={save} disabled={saving} style={{ padding: '8px 20px', background: saving ? 'var(--green-dim)' : '#1D9E75', border: 'none', borderRadius: '8px', color: 'var(--text)', fontSize: '12px', fontWeight: '500', cursor: 'pointer' }}>
               {saving ? 'Saving...' : editId ? 'Update episode' : 'Create episode'}
             </button>
-            <button onClick={() => { setShowForm(false); setForm(EMPTY_EPISODE); setEditId(null) }} style={{ padding: '8px 16px', background: 'transparent', border: '0.5px solid #333', borderRadius: '8px', color: '#666', fontSize: '12px', cursor: 'pointer' }}>Cancel</button>
+            <button onClick={() => { setShowForm(false); setForm(EMPTY_EPISODE); setEditId(null) }} style={{ padding: '8px 16px', background: 'transparent', border: '0.5px solid var(--border-3)', borderRadius: '8px', color: 'var(--text-muted)', fontSize: '12px', cursor: 'pointer' }}>Cancel</button>
           </div>
         </div>
       )}
 
       {/* Episodes table */}
-      <div style={{ background: '#111', border: '0.5px solid #222', borderRadius: '12px', overflow: 'hidden' }}>
+      <div style={{ background: 'var(--bg-2)', border: '0.5px solid var(--border)', borderRadius: '12px', overflow: 'hidden' }}>
         {loading ? (
-          <div style={{ padding: '3rem', textAlign: 'center', color: '#555', fontSize: '12px' }}>Loading episodes...</div>
+          <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-3)', fontSize: '12px' }}>Loading episodes...</div>
         ) : filtered.length === 0 ? (
           <div style={{ padding: '3rem', textAlign: 'center' }}>
             <div style={{ fontSize: '13px', fontWeight: '500', color: '#1D9E75', marginBottom: '6px' }}>No episodes yet</div>
-            <div style={{ fontSize: '12px', color: '#555' }}>Click "New episode" to add one.</div>
+            <div style={{ fontSize: '12px', color: 'var(--text-3)' }}>Click "New episode" to add one.</div>
           </div>
         ) : (
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
-              <tr style={{ borderBottom: '0.5px solid #222' }}>
+              <tr style={{ borderBottom: '0.5px solid var(--border)' }}>
                 {['#', 'Episode', 'Show', 'Guest', 'Duration', 'Plays', 'Status', 'Scheduled', 'Actions'].map(h => (
-                  <th key={h} style={{ textAlign: 'left', padding: '10px 14px', fontSize: '10px', fontWeight: '500', letterSpacing: '0.06em', textTransform: 'uppercase', color: '#555' }}>{h}</th>
+                  <th key={h} style={{ textAlign: 'left', padding: '10px 14px', fontSize: '10px', fontWeight: '500', letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--text-3)' }}>{h}</th>
                 ))}
               </tr>
             </thead>
@@ -308,31 +308,31 @@ export default function PodcastsPage() {
                 const sc = STATUS_COLORS[ep.status]
                 return (
                   <tr key={ep.id}
-                    style={{ borderBottom: i < filtered.length - 1 ? '0.5px solid #1a1a1a' : 'none', transition: 'background 0.1s' }}
-                    onMouseEnter={e => (e.currentTarget.style.background = '#161616')}
+                    style={{ borderBottom: i < filtered.length - 1 ? '0.5px solid var(--row-border)' : 'none', transition: 'background 0.1s' }}
+                    onMouseEnter={e => (e.currentTarget.style.background = 'var(--row-hover)')}
                     onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
                   >
-                    <td style={{ padding: '10px 14px', fontSize: '12px', color: '#555', fontFamily: 'monospace' }}>{ep.episode_number}</td>
+                    <td style={{ padding: '10px 14px', fontSize: '12px', color: 'var(--text-3)', fontFamily: 'monospace' }}>{ep.episode_number}</td>
                     <td style={{ padding: '10px 14px' }}>
-                      <div style={{ fontWeight: '500', color: '#fff', fontSize: '12px' }}>{ep.title}</div>
-                      {ep.description && <div style={{ fontSize: '10px', color: '#555', marginTop: '2px', maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{ep.description}</div>}
+                      <div style={{ fontWeight: '500', color: 'var(--text)', fontSize: '12px' }}>{ep.title}</div>
+                      {ep.description && <div style={{ fontSize: '10px', color: 'var(--text-3)', marginTop: '2px', maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{ep.description}</div>}
                     </td>
-                    <td style={{ padding: '10px 14px', fontSize: '12px', color: '#888' }}>{ep.show_name ?? '—'}</td>
-                    <td style={{ padding: '10px 14px', fontSize: '12px', color: ep.guest_name ? '#b8b4f0' : '#333' }}>{ep.guest_name || '—'}</td>
-                    <td style={{ padding: '10px 14px', fontSize: '12px', color: '#888', fontFamily: 'monospace' }}>{formatDuration(ep.duration_seconds)}</td>
-                    <td style={{ padding: '10px 14px', fontSize: '12px', color: '#888' }}>{ep.play_count.toLocaleString()}</td>
+                    <td style={{ padding: '10px 14px', fontSize: '12px', color: 'var(--text-faint)' }}>{ep.show_name ?? '—'}</td>
+                    <td style={{ padding: '10px 14px', fontSize: '12px', color: ep.guest_name ? '#b8b4f0' : 'var(--text-5)' }}>{ep.guest_name || '—'}</td>
+                    <td style={{ padding: '10px 14px', fontSize: '12px', color: 'var(--text-faint)', fontFamily: 'monospace' }}>{formatDuration(ep.duration_seconds)}</td>
+                    <td style={{ padding: '10px 14px', fontSize: '12px', color: 'var(--text-faint)' }}>{ep.play_count.toLocaleString()}</td>
                     <td style={{ padding: '10px 14px' }}>
                       <span style={{ padding: '3px 8px', borderRadius: '20px', fontSize: '10px', fontWeight: '500', background: sc.bg, color: sc.color }}>
                         {ep.status}
                       </span>
                     </td>
-                    <td style={{ padding: '10px 14px', fontSize: '11px', color: '#555' }}>
+                    <td style={{ padding: '10px 14px', fontSize: '11px', color: 'var(--text-3)' }}>
                       {ep.scheduled_at ? new Date(ep.scheduled_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : '—'}
                     </td>
                     <td style={{ padding: '10px 14px' }}>
                       <div style={{ display: 'flex', gap: '5px' }}>
-                        <button onClick={() => editEpisode(ep)} style={{ padding: '3px 8px', background: 'transparent', border: '0.5px solid #333', borderRadius: '6px', color: '#888', fontSize: '11px', cursor: 'pointer' }}>Edit</button>
-                        <button onClick={() => deleteEpisode(ep.id)} style={{ padding: '3px 8px', background: 'transparent', border: '0.5px solid #2a1a1a', borderRadius: '6px', color: '#5a2a2a', fontSize: '11px', cursor: 'pointer' }}>Delete</button>
+                        <button onClick={() => editEpisode(ep)} style={{ padding: '3px 8px', background: 'transparent', border: '0.5px solid var(--border-3)', borderRadius: '6px', color: 'var(--text-faint)', fontSize: '11px', cursor: 'pointer' }}>Edit</button>
+                        <button onClick={() => deleteEpisode(ep.id)} style={{ padding: '3px 8px', background: 'transparent', border: '0.5px solid var(--red-muted-border)', borderRadius: '6px', color: 'var(--red-muted)', fontSize: '11px', cursor: 'pointer' }}>Delete</button>
                       </div>
                     </td>
                   </tr>

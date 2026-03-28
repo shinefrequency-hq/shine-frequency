@@ -4,16 +4,27 @@
   padding: 0;
 }
 
-:root {
+:root,
+[data-theme="dark"] {
   --bg: #0a0a0a;
   --bg-2: #111111;
   --bg-3: #181818;
+  --bg-4: #1a1a1a;
   --border: #222222;
   --border-2: #2a2a2a;
+  --border-3: #333333;
   --text: #ffffff;
   --text-2: #999999;
   --text-3: #555555;
+  --text-4: #444444;
+  --text-5: #333333;
+  --text-muted: #666666;
+  --text-faint: #888888;
+  --row-hover: #161616;
+  --row-selected: #161a16;
+  --row-border: #1a1a1a;
   --green: #1D9E75;
+  --green-dim: #0a4a30;
   --green-bg: #0a2a1e;
   --green-text: #4ecca3;
   --amber: #EF9F27;
@@ -22,14 +33,74 @@
   --red: #E24B4A;
   --red-bg: #2a0a0a;
   --red-text: #f08080;
+  --red-border: #5a1a1a;
+  --red-muted: #5a2a2a;
+  --red-muted-border: #2a1a1a;
   --blue: #378ADD;
   --blue-bg: #0a1a2a;
   --blue-text: #7ab8f5;
+  --blue-border: #0a3a5a;
   --purple: #7F77DD;
   --purple-bg: #1a1a2a;
   --purple-text: #b8b4f0;
+  --pink-bg: #2a0a1a;
+  --pink-text: #f48fb1;
+  --orange-bg: #1a0a00;
+  --orange-border: #3a1a00;
+  --orange-text: #ff7043;
+  --orange-bg-2: #2a1000;
+  --scrollbar: #2a2a2a;
+  --scrollbar-hover: #333333;
   --radius: 8px;
   --radius-lg: 12px;
+}
+
+[data-theme="light"] {
+  --bg: #f5f5f5;
+  --bg-2: #ffffff;
+  --bg-3: #f0f0f0;
+  --bg-4: #e8e8e8;
+  --border: #ddd;
+  --border-2: #ccc;
+  --border-3: #bbb;
+  --text: #1a1a1a;
+  --text-2: #555;
+  --text-3: #888;
+  --text-4: #aaa;
+  --text-5: #ccc;
+  --text-muted: #777;
+  --text-faint: #666;
+  --row-hover: #f0f0f0;
+  --row-selected: #e8f5e9;
+  --row-border: #eee;
+  --green: #158a64;
+  --green-dim: #b2dfdb;
+  --green-bg: #e0f2ef;
+  --green-text: #0d7a56;
+  --amber: #d48806;
+  --amber-bg: #fff8e1;
+  --amber-text: #b8760a;
+  --red: #d32f2f;
+  --red-bg: #fce4ec;
+  --red-text: #c62828;
+  --red-border: #ef9a9a;
+  --red-muted: #e57373;
+  --red-muted-border: #ffcdd2;
+  --blue: #1976d2;
+  --blue-bg: #e3f2fd;
+  --blue-text: #1565c0;
+  --blue-border: #90caf9;
+  --purple: #5e35b1;
+  --purple-bg: #ede7f6;
+  --purple-text: #4527a0;
+  --pink-bg: #fce4ec;
+  --pink-text: #c2185b;
+  --orange-bg: #fff3e0;
+  --orange-border: #ffcc80;
+  --orange-text: #e65100;
+  --orange-bg-2: #ffe0b2;
+  --scrollbar: #ccc;
+  --scrollbar-hover: #aaa;
 }
 
 html, body {
@@ -66,10 +137,10 @@ button {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #2a2a2a;
+  background: var(--scrollbar);
   border-radius: 2px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #333;
+  background: var(--scrollbar-hover);
 }

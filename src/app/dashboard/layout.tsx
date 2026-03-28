@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase-server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import { ThemeToggle } from '@/lib/theme'
 import type { Staff } from '@/types/database'
 
 const NAV = [
@@ -158,8 +159,9 @@ export default async function DashboardLayout({
           ))}
         </nav>
 
-        {/* Sign out */}
-        <div style={{ padding: '8px', borderTop: '0.5px solid var(--border)', flexShrink: 0 }}>
+        {/* Theme + Sign out */}
+        <div style={{ padding: '8px', borderTop: '0.5px solid var(--border)', flexShrink: 0, display: 'flex', flexDirection: 'column', gap: '4px' }}>
+          <ThemeToggle />
           <form action="/auth/signout" method="post" style={{ width: '100%' }}>
             <button style={{
               width: '100%', padding: '7px', background: 'transparent',

@@ -146,12 +146,12 @@ export default function InvoicingPage() {
 
   const inp = (style = {}) => ({
     width: '100%', padding: '8px 12px',
-    background: '#1a1a1a', border: '0.5px solid #333',
-    borderRadius: '8px', color: '#fff', fontSize: '12px',
+    background: 'var(--bg-4)', border: '0.5px solid var(--border-3)',
+    borderRadius: '8px', color: 'var(--text)', fontSize: '12px',
     outline: 'none', ...style
   } as React.CSSProperties)
 
-  const lbl = { fontSize: '11px', color: '#666', display: 'block', marginBottom: '4px' } as React.CSSProperties
+  const lbl = { fontSize: '11px', color: 'var(--text-muted)', display: 'block', marginBottom: '4px' } as React.CSSProperties
 
   return (
     <div style={{ padding: '1.5rem', maxWidth: '1200px' }}>
@@ -160,7 +160,7 @@ export default function InvoicingPage() {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '10px' }}>
         <div>
           <div style={{ fontSize: '18px', fontWeight: '500' }}>Invoicing</div>
-          <div style={{ fontSize: '12px', color: '#555', marginTop: '2px' }}>{invoices.length} total · {overdueInvoices.length} overdue</div>
+          <div style={{ fontSize: '12px', color: 'var(--text-3)', marginTop: '2px' }}>{invoices.length} total · {overdueInvoices.length} overdue</div>
         </div>
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
           <input placeholder="Search invoices..." value={search} onChange={e => setSearch(e.target.value)} style={{ ...inp({ width: '200px' }) }} />
@@ -174,8 +174,8 @@ export default function InvoicingPage() {
             <option value="cancelled">Cancelled</option>
           </select>
           <button onClick={() => { setForm(EMPTY); setEditId(null); setShowForm(!showForm) }} style={{
-            padding: '8px 16px', background: showForm ? '#333' : '#1D9E75',
-            border: 'none', borderRadius: '8px', color: '#fff',
+            padding: '8px 16px', background: showForm ? 'var(--border-3)' : '#1D9E75',
+            border: 'none', borderRadius: '8px', color: 'var(--text)',
             fontSize: '12px', fontWeight: '500', cursor: 'pointer'
           }}>
             {showForm ? 'Cancel' : '+ New invoice'}
@@ -192,8 +192,8 @@ export default function InvoicingPage() {
           { label: 'Overdue', count: overdueInvoices.length, color: '#f08080' },
           { label: 'Outstanding', count: `\u00A3${totalOutstanding.toLocaleString()}`, color: '#f5c842' },
         ].map(s => (
-          <div key={s.label} style={{ background: '#111', border: '0.5px solid #222', borderRadius: '10px', padding: '0.75rem 1rem' }}>
-            <div style={{ fontSize: '10px', color: '#555', marginBottom: '4px' }}>{s.label}</div>
+          <div key={s.label} style={{ background: 'var(--bg-2)', border: '0.5px solid var(--border)', borderRadius: '10px', padding: '0.75rem 1rem' }}>
+            <div style={{ fontSize: '10px', color: 'var(--text-3)', marginBottom: '4px' }}>{s.label}</div>
             <div style={{ fontSize: '18px', fontWeight: '500', color: s.color }}>{s.count}</div>
           </div>
         ))}
@@ -201,11 +201,11 @@ export default function InvoicingPage() {
 
       {/* Overdue alert */}
       {overdueInvoices.length > 0 && (
-        <div style={{ padding: '10px 14px', background: '#2a0a0a', border: '0.5px solid #5a1a1a', borderRadius: '10px', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <div style={{ padding: '10px 14px', background: 'var(--red-bg)', border: '0.5px solid var(--red-border)', borderRadius: '10px', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
           <span style={{ fontSize: '12px', color: '#f08080', fontWeight: '500' }}>
             {overdueInvoices.length} overdue invoice{overdueInvoices.length > 1 ? 's' : ''}
           </span>
-          <span style={{ fontSize: '11px', color: '#aa5555' }}>
+          <span style={{ fontSize: '11px', color: 'var(--red-muted)' }}>
             {overdueInvoices.map(inv => `${inv.invoice_number} (${currSymbol(inv.currency)}${inv.total})`).join(' · ')}
           </span>
         </div>
@@ -213,7 +213,7 @@ export default function InvoicingPage() {
 
       {/* Form */}
       {showForm && (
-        <div style={{ background: '#111', border: '0.5px solid #2a2a2a', borderRadius: '12px', padding: '1.25rem', marginBottom: '1.25rem' }}>
+        <div style={{ background: 'var(--bg-2)', border: '0.5px solid var(--border-2)', borderRadius: '12px', padding: '1.25rem', marginBottom: '1.25rem' }}>
           <div style={{ fontSize: '13px', fontWeight: '500', marginBottom: '1rem', color: '#1D9E75' }}>
             {editId ? 'Edit invoice' : 'New invoice'}
           </div>
@@ -257,19 +257,19 @@ export default function InvoicingPage() {
 
           {/* Line items */}
           <div style={{ marginBottom: '12px' }}>
-            <div style={{ fontSize: '11px', color: '#666', marginBottom: '8px' }}>Line items</div>
+            <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginBottom: '8px' }}>Line items</div>
             {(form.line_items ?? []).map((li, idx) => (
               <div key={idx} style={{ display: 'grid', gridTemplateColumns: '2fr 80px 100px 100px 30px', gap: '8px', marginBottom: '6px', alignItems: 'center' }}>
                 <input style={inp()} value={li.description} onChange={e => updateLineItem(idx, 'description', e.target.value)} placeholder="Description" />
                 <input style={inp()} type="number" value={li.quantity} onChange={e => updateLineItem(idx, 'quantity', parseInt(e.target.value) || 0)} />
                 <input style={inp()} type="number" step="0.01" value={li.unit_price} onChange={e => updateLineItem(idx, 'unit_price', parseFloat(e.target.value) || 0)} />
-                <div style={{ fontSize: '12px', color: '#888', textAlign: 'right', fontFamily: 'monospace' }}>
+                <div style={{ fontSize: '12px', color: 'var(--text-faint)', textAlign: 'right', fontFamily: 'monospace' }}>
                   {currSymbol(form.currency ?? 'GBP')}{(li.quantity * li.unit_price).toFixed(2)}
                 </div>
-                <button onClick={() => removeLineItem(idx)} style={{ background: 'transparent', border: 'none', color: '#5a2a2a', fontSize: '14px', cursor: 'pointer' }}>×</button>
+                <button onClick={() => removeLineItem(idx)} style={{ background: 'transparent', border: 'none', color: 'var(--red-muted)', fontSize: '14px', cursor: 'pointer' }}>×</button>
               </div>
             ))}
-            <button onClick={addLineItem} style={{ padding: '4px 10px', background: 'transparent', border: '0.5px solid #333', borderRadius: '6px', color: '#666', fontSize: '11px', cursor: 'pointer' }}>+ Add line</button>
+            <button onClick={addLineItem} style={{ padding: '4px 10px', background: 'transparent', border: '0.5px solid var(--border-3)', borderRadius: '6px', color: 'var(--text-muted)', fontSize: '11px', cursor: 'pointer' }}>+ Add line</button>
           </div>
 
           {/* Totals */}
@@ -280,53 +280,53 @@ export default function InvoicingPage() {
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
-                <span style={{ color: '#666' }}>Subtotal</span>
+                <span style={{ color: 'var(--text-muted)' }}>Subtotal</span>
                 <span style={{ fontFamily: 'monospace' }}>{currSymbol(form.currency ?? 'GBP')}{(form.subtotal ?? 0).toFixed(2)}</span>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', alignItems: 'center' }}>
-                <span style={{ color: '#666' }}>Tax</span>
+                <span style={{ color: 'var(--text-muted)' }}>Tax</span>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                   <input style={{ ...inp({ width: '50px', textAlign: 'right' }) }} type="number" value={form.tax_rate ?? 20} onChange={e => updateTaxRate(parseFloat(e.target.value) || 0)} />
-                  <span style={{ color: '#555', fontSize: '11px' }}>%</span>
+                  <span style={{ color: 'var(--text-3)', fontSize: '11px' }}>%</span>
                 </div>
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px' }}>
-                <span style={{ color: '#666' }}>Tax amount</span>
+                <span style={{ color: 'var(--text-muted)' }}>Tax amount</span>
                 <span style={{ fontFamily: 'monospace' }}>{currSymbol(form.currency ?? 'GBP')}{(form.tax_amount ?? 0).toFixed(2)}</span>
               </div>
-              <div style={{ borderTop: '0.5px solid #333', paddingTop: '6px', display: 'flex', justifyContent: 'space-between', fontSize: '14px', fontWeight: '500' }}>
+              <div style={{ borderTop: '0.5px solid var(--border-3)', paddingTop: '6px', display: 'flex', justifyContent: 'space-between', fontSize: '14px', fontWeight: '500' }}>
                 <span>Total</span>
                 <span style={{ color: '#1D9E75', fontFamily: 'monospace' }}>{currSymbol(form.currency ?? 'GBP')}{(form.total ?? 0).toFixed(2)}</span>
               </div>
             </div>
           </div>
 
-          {error && <div style={{ padding: '8px 12px', background: '#2a0a0a', border: '0.5px solid #5a1a1a', borderRadius: '8px', fontSize: '12px', color: '#f08080', marginBottom: '12px' }}>{error}</div>}
+          {error && <div style={{ padding: '8px 12px', background: 'var(--red-bg)', border: '0.5px solid var(--red-border)', borderRadius: '8px', fontSize: '12px', color: '#f08080', marginBottom: '12px' }}>{error}</div>}
 
           <div style={{ display: 'flex', gap: '8px' }}>
-            <button onClick={save} disabled={saving} style={{ padding: '8px 20px', background: saving ? '#0a4a30' : '#1D9E75', border: 'none', borderRadius: '8px', color: '#fff', fontSize: '12px', fontWeight: '500', cursor: 'pointer' }}>
+            <button onClick={save} disabled={saving} style={{ padding: '8px 20px', background: saving ? 'var(--green-dim)' : '#1D9E75', border: 'none', borderRadius: '8px', color: 'var(--text)', fontSize: '12px', fontWeight: '500', cursor: 'pointer' }}>
               {saving ? 'Saving...' : editId ? 'Update invoice' : 'Create invoice'}
             </button>
-            <button onClick={() => { setShowForm(false); setForm(EMPTY); setEditId(null) }} style={{ padding: '8px 16px', background: 'transparent', border: '0.5px solid #333', borderRadius: '8px', color: '#666', fontSize: '12px', cursor: 'pointer' }}>Cancel</button>
+            <button onClick={() => { setShowForm(false); setForm(EMPTY); setEditId(null) }} style={{ padding: '8px 16px', background: 'transparent', border: '0.5px solid var(--border-3)', borderRadius: '8px', color: 'var(--text-muted)', fontSize: '12px', cursor: 'pointer' }}>Cancel</button>
           </div>
         </div>
       )}
 
       {/* Table */}
-      <div style={{ background: '#111', border: '0.5px solid #222', borderRadius: '12px', overflow: 'hidden' }}>
+      <div style={{ background: 'var(--bg-2)', border: '0.5px solid var(--border)', borderRadius: '12px', overflow: 'hidden' }}>
         {loading ? (
-          <div style={{ padding: '3rem', textAlign: 'center', color: '#555', fontSize: '12px' }}>Loading invoices...</div>
+          <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-3)', fontSize: '12px' }}>Loading invoices...</div>
         ) : filtered.length === 0 ? (
           <div style={{ padding: '3rem', textAlign: 'center' }}>
             <div style={{ fontSize: '13px', fontWeight: '500', color: '#1D9E75', marginBottom: '6px' }}>No invoices yet</div>
-            <div style={{ fontSize: '12px', color: '#555' }}>Click "New invoice" to create one.</div>
+            <div style={{ fontSize: '12px', color: 'var(--text-3)' }}>Click "New invoice" to create one.</div>
           </div>
         ) : (
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
-              <tr style={{ borderBottom: '0.5px solid #222' }}>
+              <tr style={{ borderBottom: '0.5px solid var(--border)' }}>
                 {['Invoice #', 'Recipient', 'Total', 'Status', 'Issued', 'Due', 'Views', 'Actions'].map(h => (
-                  <th key={h} style={{ textAlign: 'left', padding: '10px 14px', fontSize: '10px', fontWeight: '500', letterSpacing: '0.06em', textTransform: 'uppercase', color: '#555' }}>{h}</th>
+                  <th key={h} style={{ textAlign: 'left', padding: '10px 14px', fontSize: '10px', fontWeight: '500', letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--text-3)' }}>{h}</th>
                 ))}
               </tr>
             </thead>
@@ -337,16 +337,16 @@ export default function InvoicingPage() {
                 const daysOverdue = inv.due_at ? Math.floor((Date.now() - new Date(inv.due_at).getTime()) / 86400000) : 0
                 return (
                   <tr key={inv.id}
-                    style={{ borderBottom: i < filtered.length - 1 ? '0.5px solid #1a1a1a' : 'none', transition: 'background 0.1s' }}
-                    onMouseEnter={e => (e.currentTarget.style.background = '#161616')}
+                    style={{ borderBottom: i < filtered.length - 1 ? '0.5px solid var(--row-border)' : 'none', transition: 'background 0.1s' }}
+                    onMouseEnter={e => (e.currentTarget.style.background = 'var(--row-hover)')}
                     onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
                   >
-                    <td style={{ padding: '12px 14px', fontFamily: 'monospace', fontSize: '12px', color: '#888' }}>{inv.invoice_number}</td>
+                    <td style={{ padding: '12px 14px', fontFamily: 'monospace', fontSize: '12px', color: 'var(--text-faint)' }}>{inv.invoice_number}</td>
                     <td style={{ padding: '12px 14px' }}>
-                      <div style={{ fontWeight: '500', color: '#fff', fontSize: '12px' }}>{inv.recipient_name}</div>
-                      <div style={{ fontSize: '11px', color: '#555' }}>{inv.recipient_email ?? ''}</div>
+                      <div style={{ fontWeight: '500', color: 'var(--text)', fontSize: '12px' }}>{inv.recipient_name}</div>
+                      <div style={{ fontSize: '11px', color: 'var(--text-3)' }}>{inv.recipient_email ?? ''}</div>
                     </td>
-                    <td style={{ padding: '12px 14px', fontSize: '13px', fontWeight: '500', fontFamily: 'monospace', color: '#fff' }}>
+                    <td style={{ padding: '12px 14px', fontSize: '13px', fontWeight: '500', fontFamily: 'monospace', color: 'var(--text)' }}>
                       {currSymbol(inv.currency)}{inv.total.toLocaleString()}
                     </td>
                     <td style={{ padding: '12px 14px' }}>
@@ -354,17 +354,17 @@ export default function InvoicingPage() {
                         {isOverdue ? `overdue ${daysOverdue}d` : inv.status}
                       </span>
                     </td>
-                    <td style={{ padding: '12px 14px', fontSize: '11px', color: '#555' }}>
+                    <td style={{ padding: '12px 14px', fontSize: '11px', color: 'var(--text-3)' }}>
                       {inv.issued_at ? new Date(inv.issued_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : '—'}
                     </td>
-                    <td style={{ padding: '12px 14px', fontSize: '11px', color: isOverdue ? '#f08080' : '#555' }}>
+                    <td style={{ padding: '12px 14px', fontSize: '11px', color: isOverdue ? '#f08080' : 'var(--text-3)' }}>
                       {inv.due_at ? new Date(inv.due_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : '—'}
                     </td>
-                    <td style={{ padding: '12px 14px', fontSize: '12px', color: '#666' }}>{inv.view_count}</td>
+                    <td style={{ padding: '12px 14px', fontSize: '12px', color: 'var(--text-muted)' }}>{inv.view_count}</td>
                     <td style={{ padding: '12px 14px' }}>
                       <div style={{ display: 'flex', gap: '5px' }}>
-                        <button onClick={() => editInvoice(inv)} style={{ padding: '3px 8px', background: 'transparent', border: '0.5px solid #333', borderRadius: '6px', color: '#888', fontSize: '11px', cursor: 'pointer' }}>Edit</button>
-                        <button onClick={() => deleteInvoice(inv.id)} style={{ padding: '3px 8px', background: 'transparent', border: '0.5px solid #2a1a1a', borderRadius: '6px', color: '#5a2a2a', fontSize: '11px', cursor: 'pointer' }}>Delete</button>
+                        <button onClick={() => editInvoice(inv)} style={{ padding: '3px 8px', background: 'transparent', border: '0.5px solid var(--border-3)', borderRadius: '6px', color: 'var(--text-faint)', fontSize: '11px', cursor: 'pointer' }}>Edit</button>
+                        <button onClick={() => deleteInvoice(inv.id)} style={{ padding: '3px 8px', background: 'transparent', border: '0.5px solid var(--red-muted-border)', borderRadius: '6px', color: 'var(--red-muted)', fontSize: '11px', cursor: 'pointer' }}>Delete</button>
                       </div>
                     </td>
                   </tr>

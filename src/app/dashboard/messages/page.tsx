@@ -115,8 +115,8 @@ export default function MessagesPage() {
 
   const inp = (style = {}) => ({
     width: '100%', padding: '8px 12px',
-    background: '#1a1a1a', border: '0.5px solid #333',
-    borderRadius: '8px', color: '#fff', fontSize: '12px',
+    background: 'var(--bg-4)', border: '0.5px solid var(--border-3)',
+    borderRadius: '8px', color: 'var(--text)', fontSize: '12px',
     outline: 'none', ...style
   } as React.CSSProperties)
 
@@ -127,13 +127,13 @@ export default function MessagesPage() {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', flexShrink: 0 }}>
         <div>
           <div style={{ fontSize: '18px', fontWeight: '500' }}>Messages</div>
-          <div style={{ fontSize: '12px', color: '#555', marginTop: '2px' }}>
+          <div style={{ fontSize: '12px', color: 'var(--text-3)', marginTop: '2px' }}>
             {threads.length} threads · {totalUnread} unread
           </div>
         </div>
         <button onClick={() => setShowNewThread(!showNewThread)} style={{
-          padding: '8px 16px', background: showNewThread ? '#333' : '#1D9E75',
-          border: 'none', borderRadius: '8px', color: '#fff',
+          padding: '8px 16px', background: showNewThread ? 'var(--border-3)' : '#1D9E75',
+          border: 'none', borderRadius: '8px', color: 'var(--text)',
           fontSize: '12px', fontWeight: '500', cursor: 'pointer'
         }}>
           {showNewThread ? 'Cancel' : '+ New message'}
@@ -142,12 +142,12 @@ export default function MessagesPage() {
 
       {/* New thread selector */}
       {showNewThread && (
-        <div style={{ background: '#111', border: '0.5px solid #2a2a2a', borderRadius: '12px', padding: '1rem', marginBottom: '1rem', flexShrink: 0, display: 'flex', gap: '8px', alignItems: 'center' }}>
+        <div style={{ background: 'var(--bg-2)', border: '0.5px solid var(--border-2)', borderRadius: '12px', padding: '1rem', marginBottom: '1rem', flexShrink: 0, display: 'flex', gap: '8px', alignItems: 'center' }}>
           <select style={{ ...inp({ width: '300px' }) }} value={newThreadContactId} onChange={e => setNewThreadContactId(e.target.value)}>
             <option value="">Select contact...</option>
             {contacts.map(c => <option key={c.id} value={c.id}>{c.full_name} {c.email ? `(${c.email})` : ''}</option>)}
           </select>
-          <button onClick={startNewThread} style={{ padding: '8px 16px', background: '#1D9E75', border: 'none', borderRadius: '8px', color: '#fff', fontSize: '12px', fontWeight: '500', cursor: 'pointer' }}>Open thread</button>
+          <button onClick={startNewThread} style={{ padding: '8px 16px', background: '#1D9E75', border: 'none', borderRadius: '8px', color: 'var(--text)', fontSize: '12px', fontWeight: '500', cursor: 'pointer' }}>Open thread</button>
         </div>
       )}
 
@@ -155,16 +155,16 @@ export default function MessagesPage() {
       <div style={{ display: 'grid', gridTemplateColumns: '320px 1fr', gap: '1rem', flex: 1, minHeight: 0 }}>
 
         {/* Thread list */}
-        <div style={{ background: '#111', border: '0.5px solid #222', borderRadius: '12px', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
-          <div style={{ padding: '10px', borderBottom: '0.5px solid #222', flexShrink: 0 }}>
+        <div style={{ background: 'var(--bg-2)', border: '0.5px solid var(--border)', borderRadius: '12px', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+          <div style={{ padding: '10px', borderBottom: '0.5px solid var(--border)', flexShrink: 0 }}>
             <input placeholder="Search threads..." value={search} onChange={e => setSearch(e.target.value)} style={{ ...inp() }} />
           </div>
           <div style={{ flex: 1, overflowY: 'auto' }}>
             {loading ? (
-              <div style={{ padding: '2rem', textAlign: 'center', color: '#555', fontSize: '12px' }}>Loading...</div>
+              <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-3)', fontSize: '12px' }}>Loading...</div>
             ) : filteredThreads.length === 0 ? (
               <div style={{ padding: '2rem', textAlign: 'center' }}>
-                <div style={{ fontSize: '12px', color: '#555' }}>No threads yet</div>
+                <div style={{ fontSize: '12px', color: 'var(--text-3)' }}>No threads yet</div>
               </div>
             ) : filteredThreads.map(t => {
               const isActive = selectedContactId === t.contact.id
@@ -173,13 +173,13 @@ export default function MessagesPage() {
                   onClick={() => selectThread(t.contact.id)}
                   style={{
                     padding: '10px 12px', cursor: 'pointer',
-                    background: isActive ? '#1a2a1a' : 'transparent',
-                    borderBottom: '0.5px solid #1a1a1a',
+                    background: isActive ? 'var(--row-selected)' : 'transparent',
+                    borderBottom: '0.5px solid var(--row-border)',
                     transition: 'background 0.1s',
                     display: 'flex', gap: '10px', alignItems: 'flex-start'
                   }}
-                  onMouseEnter={e => { if (!isActive) e.currentTarget.style.background = '#161616' }}
-                  onMouseLeave={e => { if (!isActive) e.currentTarget.style.background = isActive ? '#1a2a1a' : 'transparent' }}
+                  onMouseEnter={e => { if (!isActive) e.currentTarget.style.background = 'var(--row-hover)' }}
+                  onMouseLeave={e => { if (!isActive) e.currentTarget.style.background = isActive ? 'var(--row-selected)' : 'transparent' }}
                 >
                   <div style={{
                     width: '32px', height: '32px', borderRadius: '50%',
@@ -191,17 +191,17 @@ export default function MessagesPage() {
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontWeight: '500', color: '#fff', fontSize: '12px' }}>{t.contact.full_name}</span>
-                      <span style={{ fontSize: '10px', color: '#555' }}>
+                      <span style={{ fontWeight: '500', color: 'var(--text)', fontSize: '12px' }}>{t.contact.full_name}</span>
+                      <span style={{ fontSize: '10px', color: 'var(--text-3)' }}>
                         {new Date(t.lastMessage.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
                       </span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '2px' }}>
-                      <span style={{ fontSize: '11px', color: '#666', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '180px' }}>
+                      <span style={{ fontSize: '11px', color: 'var(--text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '180px' }}>
                         {t.lastMessage.direction === 'outbound' ? 'You: ' : ''}{t.lastMessage.body}
                       </span>
                       {t.unreadCount > 0 && (
-                        <span style={{ padding: '1px 6px', borderRadius: '10px', fontSize: '9px', fontWeight: '600', background: '#1D9E75', color: '#fff', flexShrink: 0 }}>
+                        <span style={{ padding: '1px 6px', borderRadius: '10px', fontSize: '9px', fontWeight: '600', background: '#1D9E75', color: 'var(--text)', flexShrink: 0 }}>
                           {t.unreadCount}
                         </span>
                       )}
@@ -214,18 +214,18 @@ export default function MessagesPage() {
         </div>
 
         {/* Message pane */}
-        <div style={{ background: '#111', border: '0.5px solid #222', borderRadius: '12px', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+        <div style={{ background: 'var(--bg-2)', border: '0.5px solid var(--border)', borderRadius: '12px', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
           {!selectedContactId ? (
             <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <div style={{ textAlign: 'center' }}>
                 <div style={{ fontSize: '13px', fontWeight: '500', color: '#1D9E75', marginBottom: '6px' }}>Select a thread</div>
-                <div style={{ fontSize: '12px', color: '#555' }}>Choose a conversation from the left or start a new one.</div>
+                <div style={{ fontSize: '12px', color: 'var(--text-3)' }}>Choose a conversation from the left or start a new one.</div>
               </div>
             </div>
           ) : (
             <>
               {/* Thread header */}
-              <div style={{ padding: '12px 16px', borderBottom: '0.5px solid #222', display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
+              <div style={{ padding: '12px 16px', borderBottom: '0.5px solid var(--border)', display: 'flex', alignItems: 'center', gap: '10px', flexShrink: 0 }}>
                 <div style={{
                   width: '30px', height: '30px', borderRadius: '50%',
                   background: '#1a0a2a', display: 'flex', alignItems: 'center',
@@ -236,7 +236,7 @@ export default function MessagesPage() {
                 </div>
                 <div>
                   <div style={{ fontWeight: '500', fontSize: '13px' }}>{selectedThread?.contact.full_name}</div>
-                  <div style={{ fontSize: '10px', color: '#555' }}>
+                  <div style={{ fontSize: '10px', color: 'var(--text-3)' }}>
                     {selectedThread?.contact.type} {selectedThread?.contact.email ? `· ${selectedThread.contact.email}` : ''}
                   </div>
                 </div>
@@ -251,29 +251,29 @@ export default function MessagesPage() {
                   }}>
                     <div style={{
                       padding: '8px 12px',
-                      background: m.direction === 'outbound' ? '#0a2a1e' : '#1a1a1a',
-                      border: `0.5px solid ${m.direction === 'outbound' ? '#1a4a3a' : '#333'}`,
+                      background: m.direction === 'outbound' ? 'var(--green-bg)' : 'var(--bg-4)',
+                      border: `0.5px solid ${m.direction === 'outbound' ? 'var(--green-bg)' : 'var(--border-3)'}`,
                       borderRadius: m.direction === 'outbound' ? '12px 12px 4px 12px' : '12px 12px 12px 4px',
                       fontSize: '12px', lineHeight: '1.5',
-                      color: m.direction === 'outbound' ? '#4ecca3' : '#ccc',
+                      color: m.direction === 'outbound' ? '#4ecca3' : 'var(--text-2)',
                     }}>
                       {m.body}
                     </div>
-                    <div style={{ fontSize: '9px', color: '#444', marginTop: '3px', textAlign: m.direction === 'outbound' ? 'right' : 'left' }}>
+                    <div style={{ fontSize: '9px', color: 'var(--text-4)', marginTop: '3px', textAlign: m.direction === 'outbound' ? 'right' : 'left' }}>
                       {new Date(m.created_at).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
                       {m.channel !== 'portal' && <span> · {m.channel}</span>}
                     </div>
                   </div>
                 ))}
                 {selectedThread && selectedThread.messages.length === 0 && (
-                  <div style={{ textAlign: 'center', color: '#555', fontSize: '12px', marginTop: '2rem' }}>
+                  <div style={{ textAlign: 'center', color: 'var(--text-3)', fontSize: '12px', marginTop: '2rem' }}>
                     No messages yet. Start the conversation below.
                   </div>
                 )}
               </div>
 
               {/* Compose */}
-              <div style={{ padding: '12px', borderTop: '0.5px solid #222', flexShrink: 0, display: 'flex', gap: '8px' }}>
+              <div style={{ padding: '12px', borderTop: '0.5px solid var(--border)', flexShrink: 0, display: 'flex', gap: '8px' }}>
                 <input
                   style={{ ...inp({ flex: '1' }) }}
                   value={body}
@@ -282,8 +282,8 @@ export default function MessagesPage() {
                   onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage() } }}
                 />
                 <button onClick={sendMessage} disabled={sending || !body.trim()} style={{
-                  padding: '8px 16px', background: sending || !body.trim() ? '#0a4a30' : '#1D9E75',
-                  border: 'none', borderRadius: '8px', color: '#fff',
+                  padding: '8px 16px', background: sending || !body.trim() ? 'var(--green-dim)' : '#1D9E75',
+                  border: 'none', borderRadius: '8px', color: 'var(--text)',
                   fontSize: '12px', fontWeight: '500', cursor: 'pointer', flexShrink: 0
                 }}>
                   {sending ? 'Sending...' : 'Send'}

@@ -86,12 +86,12 @@ export default function AutomationsPage() {
 
   const inp = (style = {}) => ({
     width: '100%', padding: '8px 12px',
-    background: '#1a1a1a', border: '0.5px solid #333',
-    borderRadius: '8px', color: '#fff', fontSize: '12px',
+    background: 'var(--bg-4)', border: '0.5px solid var(--border-3)',
+    borderRadius: '8px', color: 'var(--text)', fontSize: '12px',
     outline: 'none', ...style
   } as React.CSSProperties)
 
-  const lbl = { fontSize: '11px', color: '#666', display: 'block', marginBottom: '4px' } as React.CSSProperties
+  const lbl = { fontSize: '11px', color: 'var(--text-muted)', display: 'block', marginBottom: '4px' } as React.CSSProperties
 
   return (
     <div style={{ padding: '1.5rem', maxWidth: '1200px' }}>
@@ -100,13 +100,13 @@ export default function AutomationsPage() {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
         <div>
           <div style={{ fontSize: '18px', fontWeight: '500' }}>Automations</div>
-          <div style={{ fontSize: '12px', color: '#555', marginTop: '2px' }}>
+          <div style={{ fontSize: '12px', color: 'var(--text-3)', marginTop: '2px' }}>
             {automations.length} rules · {activeCount} active · {totalRuns} total runs
           </div>
         </div>
         <button onClick={() => { setForm({ name: '', trigger: 'promo_window_opens', is_active: true, message_template: '' }); setEditId(null); setSelected(null); setShowForm(!showForm) }} style={{
-          padding: '8px 16px', background: showForm ? '#333' : '#1D9E75',
-          border: 'none', borderRadius: '8px', color: '#fff',
+          padding: '8px 16px', background: showForm ? 'var(--border-3)' : '#1D9E75',
+          border: 'none', borderRadius: '8px', color: 'var(--text)',
           fontSize: '12px', fontWeight: '500', cursor: 'pointer'
         }}>
           {showForm ? 'Cancel' : '+ New automation'}
@@ -118,11 +118,11 @@ export default function AutomationsPage() {
         {[
           { label: 'Total rules', count: automations.length, color: '#7ab8f5' },
           { label: 'Active', count: activeCount, color: '#4ecca3' },
-          { label: 'Inactive', count: automations.length - activeCount, color: '#666' },
+          { label: 'Inactive', count: automations.length - activeCount, color: 'var(--text-muted)' },
           { label: 'Total runs', count: totalRuns, color: '#f5c842' },
         ].map(s => (
-          <div key={s.label} style={{ background: '#111', border: '0.5px solid #222', borderRadius: '10px', padding: '0.75rem 1rem' }}>
-            <div style={{ fontSize: '10px', color: '#555', marginBottom: '4px' }}>{s.label}</div>
+          <div key={s.label} style={{ background: 'var(--bg-2)', border: '0.5px solid var(--border)', borderRadius: '10px', padding: '0.75rem 1rem' }}>
+            <div style={{ fontSize: '10px', color: 'var(--text-3)', marginBottom: '4px' }}>{s.label}</div>
             <div style={{ fontSize: '18px', fontWeight: '500', color: s.color }}>{s.count}</div>
           </div>
         ))}
@@ -130,7 +130,7 @@ export default function AutomationsPage() {
 
       {/* Form */}
       {showForm && (
-        <div style={{ background: '#111', border: '0.5px solid #2a2a2a', borderRadius: '12px', padding: '1.25rem', marginBottom: '1.25rem' }}>
+        <div style={{ background: 'var(--bg-2)', border: '0.5px solid var(--border-2)', borderRadius: '12px', padding: '1.25rem', marginBottom: '1.25rem' }}>
           <div style={{ fontSize: '13px', fontWeight: '500', marginBottom: '1rem', color: '#1D9E75' }}>
             {editId ? 'Edit automation' : 'New automation'}
           </div>
@@ -153,25 +153,25 @@ export default function AutomationsPage() {
           <div style={{ marginBottom: '12px' }}>
             <label style={lbl}>Message template</label>
             <textarea style={{ ...inp({ height: '80px', resize: 'none' }) }} value={form.message_template ?? ''} onChange={e => setForm(f => ({ ...f, message_template: e.target.value }))} placeholder="Hey {first_name}, {release_title} is now available..." />
-            <div style={{ fontSize: '10px', color: '#444', marginTop: '4px' }}>
+            <div style={{ fontSize: '10px', color: 'var(--text-4)', marginTop: '4px' }}>
               Variables: {'{first_name}'} {'{release_title}'} {'{dropbox_url}'} {'{invoice_number}'} {'{amount}'}
             </div>
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '12px' }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', fontSize: '12px', color: form.is_active ? '#4ecca3' : '#666' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', fontSize: '12px', color: form.is_active ? '#4ecca3' : 'var(--text-muted)' }}>
               <input type="checkbox" checked={form.is_active ?? true} onChange={() => setForm(f => ({ ...f, is_active: !f.is_active }))} style={{ accentColor: '#1D9E75' }} />
               Active
             </label>
           </div>
 
-          {error && <div style={{ padding: '8px 12px', background: '#2a0a0a', border: '0.5px solid #5a1a1a', borderRadius: '8px', fontSize: '12px', color: '#f08080', marginBottom: '12px' }}>{error}</div>}
+          {error && <div style={{ padding: '8px 12px', background: 'var(--red-bg)', border: '0.5px solid var(--red-border)', borderRadius: '8px', fontSize: '12px', color: '#f08080', marginBottom: '12px' }}>{error}</div>}
 
           <div style={{ display: 'flex', gap: '8px' }}>
-            <button onClick={save} disabled={saving} style={{ padding: '8px 20px', background: saving ? '#0a4a30' : '#1D9E75', border: 'none', borderRadius: '8px', color: '#fff', fontSize: '12px', fontWeight: '500', cursor: 'pointer' }}>
+            <button onClick={save} disabled={saving} style={{ padding: '8px 20px', background: saving ? 'var(--green-dim)' : '#1D9E75', border: 'none', borderRadius: '8px', color: 'var(--text)', fontSize: '12px', fontWeight: '500', cursor: 'pointer' }}>
               {saving ? 'Saving...' : editId ? 'Update' : 'Create automation'}
             </button>
-            <button onClick={() => { setShowForm(false); setEditId(null) }} style={{ padding: '8px 16px', background: 'transparent', border: '0.5px solid #333', borderRadius: '8px', color: '#666', fontSize: '12px', cursor: 'pointer' }}>Cancel</button>
+            <button onClick={() => { setShowForm(false); setEditId(null) }} style={{ padding: '8px 16px', background: 'transparent', border: '0.5px solid var(--border-3)', borderRadius: '8px', color: 'var(--text-muted)', fontSize: '12px', cursor: 'pointer' }}>Cancel</button>
           </div>
         </div>
       )}
@@ -180,11 +180,11 @@ export default function AutomationsPage() {
         {/* Automation list */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
           {loading ? (
-            <div style={{ padding: '3rem', textAlign: 'center', color: '#555', fontSize: '12px', background: '#111', borderRadius: '12px', border: '0.5px solid #222' }}>Loading...</div>
+            <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-3)', fontSize: '12px', background: 'var(--bg-2)', borderRadius: '12px', border: '0.5px solid var(--border)' }}>Loading...</div>
           ) : automations.length === 0 ? (
-            <div style={{ padding: '3rem', textAlign: 'center', background: '#111', borderRadius: '12px', border: '0.5px solid #222' }}>
+            <div style={{ padding: '3rem', textAlign: 'center', background: 'var(--bg-2)', borderRadius: '12px', border: '0.5px solid var(--border)' }}>
               <div style={{ fontSize: '13px', fontWeight: '500', color: '#1D9E75', marginBottom: '6px' }}>No automations</div>
-              <div style={{ fontSize: '12px', color: '#555' }}>Create an automation to get started.</div>
+              <div style={{ fontSize: '12px', color: 'var(--text-3)' }}>Create an automation to get started.</div>
             </div>
           ) : automations.map(a => {
             const tl = TRIGGER_LABELS[a.trigger]
@@ -192,34 +192,34 @@ export default function AutomationsPage() {
             return (
               <div key={a.id}
                 style={{
-                  background: isSelected ? '#161a16' : '#111', border: '0.5px solid #222',
+                  background: isSelected ? 'var(--row-selected)' : 'var(--bg-2)', border: '0.5px solid var(--border)',
                   borderRadius: '12px', padding: '1rem', cursor: 'pointer',
                   opacity: a.is_active ? 1 : 0.5, transition: 'all 0.1s'
                 }}
                 onClick={() => setSelected(isSelected ? null : a)}
-                onMouseEnter={e => { if (!isSelected) e.currentTarget.style.background = '#161616' }}
-                onMouseLeave={e => { if (!isSelected) e.currentTarget.style.background = isSelected ? '#161a16' : '#111' }}
+                onMouseEnter={e => { if (!isSelected) e.currentTarget.style.background = 'var(--row-hover)' }}
+                onMouseLeave={e => { if (!isSelected) e.currentTarget.style.background = isSelected ? 'var(--row-selected)' : 'var(--bg-2)' }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                     <div onClick={e => { e.stopPropagation(); toggleActive(a.id, a.is_active) }} style={{
                       width: '36px', height: '20px', borderRadius: '10px', cursor: 'pointer',
-                      background: a.is_active ? '#1D9E75' : '#333', padding: '2px',
+                      background: a.is_active ? '#1D9E75' : 'var(--border-3)', padding: '2px',
                       transition: 'background 0.2s', flexShrink: 0
                     }}>
                       <div style={{
-                        width: '16px', height: '16px', borderRadius: '50%', background: '#fff',
+                        width: '16px', height: '16px', borderRadius: '50%', background: 'var(--text)',
                         transform: a.is_active ? 'translateX(16px)' : 'translateX(0)',
                         transition: 'transform 0.2s'
                       }} />
                     </div>
                     <div>
-                      <div style={{ fontWeight: '500', color: '#fff', fontSize: '13px' }}>{a.name}</div>
+                      <div style={{ fontWeight: '500', color: 'var(--text)', fontSize: '13px' }}>{a.name}</div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
                         <span style={{ padding: '2px 7px', borderRadius: '20px', fontSize: '10px', fontWeight: '500', background: tl.bg, color: tl.color }}>
                           {tl.label}
                         </span>
-                        <span style={{ fontSize: '10px', color: '#555' }}>
+                        <span style={{ fontSize: '10px', color: 'var(--text-3)' }}>
                           {a.run_count} runs
                           {a.last_ran_at && ` · last ${new Date(a.last_ran_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}`}
                         </span>
@@ -227,8 +227,8 @@ export default function AutomationsPage() {
                     </div>
                   </div>
                   <div style={{ display: 'flex', gap: '5px' }} onClick={e => e.stopPropagation()}>
-                    <button onClick={() => editAutomation(a)} style={{ padding: '3px 8px', background: 'transparent', border: '0.5px solid #333', borderRadius: '6px', color: '#888', fontSize: '11px', cursor: 'pointer' }}>Edit</button>
-                    <button onClick={() => deleteAutomation(a.id)} style={{ padding: '3px 8px', background: 'transparent', border: '0.5px solid #2a1a1a', borderRadius: '6px', color: '#5a2a2a', fontSize: '11px', cursor: 'pointer' }}>Delete</button>
+                    <button onClick={() => editAutomation(a)} style={{ padding: '3px 8px', background: 'transparent', border: '0.5px solid var(--border-3)', borderRadius: '6px', color: 'var(--text-faint)', fontSize: '11px', cursor: 'pointer' }}>Edit</button>
+                    <button onClick={() => deleteAutomation(a.id)} style={{ padding: '3px 8px', background: 'transparent', border: '0.5px solid var(--red-muted-border)', borderRadius: '6px', color: 'var(--red-muted)', fontSize: '11px', cursor: 'pointer' }}>Delete</button>
                   </div>
                 </div>
               </div>
@@ -238,53 +238,53 @@ export default function AutomationsPage() {
 
         {/* Detail panel */}
         {selected && (
-          <div style={{ background: '#111', border: '0.5px solid #222', borderRadius: '12px', padding: '1.25rem', alignSelf: 'start' }}>
+          <div style={{ background: 'var(--bg-2)', border: '0.5px solid var(--border)', borderRadius: '12px', padding: '1.25rem', alignSelf: 'start' }}>
             <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '1rem' }}>
               <div>
                 <div style={{ fontWeight: '500', fontSize: '14px' }}>{selected.name}</div>
-                <div style={{ fontSize: '11px', color: '#555', marginTop: '2px' }}>
+                <div style={{ fontSize: '11px', color: 'var(--text-3)', marginTop: '2px' }}>
                   {selected.is_active ? 'Active' : 'Inactive'}
                 </div>
               </div>
-              <button onClick={() => setSelected(null)} style={{ background: 'transparent', border: 'none', color: '#555', fontSize: '16px', cursor: 'pointer', lineHeight: 1 }}>×</button>
+              <button onClick={() => setSelected(null)} style={{ background: 'transparent', border: 'none', color: 'var(--text-3)', fontSize: '16px', cursor: 'pointer', lineHeight: 1 }}>×</button>
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '1rem' }}>
-              <div style={{ background: '#1a1a1a', borderRadius: '8px', padding: '0.6rem 0.75rem' }}>
-                <div style={{ fontSize: '10px', color: '#555', marginBottom: '3px' }}>Trigger</div>
+              <div style={{ background: 'var(--bg-4)', borderRadius: '8px', padding: '0.6rem 0.75rem' }}>
+                <div style={{ fontSize: '10px', color: 'var(--text-3)', marginBottom: '3px' }}>Trigger</div>
                 <div style={{ fontSize: '12px', color: TRIGGER_LABELS[selected.trigger].color }}>{TRIGGER_LABELS[selected.trigger].label}</div>
               </div>
-              <div style={{ background: '#1a1a1a', borderRadius: '8px', padding: '0.6rem 0.75rem' }}>
-                <div style={{ fontSize: '10px', color: '#555', marginBottom: '3px' }}>Run count</div>
+              <div style={{ background: 'var(--bg-4)', borderRadius: '8px', padding: '0.6rem 0.75rem' }}>
+                <div style={{ fontSize: '10px', color: 'var(--text-3)', marginBottom: '3px' }}>Run count</div>
                 <div style={{ fontSize: '16px', fontWeight: '500' }}>{selected.run_count}</div>
               </div>
             </div>
 
             {selected.message_template && (
               <>
-                <div style={{ fontSize: '12px', color: '#666', marginBottom: '4px' }}>Message template</div>
-                <div style={{ padding: '10px', background: '#1a1a1a', borderRadius: '8px', fontSize: '12px', color: '#888', lineHeight: '1.6', marginBottom: '1rem', whiteSpace: 'pre-wrap' }}>
+                <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '4px' }}>Message template</div>
+                <div style={{ padding: '10px', background: 'var(--bg-4)', borderRadius: '8px', fontSize: '12px', color: 'var(--text-faint)', lineHeight: '1.6', marginBottom: '1rem', whiteSpace: 'pre-wrap' }}>
                   {selected.message_template}
                 </div>
               </>
             )}
 
             {selected.last_ran_at && (
-              <div style={{ fontSize: '11px', color: '#555', marginBottom: '1rem' }}>
+              <div style={{ fontSize: '11px', color: 'var(--text-3)', marginBottom: '1rem' }}>
                 Last ran: {new Date(selected.last_ran_at).toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
               </div>
             )}
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
               <button onClick={() => toggleActive(selected.id, selected.is_active)} style={{
-                padding: '8px', background: selected.is_active ? '#2a0a0a' : '#0a2a1e',
-                border: `0.5px solid ${selected.is_active ? '#5a1a1a' : '#1a4a3a'}`,
+                padding: '8px', background: selected.is_active ? 'var(--red-bg)' : '#0a2a1e',
+                border: `0.5px solid ${selected.is_active ? 'var(--red-border)' : '#1a4a3a'}`,
                 borderRadius: '8px', color: selected.is_active ? '#f08080' : '#4ecca3',
                 fontSize: '12px', cursor: 'pointer'
               }}>
                 {selected.is_active ? 'Deactivate' : 'Activate'}
               </button>
-              <button onClick={() => editAutomation(selected)} style={{ padding: '8px', background: '#1D9E75', border: 'none', borderRadius: '8px', color: '#fff', fontSize: '12px', fontWeight: '500', cursor: 'pointer' }}>Edit automation</button>
+              <button onClick={() => editAutomation(selected)} style={{ padding: '8px', background: '#1D9E75', border: 'none', borderRadius: '8px', color: 'var(--text)', fontSize: '12px', fontWeight: '500', cursor: 'pointer' }}>Edit automation</button>
             </div>
           </div>
         )}

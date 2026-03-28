@@ -109,15 +109,15 @@ export default function ContactsPage() {
 
   const inp = (style = {}) => ({
     width: '100%', padding: '8px 12px',
-    background: '#1a1a1a', border: '0.5px solid #333',
-    borderRadius: '8px', color: '#fff', fontSize: '12px',
+    background: 'var(--bg-4)', border: '0.5px solid var(--border-3)',
+    borderRadius: '8px', color: 'var(--text)', fontSize: '12px',
     outline: 'none', ...style
   } as React.CSSProperties)
 
-  const lbl = { fontSize: '11px', color: '#666', display: 'block', marginBottom: '4px' } as React.CSSProperties
+  const lbl = { fontSize: '11px', color: 'var(--text-muted)', display: 'block', marginBottom: '4px' } as React.CSSProperties
 
   const chk = (checked: boolean, onChange: () => void, label: string) => (
-    <label style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', fontSize: '12px', color: checked ? '#4ecca3' : '#666' }}>
+    <label style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', fontSize: '12px', color: checked ? '#4ecca3' : 'var(--text-muted)' }}>
       <input type="checkbox" checked={checked} onChange={onChange} style={{ accentColor: '#1D9E75' }} />
       {label}
     </label>
@@ -138,7 +138,7 @@ export default function ContactsPage() {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '10px' }}>
         <div>
           <div style={{ fontSize: '18px', fontWeight: '500' }}>Contacts</div>
-          <div style={{ fontSize: '12px', color: '#555', marginTop: '2px' }}>{contacts.length} total · {contacts.filter(c => c.is_on_promo_list).length} on promo list</div>
+          <div style={{ fontSize: '12px', color: 'var(--text-3)', marginTop: '2px' }}>{contacts.length} total · {contacts.filter(c => c.is_on_promo_list).length} on promo list</div>
         </div>
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
           <input placeholder="Search name, email, city..." value={search} onChange={e => setSearch(e.target.value)} style={{ ...inp({ width: '220px' }) }} />
@@ -153,13 +153,13 @@ export default function ContactsPage() {
             <option value="artist">Artists</option>
             <option value="industry">Industry</option>
           </select>
-          <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: filterPromo ? '#4ecca3' : '#666', cursor: 'pointer', whiteSpace: 'nowrap' }}>
+          <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: filterPromo ? '#4ecca3' : 'var(--text-muted)', cursor: 'pointer', whiteSpace: 'nowrap' }}>
             <input type="checkbox" checked={filterPromo} onChange={() => setFilterPromo(!filterPromo)} style={{ accentColor: '#1D9E75' }} />
             Promo only
           </label>
           <button onClick={() => { setForm(EMPTY); setEditId(null); setSelected(null); setShowForm(!showForm) }} style={{
-            padding: '8px 16px', background: showForm ? '#333' : '#1D9E75',
-            border: 'none', borderRadius: '8px', color: '#fff',
+            padding: '8px 16px', background: showForm ? 'var(--border-3)' : '#1D9E75',
+            border: 'none', borderRadius: '8px', color: 'var(--text)',
             fontSize: '12px', fontWeight: '500', cursor: 'pointer'
           }}>
             {showForm ? 'Cancel' : '+ Add contact'}
@@ -176,8 +176,8 @@ export default function ContactsPage() {
           { label: 'Venues', count: contacts.filter(c => c.type === 'venue').length, color: '#f5c842' },
           { label: 'High value', count: contacts.filter(c => c.is_high_value).length, color: '#1D9E75' },
         ].map(s => (
-          <div key={s.label} style={{ background: '#111', border: '0.5px solid #222', borderRadius: '10px', padding: '0.75rem 1rem' }}>
-            <div style={{ fontSize: '10px', color: '#555', marginBottom: '4px' }}>{s.label}</div>
+          <div key={s.label} style={{ background: 'var(--bg-2)', border: '0.5px solid var(--border)', borderRadius: '10px', padding: '0.75rem 1rem' }}>
+            <div style={{ fontSize: '10px', color: 'var(--text-3)', marginBottom: '4px' }}>{s.label}</div>
             <div style={{ fontSize: '18px', fontWeight: '500', color: s.color }}>{s.count}</div>
           </div>
         ))}
@@ -187,7 +187,7 @@ export default function ContactsPage() {
 
         {/* Form */}
         {showForm && (
-          <div style={{ gridColumn: '1 / -1', background: '#111', border: '0.5px solid #2a2a2a', borderRadius: '12px', padding: '1.25rem', marginBottom: '0' }}>
+          <div style={{ gridColumn: '1 / -1', background: 'var(--bg-2)', border: '0.5px solid var(--border-2)', borderRadius: '12px', padding: '1.25rem', marginBottom: '0' }}>
             <div style={{ fontSize: '13px', fontWeight: '500', marginBottom: '1rem', color: '#1D9E75' }}>
               {editId ? 'Edit contact' : 'New contact'}
             </div>
@@ -260,31 +260,31 @@ export default function ContactsPage() {
               <label style={lbl}>Notes</label>
               <textarea style={{ ...inp({ height: '64px', resize: 'none' }) }} value={form.notes ?? ''} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))} placeholder="Private notes..." />
             </div>
-            {error && <div style={{ padding: '8px 12px', background: '#2a0a0a', border: '0.5px solid #5a1a1a', borderRadius: '8px', fontSize: '12px', color: '#f08080', marginBottom: '12px' }}>{error}</div>}
+            {error && <div style={{ padding: '8px 12px', background: 'var(--red-bg)', border: '0.5px solid var(--red-border)', borderRadius: '8px', fontSize: '12px', color: '#f08080', marginBottom: '12px' }}>{error}</div>}
             <div style={{ display: 'flex', gap: '8px' }}>
-              <button onClick={save} disabled={saving} style={{ padding: '8px 20px', background: saving ? '#0a4a30' : '#1D9E75', border: 'none', borderRadius: '8px', color: '#fff', fontSize: '12px', fontWeight: '500', cursor: 'pointer' }}>
+              <button onClick={save} disabled={saving} style={{ padding: '8px 20px', background: saving ? 'var(--green-dim)' : '#1D9E75', border: 'none', borderRadius: '8px', color: 'var(--text)', fontSize: '12px', fontWeight: '500', cursor: 'pointer' }}>
                 {saving ? 'Saving...' : editId ? 'Update contact' : 'Add contact'}
               </button>
-              <button onClick={() => { setShowForm(false); setForm(EMPTY); setEditId(null) }} style={{ padding: '8px 16px', background: 'transparent', border: '0.5px solid #333', borderRadius: '8px', color: '#666', fontSize: '12px', cursor: 'pointer' }}>Cancel</button>
+              <button onClick={() => { setShowForm(false); setForm(EMPTY); setEditId(null) }} style={{ padding: '8px 16px', background: 'transparent', border: '0.5px solid var(--border-3)', borderRadius: '8px', color: 'var(--text-muted)', fontSize: '12px', cursor: 'pointer' }}>Cancel</button>
             </div>
           </div>
         )}
 
         {/* Contact list */}
-        <div style={{ background: '#111', border: '0.5px solid #222', borderRadius: '12px', overflow: 'hidden' }}>
+        <div style={{ background: 'var(--bg-2)', border: '0.5px solid var(--border)', borderRadius: '12px', overflow: 'hidden' }}>
           {loading ? (
-            <div style={{ padding: '3rem', textAlign: 'center', color: '#555', fontSize: '12px' }}>Loading contacts...</div>
+            <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-3)', fontSize: '12px' }}>Loading contacts...</div>
           ) : filtered.length === 0 ? (
             <div style={{ padding: '3rem', textAlign: 'center' }}>
               <div style={{ fontSize: '13px', fontWeight: '500', color: '#1D9E75', marginBottom: '6px' }}>No contacts yet</div>
-              <div style={{ fontSize: '12px', color: '#555' }}>Click "Add contact" to build your network.</div>
+              <div style={{ fontSize: '12px', color: 'var(--text-3)' }}>Click "Add contact" to build your network.</div>
             </div>
           ) : (
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
-                <tr style={{ borderBottom: '0.5px solid #222' }}>
+                <tr style={{ borderBottom: '0.5px solid var(--border)' }}>
                   {['Contact', 'Type', 'Location', 'Tags', 'Downloads', 'Last active', ''].map(h => (
-                    <th key={h} style={{ textAlign: 'left', padding: '10px 14px', fontSize: '10px', fontWeight: '500', letterSpacing: '0.06em', textTransform: 'uppercase', color: '#555' }}>{h}</th>
+                    <th key={h} style={{ textAlign: 'left', padding: '10px 14px', fontSize: '10px', fontWeight: '500', letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--text-3)' }}>{h}</th>
                   ))}
                 </tr>
               </thead>
@@ -294,9 +294,9 @@ export default function ContactsPage() {
                   const isSelected = selected?.id === c.id
                   return (
                     <tr key={c.id}
-                      style={{ borderBottom: i < filtered.length - 1 ? '0.5px solid #1a1a1a' : 'none', cursor: 'pointer', background: isSelected ? '#161a16' : 'transparent', transition: 'background 0.1s' }}
+                      style={{ borderBottom: i < filtered.length - 1 ? '0.5px solid var(--row-border)' : 'none', cursor: 'pointer', background: isSelected ? 'var(--row-selected)' : 'transparent', transition: 'background 0.1s' }}
                       onClick={() => setSelected(isSelected ? null : c)}
-                      onMouseEnter={e => { if (!isSelected) e.currentTarget.style.background = '#161616' }}
+                      onMouseEnter={e => { if (!isSelected) e.currentTarget.style.background = 'var(--row-hover)' }}
                       onMouseLeave={e => { if (!isSelected) e.currentTarget.style.background = 'transparent' }}
                     >
                       <td style={{ padding: '10px 14px' }}>
@@ -305,8 +305,8 @@ export default function ContactsPage() {
                             {initials(c.full_name)}
                           </div>
                           <div>
-                            <div style={{ fontWeight: '500', color: '#fff', fontSize: '12px' }}>{c.full_name}</div>
-                            <div style={{ fontSize: '11px', color: '#555' }}>{c.email ?? '—'}</div>
+                            <div style={{ fontWeight: '500', color: 'var(--text)', fontSize: '12px' }}>{c.full_name}</div>
+                            <div style={{ fontSize: '11px', color: 'var(--text-3)' }}>{c.email ?? '—'}</div>
                           </div>
                         </div>
                       </td>
@@ -315,7 +315,7 @@ export default function ContactsPage() {
                           {c.type}
                         </span>
                       </td>
-                      <td style={{ padding: '10px 14px', fontSize: '11px', color: '#666' }}>
+                      <td style={{ padding: '10px 14px', fontSize: '11px', color: 'var(--text-muted)' }}>
                         {[c.city, c.country_code].filter(Boolean).join(', ') || '—'}
                       </td>
                       <td style={{ padding: '10px 14px' }}>
@@ -326,14 +326,14 @@ export default function ContactsPage() {
                           {c.is_sf_artist && <span style={{ padding: '1px 6px', borderRadius: '10px', fontSize: '9px', fontWeight: '500', background: '#2a0a1a', color: '#f48fb1' }}>SF artist</span>}
                         </div>
                       </td>
-                      <td style={{ padding: '10px 14px', fontSize: '12px', color: '#666' }}>{c.total_downloads}</td>
-                      <td style={{ padding: '10px 14px', fontSize: '11px', color: '#555' }}>
+                      <td style={{ padding: '10px 14px', fontSize: '12px', color: 'var(--text-muted)' }}>{c.total_downloads}</td>
+                      <td style={{ padding: '10px 14px', fontSize: '11px', color: 'var(--text-3)' }}>
                         {c.last_active_at ? new Date(c.last_active_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : '—'}
                       </td>
                       <td style={{ padding: '10px 14px' }}>
                         <div style={{ display: 'flex', gap: '5px' }} onClick={e => e.stopPropagation()}>
-                          <button onClick={() => editContact(c)} style={{ padding: '3px 8px', background: 'transparent', border: '0.5px solid #333', borderRadius: '6px', color: '#888', fontSize: '11px', cursor: 'pointer' }}>Edit</button>
-                          <button onClick={() => deleteContact(c.id)} style={{ padding: '3px 8px', background: 'transparent', border: '0.5px solid #2a1a1a', borderRadius: '6px', color: '#5a2a2a', fontSize: '11px', cursor: 'pointer' }}>Delete</button>
+                          <button onClick={() => editContact(c)} style={{ padding: '3px 8px', background: 'transparent', border: '0.5px solid var(--border-3)', borderRadius: '6px', color: 'var(--text-faint)', fontSize: '11px', cursor: 'pointer' }}>Edit</button>
+                          <button onClick={() => deleteContact(c.id)} style={{ padding: '3px 8px', background: 'transparent', border: '0.5px solid var(--red-muted-border)', borderRadius: '6px', color: 'var(--red-muted)', fontSize: '11px', cursor: 'pointer' }}>Delete</button>
                         </div>
                       </td>
                     </tr>
@@ -346,7 +346,7 @@ export default function ContactsPage() {
 
         {/* Profile panel */}
         {selected && (
-          <div style={{ background: '#111', border: '0.5px solid #222', borderRadius: '12px', padding: '1.25rem', alignSelf: 'start' }}>
+          <div style={{ background: 'var(--bg-2)', border: '0.5px solid var(--border)', borderRadius: '12px', padding: '1.25rem', alignSelf: 'start' }}>
             <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '1rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: avatarColors[selected.type], display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '14px', fontWeight: '500', color: TYPE_COLORS[selected.type].color }}>
@@ -354,10 +354,10 @@ export default function ContactsPage() {
                 </div>
                 <div>
                   <div style={{ fontWeight: '500', fontSize: '14px' }}>{selected.full_name}</div>
-                  <div style={{ fontSize: '11px', color: '#555', marginTop: '1px' }}>{selected.type} {selected.organisation ? `· ${selected.organisation}` : ''}</div>
+                  <div style={{ fontSize: '11px', color: 'var(--text-3)', marginTop: '1px' }}>{selected.type} {selected.organisation ? `· ${selected.organisation}` : ''}</div>
                 </div>
               </div>
-              <button onClick={() => setSelected(null)} style={{ background: 'transparent', border: 'none', color: '#555', fontSize: '16px', cursor: 'pointer', lineHeight: 1 }}>×</button>
+              <button onClick={() => setSelected(null)} style={{ background: 'transparent', border: 'none', color: 'var(--text-3)', fontSize: '16px', cursor: 'pointer', lineHeight: 1 }}>×</button>
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', marginBottom: '1rem' }}>
@@ -367,26 +367,26 @@ export default function ContactsPage() {
                 { label: 'Avg rating', value: selected.avg_rating ? `${selected.avg_rating}★` : '—' },
                 { label: 'Response', value: selected.response_rate ? `${selected.response_rate}%` : '—' },
               ].map(s => (
-                <div key={s.label} style={{ background: '#1a1a1a', borderRadius: '8px', padding: '0.6rem 0.75rem' }}>
-                  <div style={{ fontSize: '10px', color: '#555', marginBottom: '3px' }}>{s.label}</div>
+                <div key={s.label} style={{ background: 'var(--bg-4)', borderRadius: '8px', padding: '0.6rem 0.75rem' }}>
+                  <div style={{ fontSize: '10px', color: 'var(--text-3)', marginBottom: '3px' }}>{s.label}</div>
                   <div style={{ fontSize: '16px', fontWeight: '500' }}>{s.value}</div>
                 </div>
               ))}
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', marginBottom: '1rem' }}>
-              {selected.email && <div style={{ display: 'flex', gap: '8px' }}><span style={{ color: '#555', width: '80px' }}>Email</span><span style={{ color: '#7ab8f5' }}>{selected.email}</span></div>}
-              {selected.phone && <div style={{ display: 'flex', gap: '8px' }}><span style={{ color: '#555', width: '80px' }}>Phone</span><span>{selected.phone}</span></div>}
-              {selected.city && <div style={{ display: 'flex', gap: '8px' }}><span style={{ color: '#555', width: '80px' }}>Location</span><span>{[selected.city, selected.country_code].filter(Boolean).join(', ')}</span></div>}
-              {selected.instagram_handle && <div style={{ display: 'flex', gap: '8px' }}><span style={{ color: '#555', width: '80px' }}>Instagram</span><span style={{ color: '#f48fb1' }}>{selected.instagram_handle}</span></div>}
-              {selected.soundcloud_url && <div style={{ display: 'flex', gap: '8px' }}><span style={{ color: '#555', width: '80px' }}>SoundCloud</span><a href={selected.soundcloud_url} target="_blank" rel="noreferrer" style={{ color: '#ff7043' }}>Link</a></div>}
-              {selected.notes && <div style={{ marginTop: '4px', padding: '8px', background: '#1a1a1a', borderRadius: '6px', color: '#888', fontSize: '11px', lineHeight: '1.5' }}>{selected.notes}</div>}
+              {selected.email && <div style={{ display: 'flex', gap: '8px' }}><span style={{ color: 'var(--text-3)', width: '80px' }}>Email</span><span style={{ color: '#7ab8f5' }}>{selected.email}</span></div>}
+              {selected.phone && <div style={{ display: 'flex', gap: '8px' }}><span style={{ color: 'var(--text-3)', width: '80px' }}>Phone</span><span>{selected.phone}</span></div>}
+              {selected.city && <div style={{ display: 'flex', gap: '8px' }}><span style={{ color: 'var(--text-3)', width: '80px' }}>Location</span><span>{[selected.city, selected.country_code].filter(Boolean).join(', ')}</span></div>}
+              {selected.instagram_handle && <div style={{ display: 'flex', gap: '8px' }}><span style={{ color: 'var(--text-3)', width: '80px' }}>Instagram</span><span style={{ color: '#f48fb1' }}>{selected.instagram_handle}</span></div>}
+              {selected.soundcloud_url && <div style={{ display: 'flex', gap: '8px' }}><span style={{ color: 'var(--text-3)', width: '80px' }}>SoundCloud</span><a href={selected.soundcloud_url} target="_blank" rel="noreferrer" style={{ color: '#ff7043' }}>Link</a></div>}
+              {selected.notes && <div style={{ marginTop: '4px', padding: '8px', background: 'var(--bg-4)', borderRadius: '6px', color: 'var(--text-faint)', fontSize: '11px', lineHeight: '1.5' }}>{selected.notes}</div>}
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-              <button onClick={() => editContact(selected)} style={{ padding: '8px', background: '#1D9E75', border: 'none', borderRadius: '8px', color: '#fff', fontSize: '12px', fontWeight: '500', cursor: 'pointer' }}>Edit contact</button>
-              <button style={{ padding: '8px', background: 'transparent', border: '0.5px solid #333', borderRadius: '8px', color: '#888', fontSize: '12px', cursor: 'pointer' }}>Send message</button>
-              <button style={{ padding: '8px', background: 'transparent', border: '0.5px solid #333', borderRadius: '8px', color: '#888', fontSize: '12px', cursor: 'pointer' }}>Add to promo list</button>
+              <button onClick={() => editContact(selected)} style={{ padding: '8px', background: '#1D9E75', border: 'none', borderRadius: '8px', color: 'var(--text)', fontSize: '12px', fontWeight: '500', cursor: 'pointer' }}>Edit contact</button>
+              <button style={{ padding: '8px', background: 'transparent', border: '0.5px solid var(--border-3)', borderRadius: '8px', color: 'var(--text-faint)', fontSize: '12px', cursor: 'pointer' }}>Send message</button>
+              <button style={{ padding: '8px', background: 'transparent', border: '0.5px solid var(--border-3)', borderRadius: '8px', color: 'var(--text-faint)', fontSize: '12px', cursor: 'pointer' }}>Add to promo list</button>
             </div>
           </div>
         )}

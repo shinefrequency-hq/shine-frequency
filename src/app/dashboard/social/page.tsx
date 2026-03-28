@@ -127,12 +127,12 @@ export default function SocialPage() {
 
   const inp = (style = {}) => ({
     width: '100%', padding: '8px 12px',
-    background: '#1a1a1a', border: '0.5px solid #333',
-    borderRadius: '8px', color: '#fff', fontSize: '12px',
+    background: 'var(--bg-4)', border: '0.5px solid var(--border-3)',
+    borderRadius: '8px', color: 'var(--text)', fontSize: '12px',
     outline: 'none', ...style
   } as React.CSSProperties)
 
-  const lbl = { fontSize: '11px', color: '#666', display: 'block', marginBottom: '4px' } as React.CSSProperties
+  const lbl = { fontSize: '11px', color: 'var(--text-muted)', display: 'block', marginBottom: '4px' } as React.CSSProperties
 
   return (
     <div style={{ padding: '1.5rem', maxWidth: '1200px' }}>
@@ -141,7 +141,7 @@ export default function SocialPage() {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '10px' }}>
         <div>
           <div style={{ fontSize: '18px', fontWeight: '500' }}>Social scheduler</div>
-          <div style={{ fontSize: '12px', color: '#555', marginTop: '2px' }}>
+          <div style={{ fontSize: '12px', color: 'var(--text-3)', marginTop: '2px' }}>
             {posts.length} posts · {posts.filter(p => p.status === 'scheduled').length} scheduled
           </div>
         </div>
@@ -159,8 +159,8 @@ export default function SocialPage() {
             <option value="failed">Failed</option>
           </select>
           <button onClick={() => { setForm(EMPTY); setHashtagInput(''); setEditId(null); setShowForm(!showForm) }} style={{
-            padding: '8px 16px', background: showForm ? '#333' : '#1D9E75',
-            border: 'none', borderRadius: '8px', color: '#fff',
+            padding: '8px 16px', background: showForm ? 'var(--border-3)' : '#1D9E75',
+            border: 'none', borderRadius: '8px', color: 'var(--text)',
             fontSize: '12px', fontWeight: '500', cursor: 'pointer'
           }}>
             {showForm ? 'Cancel' : '+ New post'}
@@ -177,8 +177,8 @@ export default function SocialPage() {
           { label: 'Total likes', count: totalLikes.toLocaleString(), color: '#f48fb1' },
           { label: 'Failed', count: posts.filter(p => p.status === 'failed').length, color: '#f08080' },
         ].map(s => (
-          <div key={s.label} style={{ background: '#111', border: '0.5px solid #222', borderRadius: '10px', padding: '0.75rem 1rem' }}>
-            <div style={{ fontSize: '10px', color: '#555', marginBottom: '4px' }}>{s.label}</div>
+          <div key={s.label} style={{ background: 'var(--bg-2)', border: '0.5px solid var(--border)', borderRadius: '10px', padding: '0.75rem 1rem' }}>
+            <div style={{ fontSize: '10px', color: 'var(--text-3)', marginBottom: '4px' }}>{s.label}</div>
             <div style={{ fontSize: '18px', fontWeight: '500', color: s.color }}>{s.count}</div>
           </div>
         ))}
@@ -186,7 +186,7 @@ export default function SocialPage() {
 
       {/* Form */}
       {showForm && (
-        <div style={{ background: '#111', border: '0.5px solid #2a2a2a', borderRadius: '12px', padding: '1.25rem', marginBottom: '1.25rem' }}>
+        <div style={{ background: 'var(--bg-2)', border: '0.5px solid var(--border-2)', borderRadius: '12px', padding: '1.25rem', marginBottom: '1.25rem' }}>
           <div style={{ fontSize: '13px', fontWeight: '500', marginBottom: '1rem', color: '#1D9E75' }}>
             {editId ? 'Edit post' : 'New post'}
           </div>
@@ -235,13 +235,13 @@ export default function SocialPage() {
             </div>
           </div>
 
-          {error && <div style={{ padding: '8px 12px', background: '#2a0a0a', border: '0.5px solid #5a1a1a', borderRadius: '8px', fontSize: '12px', color: '#f08080', marginBottom: '12px' }}>{error}</div>}
+          {error && <div style={{ padding: '8px 12px', background: 'var(--red-bg)', border: '0.5px solid var(--red-border)', borderRadius: '8px', fontSize: '12px', color: '#f08080', marginBottom: '12px' }}>{error}</div>}
 
           <div style={{ display: 'flex', gap: '8px' }}>
-            <button onClick={save} disabled={saving} style={{ padding: '8px 20px', background: saving ? '#0a4a30' : '#1D9E75', border: 'none', borderRadius: '8px', color: '#fff', fontSize: '12px', fontWeight: '500', cursor: 'pointer' }}>
+            <button onClick={save} disabled={saving} style={{ padding: '8px 20px', background: saving ? 'var(--green-dim)' : '#1D9E75', border: 'none', borderRadius: '8px', color: 'var(--text)', fontSize: '12px', fontWeight: '500', cursor: 'pointer' }}>
               {saving ? 'Saving...' : editId ? 'Update post' : 'Create post'}
             </button>
-            <button onClick={() => { setShowForm(false); setForm(EMPTY); setHashtagInput(''); setEditId(null) }} style={{ padding: '8px 16px', background: 'transparent', border: '0.5px solid #333', borderRadius: '8px', color: '#666', fontSize: '12px', cursor: 'pointer' }}>Cancel</button>
+            <button onClick={() => { setShowForm(false); setForm(EMPTY); setHashtagInput(''); setEditId(null) }} style={{ padding: '8px 16px', background: 'transparent', border: '0.5px solid var(--border-3)', borderRadius: '8px', color: 'var(--text-muted)', fontSize: '12px', cursor: 'pointer' }}>Cancel</button>
           </div>
         </div>
       )}
@@ -249,19 +249,19 @@ export default function SocialPage() {
       {/* Post cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '10px' }}>
         {loading ? (
-          <div style={{ padding: '3rem', textAlign: 'center', color: '#555', fontSize: '12px', background: '#111', borderRadius: '12px', border: '0.5px solid #222', gridColumn: '1 / -1' }}>Loading posts...</div>
+          <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-3)', fontSize: '12px', background: 'var(--bg-2)', borderRadius: '12px', border: '0.5px solid var(--border)', gridColumn: '1 / -1' }}>Loading posts...</div>
         ) : filtered.length === 0 ? (
-          <div style={{ padding: '3rem', textAlign: 'center', background: '#111', borderRadius: '12px', border: '0.5px solid #222', gridColumn: '1 / -1' }}>
+          <div style={{ padding: '3rem', textAlign: 'center', background: 'var(--bg-2)', borderRadius: '12px', border: '0.5px solid var(--border)', gridColumn: '1 / -1' }}>
             <div style={{ fontSize: '13px', fontWeight: '500', color: '#1D9E75', marginBottom: '6px' }}>No posts yet</div>
-            <div style={{ fontSize: '12px', color: '#555' }}>Create a social post to get started.</div>
+            <div style={{ fontSize: '12px', color: 'var(--text-3)' }}>Create a social post to get started.</div>
           </div>
         ) : filtered.map(p => {
           const sc = STATUS_COLORS[p.status]
           const pc = PLATFORM_COLORS[p.platform]
           return (
-            <div key={p.id} style={{ background: '#111', border: '0.5px solid #222', borderRadius: '12px', padding: '1rem', transition: 'background 0.1s' }}
-              onMouseEnter={e => (e.currentTarget.style.background = '#161616')}
-              onMouseLeave={e => (e.currentTarget.style.background = '#111')}
+            <div key={p.id} style={{ background: 'var(--bg-2)', border: '0.5px solid var(--border)', borderRadius: '12px', padding: '1rem', transition: 'background 0.1s' }}
+              onMouseEnter={e => (e.currentTarget.style.background = 'var(--row-hover)')}
+              onMouseLeave={e => (e.currentTarget.style.background = 'var(--bg-2)')}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
                 <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
@@ -273,12 +273,12 @@ export default function SocialPage() {
                   </span>
                 </div>
                 <div style={{ display: 'flex', gap: '4px' }}>
-                  <button onClick={() => editPost(p)} style={{ padding: '2px 6px', background: 'transparent', border: '0.5px solid #333', borderRadius: '4px', color: '#888', fontSize: '10px', cursor: 'pointer' }}>Edit</button>
-                  <button onClick={() => deletePost(p.id)} style={{ padding: '2px 6px', background: 'transparent', border: '0.5px solid #2a1a1a', borderRadius: '4px', color: '#5a2a2a', fontSize: '10px', cursor: 'pointer' }}>Del</button>
+                  <button onClick={() => editPost(p)} style={{ padding: '2px 6px', background: 'transparent', border: '0.5px solid var(--border-3)', borderRadius: '4px', color: 'var(--text-faint)', fontSize: '10px', cursor: 'pointer' }}>Edit</button>
+                  <button onClick={() => deletePost(p.id)} style={{ padding: '2px 6px', background: 'transparent', border: '0.5px solid var(--red-muted-border)', borderRadius: '4px', color: 'var(--red-muted)', fontSize: '10px', cursor: 'pointer' }}>Del</button>
                 </div>
               </div>
 
-              <div style={{ fontSize: '12px', color: '#ccc', lineHeight: '1.5', marginBottom: '8px', maxHeight: '60px', overflow: 'hidden' }}>
+              <div style={{ fontSize: '12px', color: 'var(--text-2)', lineHeight: '1.5', marginBottom: '8px', maxHeight: '60px', overflow: 'hidden' }}>
                 {p.caption}
               </div>
 
@@ -291,12 +291,12 @@ export default function SocialPage() {
               )}
 
               {p.release_title && (
-                <div style={{ fontSize: '10px', color: '#555', marginBottom: '6px' }}>
+                <div style={{ fontSize: '10px', color: 'var(--text-3)', marginBottom: '6px' }}>
                   Release: {p.release_title}
                 </div>
               )}
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px', color: '#555', borderTop: '0.5px solid #1a1a1a', paddingTop: '8px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '10px', color: 'var(--text-3)', borderTop: '0.5px solid var(--row-border)', paddingTop: '8px' }}>
                 <span>{p.scheduled_at ? new Date(p.scheduled_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : 'Not scheduled'}</span>
                 {p.status === 'published' && (
                   <div style={{ display: 'flex', gap: '8px' }}>

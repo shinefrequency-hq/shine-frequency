@@ -73,8 +73,8 @@ export default function DownloadsPage() {
 
   const inp = (style = {}) => ({
     width: '100%', padding: '8px 12px',
-    background: '#1a1a1a', border: '0.5px solid #333',
-    borderRadius: '8px', color: '#fff', fontSize: '12px',
+    background: 'var(--bg-4)', border: '0.5px solid var(--border-3)',
+    borderRadius: '8px', color: 'var(--text)', fontSize: '12px',
     outline: 'none', ...style
   } as React.CSSProperties)
 
@@ -85,7 +85,7 @@ export default function DownloadsPage() {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '10px' }}>
         <div>
           <div style={{ fontSize: '18px', fontWeight: '500' }}>Downloads</div>
-          <div style={{ fontSize: '12px', color: '#555', marginTop: '2px' }}>
+          <div style={{ fontSize: '12px', color: 'var(--text-3)', marginTop: '2px' }}>
             {timeFiltered.length} downloads{timeRange !== 'all' ? ` (${timeRange})` : ''}
           </div>
         </div>
@@ -112,8 +112,8 @@ export default function DownloadsPage() {
           { label: 'Releases accessed', count: uniqueReleases, color: '#4ecca3' },
           { label: 'Data transferred', count: `${totalSize.toFixed(1)} MB`, color: '#f5c842' },
         ].map(s => (
-          <div key={s.label} style={{ background: '#111', border: '0.5px solid #222', borderRadius: '10px', padding: '0.75rem 1rem' }}>
-            <div style={{ fontSize: '10px', color: '#555', marginBottom: '4px' }}>{s.label}</div>
+          <div key={s.label} style={{ background: 'var(--bg-2)', border: '0.5px solid var(--border)', borderRadius: '10px', padding: '0.75rem 1rem' }}>
+            <div style={{ fontSize: '10px', color: 'var(--text-3)', marginBottom: '4px' }}>{s.label}</div>
             <div style={{ fontSize: '18px', fontWeight: '500', color: s.color }}>{s.count}</div>
           </div>
         ))}
@@ -121,8 +121,8 @@ export default function DownloadsPage() {
 
       {/* Activity chart */}
       {dailyEntries.length > 1 && (
-        <div style={{ background: '#111', border: '0.5px solid #222', borderRadius: '10px', padding: '1rem', marginBottom: '1.25rem' }}>
-          <div style={{ fontSize: '11px', color: '#555', marginBottom: '10px' }}>Download activity (last 14 days)</div>
+        <div style={{ background: 'var(--bg-2)', border: '0.5px solid var(--border)', borderRadius: '10px', padding: '1rem', marginBottom: '1.25rem' }}>
+          <div style={{ fontSize: '11px', color: 'var(--text-3)', marginBottom: '10px' }}>Download activity (last 14 days)</div>
           <div style={{ display: 'flex', alignItems: 'flex-end', gap: '3px', height: '60px' }}>
             {dailyEntries.map(([day, count]) => (
               <div key={day} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
@@ -132,7 +132,7 @@ export default function DownloadsPage() {
                   background: '#1D9E75', borderRadius: '3px 3px 0 0',
                   minHeight: '2px',
                 }} />
-                <div style={{ fontSize: '8px', color: '#444', whiteSpace: 'nowrap' }}>{day}</div>
+                <div style={{ fontSize: '8px', color: 'var(--text-4)', whiteSpace: 'nowrap' }}>{day}</div>
               </div>
             ))}
           </div>
@@ -140,54 +140,54 @@ export default function DownloadsPage() {
       )}
 
       {/* Table */}
-      <div style={{ background: '#111', border: '0.5px solid #222', borderRadius: '12px', overflow: 'hidden' }}>
+      <div style={{ background: 'var(--bg-2)', border: '0.5px solid var(--border)', borderRadius: '12px', overflow: 'hidden' }}>
         {loading ? (
-          <div style={{ padding: '3rem', textAlign: 'center', color: '#555', fontSize: '12px' }}>Loading downloads...</div>
+          <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-3)', fontSize: '12px' }}>Loading downloads...</div>
         ) : filtered.length === 0 ? (
           <div style={{ padding: '3rem', textAlign: 'center' }}>
             <div style={{ fontSize: '13px', fontWeight: '500', color: '#1D9E75', marginBottom: '6px' }}>No downloads yet</div>
-            <div style={{ fontSize: '12px', color: '#555' }}>Download events will appear here when contacts access your releases.</div>
+            <div style={{ fontSize: '12px', color: 'var(--text-3)' }}>Download events will appear here when contacts access your releases.</div>
           </div>
         ) : (
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
-              <tr style={{ borderBottom: '0.5px solid #222' }}>
+              <tr style={{ borderBottom: '0.5px solid var(--border)' }}>
                 {['Contact', 'Release', 'Track', 'Method', 'Size', 'Time'].map(h => (
-                  <th key={h} style={{ textAlign: 'left', padding: '10px 14px', fontSize: '10px', fontWeight: '500', letterSpacing: '0.06em', textTransform: 'uppercase', color: '#555' }}>{h}</th>
+                  <th key={h} style={{ textAlign: 'left', padding: '10px 14px', fontSize: '10px', fontWeight: '500', letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--text-3)' }}>{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {filtered.map((d, i) => (
                 <tr key={d.id}
-                  style={{ borderBottom: i < filtered.length - 1 ? '0.5px solid #1a1a1a' : 'none', transition: 'background 0.1s' }}
-                  onMouseEnter={e => (e.currentTarget.style.background = '#161616')}
+                  style={{ borderBottom: i < filtered.length - 1 ? '0.5px solid var(--row-border)' : 'none', transition: 'background 0.1s' }}
+                  onMouseEnter={e => (e.currentTarget.style.background = 'var(--row-hover)')}
                   onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
                 >
                   <td style={{ padding: '10px 14px' }}>
-                    <div style={{ fontWeight: '500', color: '#fff', fontSize: '12px' }}>{d.contact_name ?? '—'}</div>
-                    <div style={{ fontSize: '10px', color: '#555' }}>{d.contact_type ?? ''}</div>
+                    <div style={{ fontWeight: '500', color: 'var(--text)', fontSize: '12px' }}>{d.contact_name ?? '—'}</div>
+                    <div style={{ fontSize: '10px', color: 'var(--text-3)' }}>{d.contact_type ?? ''}</div>
                   </td>
                   <td style={{ padding: '10px 14px' }}>
-                    <div style={{ fontSize: '12px', color: '#888' }}>{d.release_title ?? '—'}</div>
-                    <div style={{ fontSize: '10px', color: '#444', fontFamily: 'monospace' }}>{d.release_catalogue ?? ''}</div>
+                    <div style={{ fontSize: '12px', color: 'var(--text-faint)' }}>{d.release_title ?? '—'}</div>
+                    <div style={{ fontSize: '10px', color: 'var(--text-4)', fontFamily: 'monospace' }}>{d.release_catalogue ?? ''}</div>
                   </td>
-                  <td style={{ padding: '10px 14px', fontSize: '12px', color: '#888' }}>
+                  <td style={{ padding: '10px 14px', fontSize: '12px', color: 'var(--text-faint)' }}>
                     {d.track_title ?? 'Full release'}
                   </td>
                   <td style={{ padding: '10px 14px' }}>
                     <span style={{
                       padding: '2px 7px', borderRadius: '20px', fontSize: '10px', fontWeight: '500',
-                      background: d.delivery_method === 'dropbox' ? '#0a1a2a' : '#1a1a2a',
+                      background: d.delivery_method === 'dropbox' ? 'var(--blue-bg)' : 'var(--purple-bg)',
                       color: d.delivery_method === 'dropbox' ? '#7ab8f5' : '#b8b4f0',
                     }}>
                       {d.delivery_method}
                     </span>
                   </td>
-                  <td style={{ padding: '10px 14px', fontSize: '12px', color: '#666', fontFamily: 'monospace' }}>
+                  <td style={{ padding: '10px 14px', fontSize: '12px', color: 'var(--text-muted)', fontFamily: 'monospace' }}>
                     {d.file_size_mb ? `${d.file_size_mb} MB` : '—'}
                   </td>
-                  <td style={{ padding: '10px 14px', fontSize: '11px', color: '#555' }}>
+                  <td style={{ padding: '10px 14px', fontSize: '11px', color: 'var(--text-3)' }}>
                     {new Date(d.downloaded_at).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
                   </td>
                 </tr>

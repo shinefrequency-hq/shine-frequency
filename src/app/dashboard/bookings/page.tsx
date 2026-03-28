@@ -125,12 +125,12 @@ export default function BookingsPage() {
 
   const inp = (style = {}) => ({
     width: '100%', padding: '8px 12px',
-    background: '#1a1a1a', border: '0.5px solid #333',
-    borderRadius: '8px', color: '#fff', fontSize: '12px',
+    background: 'var(--bg-4)', border: '0.5px solid var(--border-3)',
+    borderRadius: '8px', color: 'var(--text)', fontSize: '12px',
     outline: 'none', ...style
   } as React.CSSProperties)
 
-  const lbl = { fontSize: '11px', color: '#666', display: 'block', marginBottom: '4px' } as React.CSSProperties
+  const lbl = { fontSize: '11px', color: 'var(--text-muted)', display: 'block', marginBottom: '4px' } as React.CSSProperties
 
   return (
     <div style={{ padding: '1.5rem', maxWidth: '1200px' }}>
@@ -139,7 +139,7 @@ export default function BookingsPage() {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '10px' }}>
         <div>
           <div style={{ fontSize: '18px', fontWeight: '500' }}>Bookings</div>
-          <div style={{ fontSize: '12px', color: '#555', marginTop: '2px' }}>{bookings.length} total · {bookings.filter(b => b.status === 'confirmed').length} confirmed</div>
+          <div style={{ fontSize: '12px', color: 'var(--text-3)', marginTop: '2px' }}>{bookings.length} total · {bookings.filter(b => b.status === 'confirmed').length} confirmed</div>
         </div>
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
           <input placeholder="Search bookings..." value={search} onChange={e => setSearch(e.target.value)} style={{ ...inp({ width: '200px' }) }} />
@@ -152,8 +152,8 @@ export default function BookingsPage() {
             <option value="completed">Completed</option>
           </select>
           <button onClick={() => { setForm(EMPTY); setEditId(null); setShowForm(!showForm) }} style={{
-            padding: '8px 16px', background: showForm ? '#333' : '#1D9E75',
-            border: 'none', borderRadius: '8px', color: '#fff',
+            padding: '8px 16px', background: showForm ? 'var(--border-3)' : '#1D9E75',
+            border: 'none', borderRadius: '8px', color: 'var(--text)',
             fontSize: '12px', fontWeight: '500', cursor: 'pointer'
           }}>
             {showForm ? 'Cancel' : '+ New booking'}
@@ -170,8 +170,8 @@ export default function BookingsPage() {
           { label: 'Travel unbooked', count: bookings.filter(b => !b.travel_booked && b.status === 'confirmed').length, color: '#ff7043' },
           { label: 'Total fees', count: `\u00A3${totalFees.toLocaleString()}`, color: '#1D9E75' },
         ].map(s => (
-          <div key={s.label} style={{ background: '#111', border: '0.5px solid #222', borderRadius: '10px', padding: '0.75rem 1rem' }}>
-            <div style={{ fontSize: '10px', color: '#555', marginBottom: '4px' }}>{s.label}</div>
+          <div key={s.label} style={{ background: 'var(--bg-2)', border: '0.5px solid var(--border)', borderRadius: '10px', padding: '0.75rem 1rem' }}>
+            <div style={{ fontSize: '10px', color: 'var(--text-3)', marginBottom: '4px' }}>{s.label}</div>
             <div style={{ fontSize: '18px', fontWeight: '500', color: s.color }}>{s.count}</div>
           </div>
         ))}
@@ -179,7 +179,7 @@ export default function BookingsPage() {
 
       {/* Form */}
       {showForm && (
-        <div style={{ background: '#111', border: '0.5px solid #2a2a2a', borderRadius: '12px', padding: '1.25rem', marginBottom: '1.25rem' }}>
+        <div style={{ background: 'var(--bg-2)', border: '0.5px solid var(--border-2)', borderRadius: '12px', padding: '1.25rem', marginBottom: '1.25rem' }}>
           <div style={{ fontSize: '13px', fontWeight: '500', marginBottom: '1rem', color: '#1D9E75' }}>
             {editId ? 'Edit booking' : 'New booking'}
           </div>
@@ -269,11 +269,11 @@ export default function BookingsPage() {
           </div>
 
           <div style={{ display: 'flex', gap: '1.5rem', marginBottom: '12px' }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', fontSize: '12px', color: form.travel_booked ? '#4ecca3' : '#666' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', fontSize: '12px', color: form.travel_booked ? '#4ecca3' : 'var(--text-muted)' }}>
               <input type="checkbox" checked={form.travel_booked ?? false} onChange={() => setForm(f => ({ ...f, travel_booked: !f.travel_booked }))} style={{ accentColor: '#1D9E75' }} />
               Travel booked
             </label>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', fontSize: '12px', color: form.hotel_booked ? '#4ecca3' : '#666' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', fontSize: '12px', color: form.hotel_booked ? '#4ecca3' : 'var(--text-muted)' }}>
               <input type="checkbox" checked={form.hotel_booked ?? false} onChange={() => setForm(f => ({ ...f, hotel_booked: !f.hotel_booked }))} style={{ accentColor: '#1D9E75' }} />
               Hotel booked
             </label>
@@ -287,29 +287,29 @@ export default function BookingsPage() {
           {error && <div style={{ padding: '8px 12px', background: '#2a0a0a', border: '0.5px solid #5a1a1a', borderRadius: '8px', fontSize: '12px', color: '#f08080', marginBottom: '12px' }}>{error}</div>}
 
           <div style={{ display: 'flex', gap: '8px' }}>
-            <button onClick={save} disabled={saving} style={{ padding: '8px 20px', background: saving ? '#0a4a30' : '#1D9E75', border: 'none', borderRadius: '8px', color: '#fff', fontSize: '12px', fontWeight: '500', cursor: 'pointer' }}>
+            <button onClick={save} disabled={saving} style={{ padding: '8px 20px', background: saving ? 'var(--green-dim)' : '#1D9E75', border: 'none', borderRadius: '8px', color: 'var(--text)', fontSize: '12px', fontWeight: '500', cursor: 'pointer' }}>
               {saving ? 'Saving...' : editId ? 'Update booking' : 'Create booking'}
             </button>
-            <button onClick={() => { setShowForm(false); setForm(EMPTY); setEditId(null) }} style={{ padding: '8px 16px', background: 'transparent', border: '0.5px solid #333', borderRadius: '8px', color: '#666', fontSize: '12px', cursor: 'pointer' }}>Cancel</button>
+            <button onClick={() => { setShowForm(false); setForm(EMPTY); setEditId(null) }} style={{ padding: '8px 16px', background: 'transparent', border: '0.5px solid var(--border-3)', borderRadius: '8px', color: 'var(--text-muted)', fontSize: '12px', cursor: 'pointer' }}>Cancel</button>
           </div>
         </div>
       )}
 
       {/* Table */}
-      <div style={{ background: '#111', border: '0.5px solid #222', borderRadius: '12px', overflow: 'hidden' }}>
+      <div style={{ background: 'var(--bg-2)', border: '0.5px solid var(--border)', borderRadius: '12px', overflow: 'hidden' }}>
         {loading ? (
-          <div style={{ padding: '3rem', textAlign: 'center', color: '#555', fontSize: '12px' }}>Loading bookings...</div>
+          <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-3)', fontSize: '12px' }}>Loading bookings...</div>
         ) : filtered.length === 0 ? (
           <div style={{ padding: '3rem', textAlign: 'center' }}>
             <div style={{ fontSize: '13px', fontWeight: '500', color: '#1D9E75', marginBottom: '6px' }}>No bookings yet</div>
-            <div style={{ fontSize: '12px', color: '#555' }}>Click "New booking" to add a gig.</div>
+            <div style={{ fontSize: '12px', color: 'var(--text-3)' }}>Click "New booking" to add a gig.</div>
           </div>
         ) : (
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
-              <tr style={{ borderBottom: '0.5px solid #222' }}>
+              <tr style={{ borderBottom: '0.5px solid var(--border)' }}>
                 {['Date', 'Artist', 'Venue', 'Fee', 'Status', 'Contract', 'Rider', 'Travel', 'Actions'].map(h => (
-                  <th key={h} style={{ textAlign: 'left', padding: '10px 14px', fontSize: '10px', fontWeight: '500', letterSpacing: '0.06em', textTransform: 'uppercase', color: '#555' }}>{h}</th>
+                  <th key={h} style={{ textAlign: 'left', padding: '10px 14px', fontSize: '10px', fontWeight: '500', letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--text-3)' }}>{h}</th>
                 ))}
               </tr>
             </thead>
@@ -321,22 +321,22 @@ export default function BookingsPage() {
                 const daysUntil = Math.ceil((eventDate.getTime() - Date.now()) / 86400000)
                 return (
                   <tr key={b.id}
-                    style={{ borderBottom: i < filtered.length - 1 ? '0.5px solid #1a1a1a' : 'none', transition: 'background 0.1s' }}
-                    onMouseEnter={e => (e.currentTarget.style.background = '#161616')}
+                    style={{ borderBottom: i < filtered.length - 1 ? '0.5px solid var(--row-border)' : 'none', transition: 'background 0.1s' }}
+                    onMouseEnter={e => (e.currentTarget.style.background = 'var(--row-hover)')}
                     onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
                   >
                     <td style={{ padding: '12px 14px' }}>
                       <div style={{ fontSize: '12px', fontWeight: '500' }}>{eventDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</div>
-                      <div style={{ fontSize: '10px', color: daysUntil <= 7 && daysUntil > 0 ? '#f5c842' : '#555' }}>
+                      <div style={{ fontSize: '10px', color: daysUntil <= 7 && daysUntil > 0 ? '#f5c842' : 'var(--text-3)' }}>
                         {daysUntil > 0 ? `${daysUntil}d away` : daysUntil === 0 ? 'Today' : 'Past'}
                       </div>
                     </td>
-                    <td style={{ padding: '12px 14px', fontWeight: '500', color: '#fff', fontSize: '12px' }}>{b.artist_name ?? '—'}</td>
+                    <td style={{ padding: '12px 14px', fontWeight: '500', color: 'var(--text)', fontSize: '12px' }}>{b.artist_name ?? '—'}</td>
                     <td style={{ padding: '12px 14px' }}>
-                      <div style={{ fontSize: '12px', color: '#fff' }}>{b.venue_name}</div>
-                      <div style={{ fontSize: '11px', color: '#555' }}>{b.venue_city}, {b.venue_country}</div>
+                      <div style={{ fontSize: '12px', color: 'var(--text)' }}>{b.venue_name}</div>
+                      <div style={{ fontSize: '11px', color: 'var(--text-3)' }}>{b.venue_city}, {b.venue_country}</div>
                     </td>
-                    <td style={{ padding: '12px 14px', fontSize: '12px', color: '#888', fontFamily: 'monospace' }}>
+                    <td style={{ padding: '12px 14px', fontSize: '12px', color: 'var(--text-faint)', fontFamily: 'monospace' }}>
                       {b.fee ? `${b.currency === 'GBP' ? '\u00A3' : b.currency === 'EUR' ? '\u20AC' : '$'}${b.fee.toLocaleString()}` : '—'}
                     </td>
                     <td style={{ padding: '12px 14px' }}>
@@ -353,20 +353,20 @@ export default function BookingsPage() {
                       {b.rider_url ? (
                         <a href={b.rider_url} target="_blank" rel="noreferrer" style={{ padding: '3px 8px', borderRadius: '20px', fontSize: '10px', fontWeight: '500', background: '#0a2a1e', color: '#4ecca3' }}>Received</a>
                       ) : (
-                        <span style={{ padding: '3px 8px', borderRadius: '20px', fontSize: '10px', fontWeight: '500', background: '#1a1a1a', color: '#555' }}>None</span>
+                        <span style={{ padding: '3px 8px', borderRadius: '20px', fontSize: '10px', fontWeight: '500', background: 'var(--bg-4)', color: 'var(--text-3)' }}>None</span>
                       )}
                     </td>
                     <td style={{ padding: '12px 14px' }}>
                       <div style={{ display: 'flex', gap: '4px' }}>
                         {b.travel_booked && <span style={{ padding: '1px 6px', borderRadius: '10px', fontSize: '9px', fontWeight: '500', background: '#0a2a1e', color: '#4ecca3' }}>Travel</span>}
                         {b.hotel_booked && <span style={{ padding: '1px 6px', borderRadius: '10px', fontSize: '9px', fontWeight: '500', background: '#0a2a1e', color: '#4ecca3' }}>Hotel</span>}
-                        {!b.travel_booked && !b.hotel_booked && <span style={{ color: '#333', fontSize: '12px' }}>—</span>}
+                        {!b.travel_booked && !b.hotel_booked && <span style={{ color: 'var(--text-5)', fontSize: '12px' }}>—</span>}
                       </div>
                     </td>
                     <td style={{ padding: '12px 14px' }}>
                       <div style={{ display: 'flex', gap: '5px' }}>
-                        <button onClick={() => editBooking(b)} style={{ padding: '3px 8px', background: 'transparent', border: '0.5px solid #333', borderRadius: '6px', color: '#888', fontSize: '11px', cursor: 'pointer' }}>Edit</button>
-                        <button onClick={() => deleteBooking(b.id)} style={{ padding: '3px 8px', background: 'transparent', border: '0.5px solid #2a1a1a', borderRadius: '6px', color: '#5a2a2a', fontSize: '11px', cursor: 'pointer' }}>Delete</button>
+                        <button onClick={() => editBooking(b)} style={{ padding: '3px 8px', background: 'transparent', border: '0.5px solid var(--border-3)', borderRadius: '6px', color: 'var(--text-faint)', fontSize: '11px', cursor: 'pointer' }}>Edit</button>
+                        <button onClick={() => deleteBooking(b.id)} style={{ padding: '3px 8px', background: 'transparent', border: '0.5px solid var(--red-muted-border)', borderRadius: '6px', color: 'var(--red-muted)', fontSize: '11px', cursor: 'pointer' }}>Delete</button>
                       </div>
                     </td>
                   </tr>

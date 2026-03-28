@@ -401,28 +401,29 @@ export interface AuditLog {
   created_at: string
 }
 
+
 export interface Database {
   public: {
     Tables: {
-      staff: { Row: Staff; Insert: Partial<Staff>; Update: Partial<Staff> }
-      contacts: { Row: Contact; Insert: Partial<Contact>; Update: Partial<Contact> }
-      contact_tags: { Row: ContactTag; Insert: Partial<ContactTag>; Update: Partial<ContactTag> }
-      releases: { Row: Release; Insert: Partial<Release>; Update: Partial<Release> }
-      tracks: { Row: Track; Insert: Partial<Track>; Update: Partial<Track> }
-      promo_lists: { Row: PromoList; Insert: Partial<PromoList>; Update: Partial<PromoList> }
-      reviews: { Row: Review; Insert: Partial<Review>; Update: Partial<Review> }
-      download_events: { Row: DownloadEvent; Insert: Partial<DownloadEvent>; Update: Partial<DownloadEvent> }
-      artists: { Row: Artist; Insert: Partial<Artist>; Update: Partial<Artist> }
-      bookings: { Row: Booking; Insert: Partial<Booking>; Update: Partial<Booking> }
-      invoices: { Row: Invoice; Insert: Partial<Invoice>; Update: Partial<Invoice> }
-      campaigns: { Row: Campaign; Insert: Partial<Campaign>; Update: Partial<Campaign> }
-      social_posts: { Row: SocialPost; Insert: Partial<SocialPost>; Update: Partial<SocialPost> }
-      podcast_shows: { Row: PodcastShow; Insert: Partial<PodcastShow>; Update: Partial<PodcastShow> }
-      podcast_episodes: { Row: PodcastEpisode; Insert: Partial<PodcastEpisode>; Update: Partial<PodcastEpisode> }
-      messages: { Row: Message; Insert: Partial<Message>; Update: Partial<Message> }
-      tasks: { Row: Task; Insert: Partial<Task>; Update: Partial<Task> }
-      automations: { Row: Automation; Insert: Partial<Automation>; Update: Partial<Automation> }
-      audit_log: { Row: AuditLog; Insert: Partial<AuditLog>; Update: Partial<AuditLog> }
+      staff: { Row: Staff; Insert: any; Update: any }
+      contacts: { Row: Contact; Insert: any; Update: any }
+      contact_tags: { Row: ContactTag; Insert: any; Update: any }
+      releases: { Row: Release; Insert: any; Update: any }
+      tracks: { Row: Track; Insert: any; Update: any }
+      promo_lists: { Row: PromoList; Insert: any; Update: any }
+      reviews: { Row: Review; Insert: any; Update: any }
+      download_events: { Row: DownloadEvent; Insert: any; Update: any }
+      artists: { Row: Artist; Insert: any; Update: any }
+      bookings: { Row: Booking; Insert: any; Update: any }
+      invoices: { Row: Invoice; Insert: any; Update: any }
+      campaigns: { Row: Campaign; Insert: any; Update: any }
+      social_posts: { Row: SocialPost; Insert: any; Update: any }
+      podcast_shows: { Row: PodcastShow; Insert: any; Update: any }
+      podcast_episodes: { Row: PodcastEpisode; Insert: any; Update: any }
+      messages: { Row: Message; Insert: any; Update: any }
+      tasks: { Row: Task; Insert: any; Update: any }
+      automations: { Row: Automation; Insert: any; Update: any }
+      audit_log: { Row: AuditLog; Insert: any; Update: any }
     }
   }
 }

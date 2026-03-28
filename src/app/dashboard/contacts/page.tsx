@@ -51,7 +51,7 @@ export default function ContactsPage() {
 
   async function load() {
     setLoading(true)
-    const { data } = await supabase
+    const { data } = await (supabase as any)
       .from('contacts')
       .select('*')
       .order('full_name')
@@ -70,10 +70,10 @@ export default function ContactsPage() {
       return
     }
     if (editId) {
-      const { error } = await supabase.from('contacts').update(form).eq('id', editId)
+      const { error } = await (supabase as any).from('contacts').update(form).eq('id', editId)
       if (error) { setError(error.message); setSaving(false); return }
     } else {
-      const { error } = await supabase.from('contacts').insert([form])
+      const { error } = await (supabase as any).from('contacts').insert([form])
       if (error) { setError(error.message); setSaving(false); return }
     }
     setForm(EMPTY)
@@ -85,7 +85,7 @@ export default function ContactsPage() {
 
   async function deleteContact(id: string) {
     if (!confirm('Delete this contact?')) return
-    await supabase.from('contacts').delete().eq('id', id)
+    await (supabase as any).from('contacts').delete().eq('id', id)
     if (selected?.id === id) setSelected(null)
     load()
   }

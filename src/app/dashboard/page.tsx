@@ -7,16 +7,16 @@ export default async function DashboardPage() {
   if (!user) redirect('/login')
 
   const [releases, reviews, tasks] = await Promise.all([
-    supabase.from('releases').select('*').eq('status', 'live'),
-    supabase.from('reviews').select('*').eq('status', 'pending'),
-    supabase.from('tasks').select('*').is('completed_at', null).order('urgency'),
+    (supabase as any).from('releases').select('*').eq('status', 'live'),
+    (supabase as any).from('reviews').select('*').eq('status', 'pending'),
+    (supabase as any).from('tasks').select('*').is('completed_at', null).order('urgency'),
   ])
 
   const activeReleases = releases.data?.length ?? 0
   const pendingReviews = reviews.data?.length ?? 0
-  const urgentTasks = tasks.data?.filter(t => t.urgency === 'now') ?? []
-  const todayTasks = tasks.data?.filter(t => t.urgency === 'today') ?? []
-  const weekTasks = tasks.data?.filter(t => t.urgency === 'this_week') ?? []
+  const urgentTasks = tasks.data?.filter((t: any) => t.urgency === 'now') ?? []
+  const todayTasks = tasks.data?.filter((t: any) => t.urgency === 'today') ?? []
+  const weekTasks = tasks.data?.filter((t: any) => t.urgency === 'this_week') ?? []
 
   return (
     <div style={{ padding: '1.5rem', maxWidth: '900px' }}>

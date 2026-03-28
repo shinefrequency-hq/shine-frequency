@@ -69,10 +69,10 @@ export default function ReleasesPage() {
       return
     }
     if (editId) {
-      const { error } = await supabase.from('releases').update(form).eq('id', editId)
+      const { error } = await (supabase as any).from('releases').update(form as any).eq('id', editId)
       if (error) { setError(error.message); setSaving(false); return }
     } else {
-      const { error } = await supabase.from('releases').insert([form])
+      const { error } = await (supabase as any).from('releases').insert([form as any])
       if (error) { setError(error.message); setSaving(false); return }
     }
     setForm(EMPTY)
@@ -84,7 +84,7 @@ export default function ReleasesPage() {
 
   async function deleteRelease(id: string) {
     if (!confirm('Delete this release? This cannot be undone.')) return
-    await supabase.from('releases').delete().eq('id', id)
+    await (supabase as any).from('releases').delete().eq('id', id)
     load()
   }
 

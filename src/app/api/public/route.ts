@@ -19,29 +19,15 @@ export async function POST(req: NextRequest) {
     if (action === 'onboard_artist') {
       const { contact, artist } = body
 
-      // Try insert, if duplicate email then upsert
-      let contactData: any
-      const { data: inserted, error: cErr } = await sb
+      // Create contact (allows duplicate emails for aliases/labels)
+      const { data: contactData, error: cErr } = await sb
         .from('contacts')
         .insert([contact])
         .select()
         .single()
 
       if (cErr) {
-        if (cErr.message?.includes('duplicate') || cErr.code === '23505') {
-          // Email exists — update the existing record
-          const { data: existing } = await sb.from('contacts').select('id').eq('email', contact.email).single()
-          if (existing) {
-            await sb.from('contacts').update(contact).eq('id', existing.id)
-            contactData = existing
-          } else {
-            return NextResponse.json({ error: cErr.message }, { status: 400 })
-          }
-        } else {
-          return NextResponse.json({ error: cErr.message }, { status: 400 })
-        }
-      } else {
-        contactData = inserted
+        return NextResponse.json({ error: cErr.message }, { status: 400 })
       }
 
       // Create or update artist

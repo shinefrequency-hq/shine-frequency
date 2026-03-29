@@ -90,7 +90,7 @@ export default function HomePage() {
         <div style={{ maxWidth: '640px' }}>
           <img src="/logo.png" alt="Shine Music" style={{ width: '100px', height: '100px', borderRadius: '50%', marginBottom: '2rem' }} />
           <div style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#1D9E75', marginBottom: '1rem' }}>
-            Press & Promotional Campaigns
+            PR & Artist Agency
           </div>
           <h1 style={{ fontSize: '42px', fontWeight: '600', lineHeight: 1.2, marginBottom: '1.5rem', letterSpacing: '-0.02em' }}>
             A hell of a lot of passion<br />and enthusiasm

@@ -1,14 +1,37 @@
 'use client'
 
 import { useState } from 'react'
+import { createClient } from '@/lib/supabase'
 
 export default function PortalPage() {
+  const supabase = createClient()
   const [email, setEmail] = useState('')
-  const [submitted, setSubmitted] = useState(false)
+  const [error, setError] = useState('')
+  const [checking, setChecking] = useState(false)
 
-  function handleSubmit() {
+  async function handleLogin() {
     if (!email) return
-    setSubmitted(true)
+    setChecking(true)
+    setError('')
+
+    // Check if email exists as a contact or artist
+    const { data: contact } = await (supabase as any)
+      .from('contacts')
+      .select('id, full_name')
+      .eq('email', email)
+      .single()
+
+    if (!contact) {
+      setError('No account found with this email. Apply as an artist or sign up for promos.')
+      setChecking(false)
+      return
+    }
+
+    // Store in sessionStorage and redirect
+    sessionStorage.setItem('portal_contact_id', contact.id)
+    sessionStorage.setItem('portal_name', contact.full_name)
+    sessionStorage.setItem('portal_email', email)
+    window.location.href = '/portal/dashboard'
   }
 
   return (
@@ -23,67 +46,50 @@ export default function PortalPage() {
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
           <img src="/logo.png" alt="Shine Music" style={{ width: '80px', height: '80px', borderRadius: '50%', marginBottom: '12px' }} />
           <div style={{ fontSize: '18px', fontWeight: '500', color: '#fff' }}>Client Portal</div>
-          <div style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>Access your releases, bookings and stats</div>
+          <div style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>View your releases, bookings and stats</div>
         </div>
 
-        {submitted ? (
-          <div style={{ textAlign: 'center' }}>
-            <div style={{
-              padding: '16px', background: '#0a2a1e', border: '0.5px solid #1D9E75',
-              borderRadius: '10px', marginBottom: '1rem',
-            }}>
-              <div style={{ fontSize: '14px', fontWeight: '500', color: '#4ecca3', marginBottom: '6px' }}>Check your email</div>
-              <div style={{ fontSize: '13px', color: '#888', lineHeight: 1.6 }}>
-                If <strong style={{ color: '#fff' }}>{email}</strong> is registered with Shine Frequency, you'll receive a login link shortly.
-              </div>
-            </div>
-            <div style={{ fontSize: '12px', color: '#555' }}>
-              Don't have an account? <a href="/onboard" style={{ color: '#1D9E75', textDecoration: 'none' }}>Apply as an artist</a> or <a href="/join" style={{ color: '#1D9E75', textDecoration: 'none' }}>sign up for promos</a>.
+        <div style={{ marginBottom: '1rem' }}>
+          <label style={{ fontSize: '12px', color: '#666', display: 'block', marginBottom: '6px' }}>Email address</label>
+          <input
+            type="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && handleLogin()}
+            placeholder="your@email.com"
+            style={{
+              width: '100%', padding: '10px 14px', background: '#1a1a1a',
+              border: '0.5px solid #333', borderRadius: '8px', color: '#fff',
+              fontSize: '13px', outline: 'none',
+            }}
+          />
+        </div>
+
+        {error && (
+          <div style={{ padding: '10px 12px', background: '#1a0a0a', border: '0.5px solid #5a1a1a', borderRadius: '8px', fontSize: '12px', color: '#f08080', marginBottom: '1rem' }}>
+            {error}
+            <div style={{ marginTop: '8px', display: 'flex', gap: '8px' }}>
+              <a href="/onboard" style={{ color: '#1D9E75', fontSize: '11px' }}>Apply as artist</a>
+              <a href="/join" style={{ color: '#1D9E75', fontSize: '11px' }}>Sign up for promos</a>
             </div>
           </div>
-        ) : (
-          <>
-            <div style={{ marginBottom: '1rem' }}>
-              <label style={{ fontSize: '12px', color: '#666', display: 'block', marginBottom: '6px' }}>Email address</label>
-              <input
-                type="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                onKeyDown={e => e.key === 'Enter' && handleSubmit()}
-                placeholder="your@email.com"
-                style={{
-                  width: '100%', padding: '10px 14px', background: '#1a1a1a',
-                  border: '0.5px solid #333', borderRadius: '8px', color: '#fff',
-                  fontSize: '13px', outline: 'none',
-                }}
-              />
-            </div>
-
-            <button
-              onClick={handleSubmit}
-              disabled={!email}
-              style={{
-                width: '100%', padding: '11px', background: !email ? '#0a4a30' : '#1D9E75',
-                border: 'none', borderRadius: '8px', color: '#fff', fontSize: '13px',
-                fontWeight: '500', cursor: !email ? 'not-allowed' : 'pointer',
-                transition: 'background 0.15s', marginBottom: '1rem',
-              }}
-            >
-              Send login link
-            </button>
-
-            <div style={{ fontSize: '12px', color: '#555', textAlign: 'center', lineHeight: 1.6 }}>
-              For artists, DJs, and press contacts with a Shine Frequency account.
-              <br />
-              <a href="/onboard" style={{ color: '#1D9E75', textDecoration: 'none' }}>Apply as artist</a>
-              {' · '}
-              <a href="/join" style={{ color: '#1D9E75', textDecoration: 'none' }}>DJ promo sign-up</a>
-            </div>
-          </>
         )}
 
-        <div style={{ marginTop: '2rem', textAlign: 'center' }}>
-          <a href="/" style={{ fontSize: '12px', color: '#444', textDecoration: 'none' }}>Back to shine-frequency.vercel.app</a>
+        <button
+          onClick={handleLogin}
+          disabled={!email || checking}
+          style={{
+            width: '100%', padding: '11px', background: !email || checking ? '#0a4a30' : '#1D9E75',
+            border: 'none', borderRadius: '8px', color: '#fff', fontSize: '13px',
+            fontWeight: '500', cursor: !email || checking ? 'not-allowed' : 'pointer',
+            transition: 'background 0.15s',
+          }}
+        >
+          {checking ? 'Checking...' : 'Access portal'}
+        </button>
+
+        <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '11px', color: '#444' }}>
+          <a href="/" style={{ color: '#555', textDecoration: 'none' }}>Back to Shine Frequency</a>
         </div>
       </div>
     </div>

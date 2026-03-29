@@ -109,7 +109,7 @@ export default function SettingsPage() {
 
   function handleConnectDropbox() {
     const appKey = process.env.NEXT_PUBLIC_DROPBOX_APP_KEY || 'td97ap98k4n9y38'
-    const redirectUri = `${window.location.origin}/auth/dropbox/callback`
+    const redirectUri = `${window.location.origin}/api/dropbox-callback`
     const authUrl = `https://www.dropbox.com/oauth2/authorize?client_id=${appKey}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&token_access_type=offline`
     window.location.href = authUrl
   }

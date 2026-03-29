@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase'
 import { useToast } from '@/lib/toast'
 import type { Invoice, InvoiceStatus, LineItem } from '@/types/database'
+import { generateInvoicePDF } from '@/lib/invoice-pdf'
 
 const STATUS_COLORS: Record<InvoiceStatus, { bg: string; color: string }> = {
   draft:     { bg: '#1a1a1a', color: '#666' },
@@ -379,6 +380,7 @@ export default function InvoicingPage() {
                     <td style={{ padding: '12px 14px', fontSize: '12px', color: 'var(--text-muted)' }}>{inv.view_count}</td>
                     <td style={{ padding: '12px 14px' }}>
                       <div style={{ display: 'flex', gap: '5px' }}>
+                        <button onClick={() => generateInvoicePDF(inv)} style={{ padding: '3px 8px', background: '#0a2a1e', border: '0.5px solid #1D9E75', borderRadius: '6px', color: '#4ecca3', fontSize: '11px', cursor: 'pointer' }}>PDF</button>
                         <button onClick={() => editInvoice(inv)} style={{ padding: '3px 8px', background: 'transparent', border: '0.5px solid var(--border-3)', borderRadius: '6px', color: 'var(--text-faint)', fontSize: '11px', cursor: 'pointer' }}>Edit</button>
                         <button onClick={() => deleteInvoice(inv.id)} style={{ padding: '3px 8px', background: 'transparent', border: '0.5px solid var(--red-muted-border)', borderRadius: '6px', color: 'var(--red-muted)', fontSize: '11px', cursor: 'pointer' }}>Delete</button>
                       </div>

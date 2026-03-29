@@ -80,15 +80,42 @@ export default function SettingsPage() {
   const [dropboxSuccess, setDropboxSuccess] = useState(false)
 
   useEffect(() => {
+    // Handle Dropbox OAuth code from redirect
+    const code = searchParams.get('code')
+    if (code) {
+      setDropboxChecking(true)
+      const redirectUri = `${window.location.origin}/dashboard/settings`
+      fetch('/api/dropbox-connect', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code, redirect_uri: redirectUri }),
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            setDropboxConnected(true)
+            setDropboxSuccess(true)
+            setTimeout(() => setDropboxSuccess(false), 5000)
+            // Clean URL
+            window.history.replaceState({}, '', '/dashboard/settings')
+          } else {
+            console.error('Dropbox connect error:', data.error)
+          }
+        })
+        .catch(console.error)
+        .finally(() => setDropboxChecking(false))
+      return
+    }
+
     if (searchParams.get('dropbox') === 'connected') {
       setDropboxSuccess(true)
       setDropboxConnected(true)
       setDropboxChecking(false)
       setTimeout(() => setDropboxSuccess(false), 5000)
+      return
     }
-  }, [searchParams])
 
-  useEffect(() => {
+    // Check existing connection
     async function checkDropbox() {
       try {
         const res = await fetch('/api/dropbox', {
@@ -105,11 +132,11 @@ export default function SettingsPage() {
       }
     }
     checkDropbox()
-  }, [])
+  }, [searchParams])
 
   function handleConnectDropbox() {
     const appKey = process.env.NEXT_PUBLIC_DROPBOX_APP_KEY || 'td97ap98k4n9y38'
-    const redirectUri = `${window.location.origin}/api/dropbox-callback`
+    const redirectUri = `${window.location.origin}/dashboard/settings`
     const authUrl = `https://www.dropbox.com/oauth2/authorize?client_id=${appKey}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&token_access_type=offline`
     window.location.href = authUrl
   }

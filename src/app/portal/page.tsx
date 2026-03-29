@@ -46,28 +46,28 @@ export default function PortalPage() {
   }
 
   const inp = {
-    width: '100%', padding: '10px 14px', background: '#1a1a1a',
-    border: '0.5px solid #333', borderRadius: '8px', color: '#fff',
+    width: '100%', padding: '10px 14px', background: '#fff',
+    border: '1px solid #ccc', borderRadius: '8px', color: '#1a1a1a',
     fontSize: '13px', outline: 'none',
   } as React.CSSProperties
 
   return (
     <div style={{
       minHeight: '100vh', display: 'flex', flexDirection: 'column',
-      background: '#0a0a0a', fontFamily: 'system-ui, sans-serif',
+      background: '#E6E6E6', fontFamily: 'system-ui, sans-serif',
     }}>
       {/* Nav */}
       <div style={{
         padding: '12px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        borderBottom: '0.5px solid #1a1a1a', background: 'rgba(10,10,10,0.95)',
+        borderBottom: '1px solid #ddd', background: 'rgba(255,255,255,0.95)',
       }}>
-        <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', color: '#fff' }}>
+        <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', color: '#1a1a1a' }}>
           <img src="/logo.png" alt="Shine" style={{ width: '24px', height: '24px', borderRadius: '50%' }} />
           <span style={{ fontSize: '13px', fontWeight: '500' }}>Shine Frequency</span>
         </a>
         <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-          <a href="/" style={{ fontSize: '12px', color: '#888', textDecoration: 'none' }}>Home</a>
-          <a href="/onboard" style={{ fontSize: '12px', color: '#888', textDecoration: 'none' }}>Artist Sign Up</a>
+          <a href="/" style={{ fontSize: '12px', color: '#666', textDecoration: 'none' }}>Home</a>
+          <a href="/onboard" style={{ fontSize: '12px', color: '#666', textDecoration: 'none' }}>Artist Sign Up</a>
           <a href="/join" style={{ fontSize: '12px', color: '#1D9E75', textDecoration: 'none' }}>DJ Sign Up</a>
         </div>
       </div>
@@ -75,14 +75,14 @@ export default function PortalPage() {
       <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem 1rem' }}>
         <div style={{
           width: '100%', maxWidth: '420px', padding: '2.5rem',
-          background: '#111', border: '0.5px solid #222', borderRadius: '16px',
+          background: '#fff', border: '1px solid #ddd', borderRadius: '16px',
         }}>
           <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
             <img src="/logo.png" alt="Shine Music" style={{ width: '80px', height: '80px', borderRadius: '50%', marginBottom: '12px' }} />
-            <div style={{ fontSize: '18px', fontWeight: '500', color: '#fff' }}>
+            <div style={{ fontSize: '18px', fontWeight: '500', color: '#1a1a1a' }}>
               {resetMode ? 'Reset Password' : 'Client Portal'}
             </div>
-            <div style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
+            <div style={{ fontSize: '12px', color: '#999', marginTop: '4px' }}>
               {resetMode ? 'Enter your email to receive a reset link' : 'View your releases, bookings and stats'}
             </div>
           </div>
@@ -91,27 +91,27 @@ export default function PortalPage() {
             // Password reset form
             resetSent ? (
               <div style={{ textAlign: 'center' }}>
-                <div style={{ padding: '16px', background: '#0a2a1e', border: '0.5px solid #1D9E75', borderRadius: '10px', marginBottom: '1rem' }}>
-                  <div style={{ fontSize: '14px', fontWeight: '500', color: '#4ecca3', marginBottom: '6px' }}>Reset link sent</div>
-                  <div style={{ fontSize: '13px', color: '#888', lineHeight: 1.6 }}>
-                    If <strong style={{ color: '#fff' }}>{email}</strong> is registered, you'll receive a password reset email shortly.
+                <div style={{ padding: '16px', background: '#e6f7f0', border: '1px solid #1D9E75', borderRadius: '10px', marginBottom: '1rem' }}>
+                  <div style={{ fontSize: '14px', fontWeight: '500', color: '#1D9E75', marginBottom: '6px' }}>Reset link sent</div>
+                  <div style={{ fontSize: '13px', color: '#666', lineHeight: 1.6 }}>
+                    If <strong style={{ color: '#1a1a1a' }}>{email}</strong> is registered, you'll receive a password reset email shortly.
                   </div>
                 </div>
                 <button onClick={() => { setResetMode(false); setResetSent(false) }} style={{
-                  padding: '8px 20px', background: 'transparent', border: '0.5px solid #333',
-                  borderRadius: '8px', color: '#888', fontSize: '12px', cursor: 'pointer',
+                  padding: '8px 20px', background: 'transparent', border: '1px solid #ccc',
+                  borderRadius: '8px', color: '#666', fontSize: '12px', cursor: 'pointer',
                 }}>Back to login</button>
               </div>
             ) : (
               <>
                 <div style={{ marginBottom: '1rem' }}>
-                  <label style={{ fontSize: '12px', color: '#666', display: 'block', marginBottom: '6px' }}>Email address</label>
+                  <label style={{ fontSize: '12px', color: '#999', display: 'block', marginBottom: '6px' }}>Email address</label>
                   <input type="email" value={email} onChange={e => setEmail(e.target.value)}
                     onKeyDown={e => e.key === 'Enter' && handleReset()}
                     placeholder="your@email.com" style={inp} />
                 </div>
                 <button onClick={handleReset} disabled={!email || resetSending} style={{
-                  width: '100%', padding: '11px', background: !email || resetSending ? '#0a4a30' : '#1D9E75',
+                  width: '100%', padding: '11px', background: !email || resetSending ? '#a0d4c0' : '#1D9E75',
                   border: 'none', borderRadius: '8px', color: '#fff', fontSize: '13px', fontWeight: '500',
                   cursor: !email || resetSending ? 'not-allowed' : 'pointer', marginBottom: '1rem',
                 }}>
@@ -128,13 +128,13 @@ export default function PortalPage() {
             // Login form
             <>
               <div style={{ marginBottom: '12px' }}>
-                <label style={{ fontSize: '12px', color: '#666', display: 'block', marginBottom: '6px' }}>Email address</label>
+                <label style={{ fontSize: '12px', color: '#999', display: 'block', marginBottom: '6px' }}>Email address</label>
                 <input type="email" value={email} onChange={e => setEmail(e.target.value)}
                   placeholder="your@email.com" style={inp} />
               </div>
 
               <div style={{ marginBottom: '4px' }}>
-                <label style={{ fontSize: '12px', color: '#666', display: 'block', marginBottom: '6px' }}>Password</label>
+                <label style={{ fontSize: '12px', color: '#999', display: 'block', marginBottom: '6px' }}>Password</label>
                 <input type="password" value={password} onChange={e => setPassword(e.target.value)}
                   onKeyDown={e => e.key === 'Enter' && handleLogin()}
                   placeholder="Enter your password" style={inp} />
@@ -147,7 +147,7 @@ export default function PortalPage() {
               </div>
 
               {error && (
-                <div style={{ padding: '10px 12px', background: '#1a0a0a', border: '0.5px solid #5a1a1a', borderRadius: '8px', fontSize: '12px', color: '#f08080', marginBottom: '1rem' }}>
+                <div style={{ padding: '10px 12px', background: '#fff0f0', border: '1px solid #e8a0a0', borderRadius: '8px', fontSize: '12px', color: '#c44', marginBottom: '1rem' }}>
                   {error}
                   <div style={{ marginTop: '8px', display: 'flex', gap: '8px' }}>
                     <a href="/onboard" style={{ color: '#1D9E75', fontSize: '11px' }}>Apply as artist</a>
@@ -158,14 +158,14 @@ export default function PortalPage() {
 
               <button onClick={handleLogin} disabled={!email || !password || checking} style={{
                 width: '100%', padding: '11px',
-                background: !email || !password || checking ? '#0a4a30' : '#1D9E75',
+                background: !email || !password || checking ? '#a0d4c0' : '#1D9E75',
                 border: 'none', borderRadius: '8px', color: '#fff', fontSize: '13px',
                 fontWeight: '500', cursor: !email || !password || checking ? 'not-allowed' : 'pointer',
               }}>
                 {checking ? 'Signing in...' : 'Sign in'}
               </button>
 
-              <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '12px', color: '#555', lineHeight: 1.6 }}>
+              <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '12px', color: '#999', lineHeight: 1.6 }}>
                 Don't have an account?<br />
                 <a href="/onboard" style={{ color: '#1D9E75', textDecoration: 'none' }}>Apply as artist</a>
                 {' · '}

@@ -54,24 +54,24 @@ const artists = [
 
 const services = [
   {
-    title: 'Press & Promo Campaigns',
-    desc: "We get your release placed, mentioned and played in all the relevant places — and get the right people to endorse it. Quality feedback to help drive sales pre-launch, plus physical records into the hands of VIP players.",
-    items: ['Targeted DJ and press promo distribution', 'Quality feedback reports before release', 'Physical vinyl to key DJs and shops', 'Chart and review tracking across platforms'],
+    title: 'Promo Distribution',
+    desc: "Your release sent to a curated network of DJs, press and tastemakers. Each contact handpicked, each promo personally delivered.",
+    items: ['Tiered DJ and press promo lists', 'Tracked Dropbox delivery with download stats', 'Physical vinyl to VIP players and shops', 'Structured DJ feedback — not just "sounds good"'],
   },
   {
-    title: 'Release Management',
-    desc: "It takes a lot of love, time and hard work crafting your release. We push it into the spotlight, giving it the best possible chance to succeed. End-to-end support from mastering to market.",
-    items: ['Promo window planning and execution', 'Artwork and press asset coordination', 'Social media campaigns', 'Performance tracking and reporting'],
+    title: 'Press & Coverage',
+    desc: "Getting your music reviewed, charted and talked about in the right places. We chase every review and track every chart entry.",
+    items: ['Resident Advisor, DJ Mag, Mixmag outreach', 'Beatport and Traxsource chart tracking', 'Featured review quotes for your socials', 'Press asset coordination and one-sheets'],
   },
   {
-    title: 'DJ Booking Agency',
-    desc: 'Full booking management for artists — from enquiry to invoice. We handle contracts, travel, riders, and payments so artists can focus on the music.',
-    items: ['Global venue relationships', 'Contract and fee negotiation', 'Travel and accommodation', 'Invoicing and payment tracking'],
+    title: 'Booking & Touring',
+    desc: "Full booking management — from initial enquiry to final invoice. Contracts, travel, riders, fees. You focus on the music.",
+    items: ['Global venue and promoter relationships', 'Contract and fee negotiation', 'Travel and accommodation booking', 'Invoicing and payment tracking'],
   },
   {
-    title: 'Discovery & Intelligence',
-    desc: "We scan YouTube, Mixcloud, Discogs, Bandcamp, SoundCloud, Resident Advisor and more to find every play, mention and chart entry your music gets — even the ones you didn't know about.",
-    items: ['8-platform web scanner', 'Chart and tracklist monitoring', 'Audience and location insights', 'Weekly artist performance reports'],
+    title: 'Release Campaign',
+    desc: "End-to-end release management. We plan the timeline, coordinate the assets, schedule the socials and track the results.",
+    items: ['Promo window planning and execution', 'Social media campaign management', 'Artwork and asset coordination', 'Post-release performance reporting'],
   },
 ]
 
@@ -196,18 +196,18 @@ export default function HomePage() {
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', fontSize: '14px', color: '#666', lineHeight: 1.8 }}>
             <div>
               <p style={{ marginBottom: '1rem' }}>
-                I choose only to work with music I adore, so you can be sure I'll be passionate when promoting your stuff. I strive to get your release placed, mentioned and played in all of the relevant places — as well as getting the right people to endorse it.
+                I choose only to work with music I adore, so you can be sure I'll be passionate when promoting your stuff. I'd like to think I have a very personal approach — working with friends and contacts, simply sharing great music over a chat.
               </p>
               <p>
-                I'll provide you with good quality feedback to help drive sales pre-launch, as well as placing physical records into the hands of VIP players.
+                It takes a lot of love, time and hard work crafting your release. Investing in what I do pushes it into the spotlight, giving it the best possible chance to succeed.
               </p>
             </div>
             <div>
               <p style={{ marginBottom: '1rem' }}>
-                In my opinion it takes a lot of love, time and hard work crafting your release. Investing in what I do pushes it into the spotlight, giving your release the best possible chance to succeed.
+                It's hard to predict exactly what we'll achieve — but what I can promise is a hell of a lot of passion and enthusiasm. And that, coupled with my track record so far, the result shouldn't be too shabby.
               </p>
               <p>
-                It's hard to predict exactly what we'll achieve — but what I can promise is a hell of a lot of passion and enthusiasm. And that, coupled with my track record so far, the result shouldn't be too shabby.
+                Predominantly Underground House, Techno, a bit of Balearic and my beloved Disco. If the music is right, let's talk.
               </p>
             </div>
           </div>

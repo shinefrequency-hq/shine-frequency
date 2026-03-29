@@ -110,6 +110,31 @@ export default function ReleasesPage() {
     toast('Release deleted')
   }
 
+  async function createDropboxFolder(r: Release) {
+    toast('Creating Dropbox folder...', 'info')
+    const res = await fetch('/api/dropbox', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'create_release_folder',
+        catalogue_number: r.catalogue_number,
+        artist_name: r.artist_name,
+      }),
+    })
+    const data = await res.json()
+    if (!res.ok) {
+      toast(data.error || 'Failed to create folder', 'error')
+      return
+    }
+    // Update release with the Dropbox URL
+    await (supabase as any).from('releases').update({
+      dropbox_folder_url: data.share_url,
+      dropbox_folder_id: data.folder_id,
+    }).eq('id', r.id)
+    toast('Dropbox folder created with subfolders')
+    load()
+  }
+
   function editRelease(r: Release) {
     setForm(r)
     setEditId(r.id)
@@ -362,6 +387,9 @@ export default function ReleasesPage() {
                     <td style={{ padding: '12px 14px' }}>
                       <div style={{ display: 'flex', gap: '6px' }}>
                         <button onClick={() => editRelease(r)} style={{ padding: '4px 10px', background: 'transparent', border: '0.5px solid var(--border-3)', borderRadius: '6px', color: 'var(--text-faint)', fontSize: '11px', cursor: 'pointer' }}>Edit</button>
+                        {!r.dropbox_folder_url && (
+                          <button onClick={() => createDropboxFolder(r)} style={{ padding: '4px 10px', background: '#0a1a2a', border: '0.5px solid #1a3a5a', borderRadius: '6px', color: '#7ab8f5', fontSize: '11px', cursor: 'pointer' }}>+ Dropbox</button>
+                        )}
                         {r.dropbox_folder_url && (
                           <a href={r.dropbox_folder_url} target="_blank" rel="noreferrer" style={{ padding: '4px 10px', background: 'var(--blue-bg)', border: '0.5px solid var(--blue-border)', borderRadius: '6px', color: '#7ab8f5', fontSize: '11px' }}>Dropbox</a>
                         )}

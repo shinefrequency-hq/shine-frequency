@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useSearchParams } from 'next/navigation'
 
 type SettingSection = {
   title: string
@@ -71,8 +72,47 @@ const DEFAULTS: Record<string, string | boolean> = {
 }
 
 export default function SettingsPage() {
+  const searchParams = useSearchParams()
   const [values, setValues] = useState<Record<string, string | boolean>>(DEFAULTS)
   const [saved, setSaved] = useState(false)
+  const [dropboxConnected, setDropboxConnected] = useState(false)
+  const [dropboxChecking, setDropboxChecking] = useState(true)
+  const [dropboxSuccess, setDropboxSuccess] = useState(false)
+
+  useEffect(() => {
+    if (searchParams.get('dropbox') === 'connected') {
+      setDropboxSuccess(true)
+      setDropboxConnected(true)
+      setDropboxChecking(false)
+      setTimeout(() => setDropboxSuccess(false), 5000)
+    }
+  }, [searchParams])
+
+  useEffect(() => {
+    async function checkDropbox() {
+      try {
+        const res = await fetch('/api/dropbox', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'check_connection' }),
+        })
+        const data = await res.json()
+        setDropboxConnected(!!data.connected)
+      } catch {
+        setDropboxConnected(false)
+      } finally {
+        setDropboxChecking(false)
+      }
+    }
+    checkDropbox()
+  }, [])
+
+  function handleConnectDropbox() {
+    const appKey = process.env.NEXT_PUBLIC_DROPBOX_APP_KEY || 'td97ap98k4n9y38'
+    const redirectUri = `${window.location.origin}/auth/dropbox/callback`
+    const authUrl = `https://www.dropbox.com/oauth2/authorize?client_id=${appKey}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&token_access_type=offline`
+    window.location.href = authUrl
+  }
 
   function update(key: string, value: string | boolean) {
     setValues(prev => ({ ...prev, [key]: value }))
@@ -156,6 +196,63 @@ export default function SettingsPage() {
             ))}
           </div>
         ))}
+
+        {/* Integrations */}
+        <div style={{ background: 'var(--bg-2)', border: '0.5px solid var(--border)', borderRadius: '12px', overflow: 'hidden' }}>
+          <div style={{ padding: '12px 16px', borderBottom: '0.5px solid var(--border)', fontSize: '13px', fontWeight: '500', color: '#1D9E75' }}>
+            Integrations
+          </div>
+          <div style={{ padding: '14px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '20px' }}>
+            <div style={{ flex: 1 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div style={{ fontSize: '12px', fontWeight: '500', color: 'var(--text)' }}>Dropbox</div>
+                {!dropboxChecking && (
+                  <span style={{
+                    fontSize: '10px',
+                    padding: '2px 8px',
+                    borderRadius: '9999px',
+                    background: dropboxConnected ? 'rgba(29,158,117,0.15)' : 'rgba(255,255,255,0.06)',
+                    color: dropboxConnected ? '#4ecca3' : 'var(--text-3)',
+                    fontWeight: '500',
+                  }}>
+                    {dropboxConnected ? 'Connected' : 'Not connected'}
+                  </span>
+                )}
+              </div>
+              <div style={{ fontSize: '11px', color: 'var(--text-3)', marginTop: '2px' }}>
+                Connect your Dropbox account to share promo files with contacts
+              </div>
+              {dropboxSuccess && (
+                <div style={{ fontSize: '11px', color: '#4ecca3', marginTop: '6px', fontWeight: '500' }}>
+                  Dropbox connected successfully!
+                </div>
+              )}
+            </div>
+            <div style={{ flexShrink: 0 }}>
+              {dropboxConnected ? (
+                <span style={{ fontSize: '11px', color: 'var(--text-3)' }}>Linked</span>
+              ) : (
+                <button
+                  onClick={handleConnectDropbox}
+                  disabled={dropboxChecking}
+                  style={{
+                    padding: '8px 20px',
+                    background: '#1D9E75',
+                    border: 'none',
+                    borderRadius: '8px',
+                    color: '#fff',
+                    fontSize: '12px',
+                    fontWeight: '500',
+                    cursor: dropboxChecking ? 'default' : 'pointer',
+                    opacity: dropboxChecking ? 0.5 : 1,
+                  }}
+                >
+                  Connect Dropbox
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )

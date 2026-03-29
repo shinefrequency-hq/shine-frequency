@@ -62,8 +62,7 @@ export default function PortalPage() {
         borderBottom: '1px solid #ddd', background: 'rgba(255,255,255,0.95)',
       }}>
         <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', color: '#1a1a1a' }}>
-          <div style={{ fontWeight: '900', fontSize: '16px', letterSpacing: '0.12em', color: '#FF6B35' }}>SHINE</div>
-          <span style={{ fontSize: '13px', fontWeight: '500' }}>Shine Frequency</span>
+          <img src="/frequency-logo.svg" alt="frequency" style={{ height: '20px' }} />
         </a>
         <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
           <a href="/" style={{ fontSize: '12px', color: '#666', textDecoration: 'none' }}>Home</a>
@@ -79,7 +78,7 @@ export default function PortalPage() {
         }}>
           <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
             <div style={{ marginBottom: '12px' }}>
-              <div style={{ fontWeight: '900', fontSize: '32px', letterSpacing: '0.12em', color: '#FF6B35', marginBottom: '12px' }}>SHINE</div>
+              <img src="/frequency-logo.svg" alt="frequency" style={{ height: '36px', marginBottom: '12px' }} />
             </div>
             <div style={{ fontSize: '18px', fontWeight: '500', color: '#1a1a1a' }}>
               {resetMode ? 'Reset Password' : 'Client Portal'}

@@ -48,6 +48,7 @@ const NAV = [
   {
     section: 'Admin',
     items: [
+      { label: 'Website', href: '/dashboard/content' },
       { label: 'Reporting', href: '/dashboard/reporting' },
       { label: 'Staff & roles', href: '/dashboard/staff' },
       { label: 'Audit log', href: '/dashboard/audit' },

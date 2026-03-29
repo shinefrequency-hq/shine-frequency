@@ -256,9 +256,9 @@ export default function PortalDashboard() {
       {/* ═══════════ HEADER ═══════════ */}
       <div style={{ background: '#111', borderBottom: '1px solid #1a1a1a', padding: '14px 28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, zIndex: 50, backdropFilter: 'blur(12px)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-          <div style={{ background: '#1D9E75', color: '#fff', fontWeight: '800', fontSize: '14px', letterSpacing: '0.15em', padding: '6px 12px', borderRadius: '4px', display: 'inline-block' }}>SHINE</div>
+          <img src="/frequency-logo.svg" alt="frequency" style={{ height: '22px', filter: 'invert(1)' }} />
           <div>
-            <div style={{ fontSize: '15px', fontWeight: '600', letterSpacing: '-0.01em' }}>Shine Frequency</div>
+            <div style={{ fontSize: '15px', fontWeight: '600', letterSpacing: '-0.01em', display: 'none' }}>Shine Frequency</div>
             <div style={{ fontSize: '11px', color: '#1D9E75', fontWeight: '500' }}>Client Portal</div>
           </div>
         </div>

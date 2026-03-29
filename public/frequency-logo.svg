@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="500" viewBox="0 0 1600 500" role="img" aria-labelledby="title desc">
+  <title id="title">frequency_ wordmark</title>
+  <desc id="desc">Minimal stylised wordmark for frequency underscore in a clean, premium, product-line aesthetic.</desc>
+
+  <rect width="100%" height="100%" fill="#ffffff"/>
+
+  <g fill="#111111">
+    <text x="80" y="315"
+          font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif"
+          font-size="190"
+          font-weight="500"
+          letter-spacing="6">frequency</text>
+
+    <!-- Underscore as a restrained product-line cue -->
+    <rect x="1318" y="334" width="118" height="16" rx="8" ry="8"/>
+  </g>
+</svg>

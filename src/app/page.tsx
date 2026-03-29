@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const testimonials = [
   {
@@ -82,6 +82,25 @@ export default function HomePage() {
   const [formSent, setFormSent] = useState(false)
   const [sending, setSending] = useState(false)
   const [form, setForm] = useState({ name: '', email: '', message: '', type: 'General enquiry' })
+  const [dynamicContent, setDynamicContent] = useState<any>(null)
+
+  useEffect(() => {
+    fetch('/api/public', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'get_site_content' }),
+    })
+      .then(r => r.json())
+      .then(d => { if (d.content) setDynamicContent(d.content) })
+      .catch(() => {})
+  }, [])
+
+  // Use dynamic content with hardcoded fallbacks
+  const liveTestimonials = dynamicContent?.testimonials ?? testimonials.map(t => t)
+  const liveStats = dynamicContent?.stats ?? stats
+  const heroTagline = dynamicContent?.hero?.[0]?.text ?? 'Your music deserves to be heard by the people who matter'
+  const heroDesc = dynamicContent?.hero?.[1]?.text ?? 'Press and promotional campaigns for Underground House, Techno, Balearic and Disco. A very personal approach — working with friends and contacts, simply sharing great music over a chat.'
+  const aboutData = dynamicContent?.about?.[0] ?? null
 
   async function handleSubmit() {
     if (!form.name || !form.email || !form.message) return
@@ -175,10 +194,10 @@ export default function HomePage() {
               PR & Artist Agency
             </div>
             <h1 style={{ fontSize: 'clamp(22px, 4vw, 36px)', fontWeight: '600', lineHeight: 1.35, marginBottom: '1.25rem', letterSpacing: '-0.01em', color: '#fff', textShadow: '0 1px 8px rgba(0,0,0,0.3)' }}>
-              Your music deserves to be heard<br />by the people who matter
+              {heroTagline}
             </h1>
             <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.7, marginBottom: '2.5rem', maxWidth: '520px', margin: '0 auto 2.5rem' }}>
-              Press and promotional campaigns for Underground House, Techno, Balearic and Disco. A very personal approach — working with friends and contacts, simply sharing great music over a chat.
+              {heroDesc}
             </p>
             <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
               <a href="/onboard" style={{ padding: '14px 32px', background: '#1D9E75', borderRadius: '8px', color: '#fff', textDecoration: 'none', fontSize: '15px', fontWeight: '600', border: 'none', boxShadow: '0 4px 20px rgba(29,158,117,0.4)' }}>
@@ -200,9 +219,9 @@ export default function HomePage() {
       {/* Stats bar */}
       <section style={{ background: '#1a1a1a', padding: '2.5rem 2rem' }}>
         <div className="shine-stats-grid" style={{ maxWidth: '900px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '2rem', textAlign: 'center' }}>
-          {stats.map(s => (
+          {(liveStats as any[]).map((s: any) => (
             <div key={s.label}>
-              <div style={{ fontSize: '32px', fontWeight: '800', color: '#F7C948', letterSpacing: '-0.02em' }}>{s.value}</div>
+              <div style={{ fontSize: '32px', fontWeight: '800', color: '#F7C948', letterSpacing: '-0.02em' }}>{s.number || s.value}</div>
               <div style={{ fontSize: '12px', color: '#888', marginTop: '4px', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{s.label}</div>
             </div>
           ))}
@@ -214,10 +233,10 @@ export default function HomePage() {
         <div style={{ maxWidth: '700px', margin: '0 auto', textAlign: 'center' }}>
           <div style={{ fontSize: '42px', color: '#E0E0E0', lineHeight: 1, marginBottom: '1rem' }}>"</div>
           <p style={{ fontSize: '20px', fontStyle: 'italic', color: '#333', lineHeight: 1.6, marginBottom: '1.5rem', fontWeight: '400' }}>
-            {testimonials[0].quote}
+            {liveTestimonials[0]?.quote}
           </p>
-          <div style={{ fontSize: '14px', fontWeight: '600', color: '#1a1a1a' }}>{testimonials[0].name}</div>
-          <div style={{ fontSize: '12px', color: '#999' }}>{testimonials[0].role}</div>
+          <div style={{ fontSize: '14px', fontWeight: '600', color: '#1a1a1a' }}>{liveTestimonials[0]?.name}</div>
+          <div style={{ fontSize: '12px', color: '#999' }}>{liveTestimonials[0]?.role}</div>
         </div>
       </section>
 
@@ -303,7 +322,7 @@ export default function HomePage() {
             <h2 style={{ fontSize: '32px', fontWeight: '700' }}>What people say</h2>
           </div>
           <div className="shine-testimonials-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
-            {testimonials.map(t => (
+            {(liveTestimonials as any[]).map((t: any) => (
               <div key={t.name} style={{ background: '#fff', borderRadius: '12px', padding: '1.75rem', border: '1px solid #ddd' }}>
                 <div style={{ fontSize: '32px', color: '#F7C948', lineHeight: 1, marginBottom: '8px' }}>"</div>
                 <p style={{ fontSize: '14px', fontStyle: 'italic', color: '#444', lineHeight: 1.7, marginBottom: '1.25rem' }}>

@@ -535,6 +535,21 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: true })
     }
 
+    // --- Site content for homepage ---
+    if (action === 'get_site_content') {
+      const { data } = await sb.from('site_content')
+        .select('*')
+        .eq('is_active', true)
+        .order('sort_order')
+
+      const grouped: Record<string, any[]> = {}
+      for (const item of (data ?? [])) {
+        if (!grouped[item.section]) grouped[item.section] = []
+        grouped[item.section].push(item.value)
+      }
+      return NextResponse.json({ success: true, content: grouped })
+    }
+
     return NextResponse.json({ error: 'Unknown action' }, { status: 400 })
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 })

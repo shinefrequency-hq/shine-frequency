@@ -125,17 +125,9 @@ export default function HomePage() {
           <a href="#artists" style={{ fontSize: '13px', color: '#555', textDecoration: 'none' }}>Artists</a>
           <a href="#contact" style={{ fontSize: '13px', color: '#555', textDecoration: 'none' }}>Contact</a>
           <span style={{ width: '1px', height: '20px', background: '#ddd' }} />
-          <a href="/onboard" style={{ fontSize: '13px', color: '#1D9E75', textDecoration: 'none', fontWeight: '500' }}>Artist Sign Up</a>
-          <a href="/portal" style={{
-            fontSize: '13px', padding: '6px 16px', background: 'transparent',
-            border: '1px solid #ddd', borderRadius: '6px', color: '#555',
-            textDecoration: 'none',
-          }}>Artist Login</a>
-          <a href="/join" style={{
-            fontSize: '13px', padding: '6px 16px', background: '#1D9E75',
-            borderRadius: '6px', color: '#fff', textDecoration: 'none', fontWeight: '500',
-            border: 'none',
-          }}>DJ / Press Sign Up</a>
+          <a href="/onboard" style={{ fontSize: '13px', color: '#555', textDecoration: 'none' }}>Artist Sign Up</a>
+          <a href="/portal" style={{ fontSize: '13px', color: '#555', textDecoration: 'none' }}>Artist Login</a>
+          <a href="/join" style={{ fontSize: '13px', color: '#555', textDecoration: 'none' }}>DJ / Press Sign Up</a>
         </div>
       </nav>
 

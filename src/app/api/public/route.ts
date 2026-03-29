@@ -175,12 +175,131 @@ export async function POST(req: NextRequest) {
         allInvoices = [...allInvoices, ...(bookingInvoices ?? [])].filter((inv, i, arr) => arr.findIndex(x => x.id === inv.id) === i)
       }
 
+      // --- Rich stats per release ---
+      const releaseStats = []
+      for (const rel of (releases.data ?? [])) {
+        // Who downloaded (DJs playing it)
+        const { data: downloads } = await sb.from('download_events')
+          .select('contact_id, contacts(full_name, type, city, country_code, organisation)')
+          .eq('release_id', rel.id)
+
+        // Reviews with DJ details
+        const { data: relReviews } = await sb.from('reviews')
+          .select('rating, body, status, charted, chart_name, is_featured, contacts(full_name, type, city, country_code, organisation)')
+          .eq('release_id', rel.id)
+
+        // Promo list stats
+        const { data: promos } = await sb.from('promo_lists')
+          .select('downloaded_at, reviewed_at, contacts(full_name, city, country_code)')
+          .eq('release_id', rel.id)
+
+        // Track stats
+        const { data: tracks } = await sb.from('tracks')
+          .select('position, title, bpm, key, download_count, play_count, charted_count')
+          .eq('release_id', rel.id)
+          .order('position')
+
+        // Social posts
+        const { data: socials } = await sb.from('social_posts')
+          .select('platform, like_count, comment_count, share_count, reach, published_at')
+          .eq('release_id', rel.id)
+          .eq('status', 'published')
+
+        // Build location breakdown
+        const locationMap: Record<string, number> = {}
+        const djsPlaying: any[] = []
+        ;(downloads ?? []).forEach((d: any) => {
+          const loc = [d.contacts?.city, d.contacts?.country_code].filter(Boolean).join(', ')
+          if (loc) locationMap[loc] = (locationMap[loc] || 0) + 1
+          if (d.contacts?.full_name) {
+            djsPlaying.push({
+              name: d.contacts.full_name,
+              type: d.contacts.type,
+              city: d.contacts.city,
+              country: d.contacts.country_code,
+              org: d.contacts.organisation,
+            })
+          }
+        })
+
+        // Unique DJs
+        const uniqueDJs = djsPlaying.filter((dj, i, arr) => arr.findIndex(x => x.name === dj.name) === i)
+
+        // Chart entries
+        const chartEntries = (relReviews ?? []).filter((r: any) => r.charted && r.chart_name).map((r: any) => ({
+          chart: r.chart_name,
+          dj: r.contacts?.full_name,
+          city: r.contacts?.city,
+        }))
+
+        // Featured quotes
+        const featuredQuotes = (relReviews ?? [])
+          .filter((r: any) => r.status === 'approved' && r.rating >= 4)
+          .map((r: any) => ({
+            quote: r.body?.split('\n').filter((l: string) => l.length > 20 && !l.startsWith('Overall:') && !l.startsWith('Energy:') && !l.startsWith('Mixability:') && !l.startsWith('Sound quality:') && !l.startsWith('Crowd reaction:') && !l.startsWith('Play context:') && !l.startsWith('Genre fit:') && !l.startsWith('Would chart:') && !l.startsWith('Would play:') && !l.startsWith('Favourite track:') && !l.startsWith('Chart:'))[0] || r.body?.slice(0, 150),
+            dj: r.contacts?.full_name,
+            org: r.contacts?.organisation,
+            city: r.contacts?.city,
+            rating: r.rating,
+          }))
+          .filter((q: any) => q.quote)
+          .slice(0, 5)
+
+        // Social reach total
+        const totalReach = (socials ?? []).reduce((s: number, p: any) => s + (p.reach || 0), 0)
+        const totalLikes = (socials ?? []).reduce((s: number, p: any) => s + (p.like_count || 0), 0)
+        const totalShares = (socials ?? []).reduce((s: number, p: any) => s + (p.share_count || 0), 0)
+
+        // Avg rating
+        const approvedReviews = (relReviews ?? []).filter((r: any) => r.status === 'approved')
+        const avgRating = approvedReviews.length > 0
+          ? (approvedReviews.reduce((s: number, r: any) => s + (r.rating || 0), 0) / approvedReviews.length).toFixed(1)
+          : null
+
+        // Download rate
+        const totalPromo = (promos ?? []).length
+        const downloaded = (promos ?? []).filter((p: any) => p.downloaded_at).length
+        const reviewed = (promos ?? []).filter((p: any) => p.reviewed_at).length
+
+        releaseStats.push({
+          id: rel.id,
+          catalogue_number: rel.catalogue_number,
+          title: rel.title,
+          artwork_url: rel.artwork_url,
+          status: rel.status,
+          heat_status: rel.heat_status,
+          genre: rel.genre,
+          format: rel.format,
+          release_date: rel.release_date,
+          // Stats
+          djs_playing: uniqueDJs,
+          dj_count: uniqueDJs.length,
+          locations: Object.entries(locationMap).sort((a, b) => b[1] - a[1]).map(([loc, count]) => ({ location: loc, count })),
+          chart_entries: chartEntries,
+          chart_count: chartEntries.length,
+          featured_quotes: featuredQuotes,
+          avg_rating: avgRating,
+          total_reviews: (relReviews ?? []).length,
+          approved_reviews: approvedReviews.length,
+          promo_sent: totalPromo,
+          promo_downloaded: downloaded,
+          promo_reviewed: reviewed,
+          download_rate: totalPromo > 0 ? Math.round((downloaded / totalPromo) * 100) : 0,
+          review_rate: totalPromo > 0 ? Math.round((reviewed / totalPromo) * 100) : 0,
+          tracks: tracks ?? [],
+          social_reach: totalReach,
+          social_likes: totalLikes,
+          social_shares: totalShares,
+        })
+      }
+
       return NextResponse.json({
         success: true,
         data: {
           contact: contact.data,
           artist: artist.data,
           releases: releases.data ?? [],
+          releaseStats,
           bookings: allBookings,
           invoices: allInvoices,
           promoAccess: promoAccess.data ?? [],

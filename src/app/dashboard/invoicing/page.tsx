@@ -127,6 +127,38 @@ export default function InvoicingPage() {
     toast(editId ? 'Invoice updated' : 'Invoice created')
   }
 
+  async function sendInvoiceEmail(inv: Invoice) {
+    if (!inv.recipient_email) {
+      toast('No recipient email on this invoice', 'error')
+      return
+    }
+    toast('Sending invoice...', 'info')
+    const res = await fetch('/api/email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'send_invoice',
+        to: inv.recipient_email,
+        recipientName: inv.recipient_name,
+        invoiceNumber: inv.invoice_number,
+        total: inv.total.toFixed(2),
+        currency: inv.currency,
+        dueDate: inv.due_at ? new Date(inv.due_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : 'On receipt',
+      }),
+    })
+    const data = await res.json()
+    if (!res.ok) {
+      toast(data.error || 'Failed to send', 'error')
+      return
+    }
+    // Update status to sent if currently draft
+    if (inv.status === 'draft') {
+      await (supabase as any).from('invoices').update({ status: 'sent', issued_at: new Date().toISOString() }).eq('id', inv.id)
+      load()
+    }
+    toast('Invoice emailed to ' + inv.recipient_email)
+  }
+
   async function deleteInvoice(id: string) {
     if (!confirm('Delete this invoice?')) return
     await (supabase as any).from('invoices').delete().eq('id', id)
@@ -381,6 +413,7 @@ export default function InvoicingPage() {
                     <td style={{ padding: '12px 14px' }}>
                       <div style={{ display: 'flex', gap: '5px' }}>
                         <button onClick={() => generateInvoicePDF(inv)} style={{ padding: '3px 8px', background: '#0a2a1e', border: '0.5px solid #1D9E75', borderRadius: '6px', color: '#4ecca3', fontSize: '11px', cursor: 'pointer' }}>PDF</button>
+                        <button onClick={() => sendInvoiceEmail(inv)} style={{ padding: '3px 8px', background: '#0a1a2a', border: '0.5px solid #1a3a5a', borderRadius: '6px', color: '#7ab8f5', fontSize: '11px', cursor: 'pointer' }}>Email</button>
                         <button onClick={() => editInvoice(inv)} style={{ padding: '3px 8px', background: 'transparent', border: '0.5px solid var(--border-3)', borderRadius: '6px', color: 'var(--text-faint)', fontSize: '11px', cursor: 'pointer' }}>Edit</button>
                         <button onClick={() => deleteInvoice(inv.id)} style={{ padding: '3px 8px', background: 'transparent', border: '0.5px solid var(--red-muted-border)', borderRadius: '6px', color: 'var(--red-muted)', fontSize: '11px', cursor: 'pointer' }}>Delete</button>
                       </div>

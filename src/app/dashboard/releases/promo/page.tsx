@@ -89,6 +89,47 @@ export default function PromoListPage() {
     loadPromoList()
   }
 
+  async function sendPromoEmails() {
+    if (!selectedRelease || promoList.length === 0) return
+    const release = releases.find(r => r.id === selectedRelease)
+    if (!release) return
+
+    const contactsWithEmail = promoList.filter(p => p.contact_email)
+    if (contactsWithEmail.length === 0) {
+      toast('No contacts with email addresses', 'error')
+      return
+    }
+
+    toast(`Sending ${contactsWithEmail.length} promo emails...`, 'info')
+    let sent = 0
+    let failed = 0
+
+    for (const p of contactsWithEmail) {
+      const res = await fetch('/api/email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'send_promo_invite',
+          to: p.contact_email,
+          contactName: p.contact_name || 'there',
+          releaseTitle: release.title,
+          artistName: release.artist_name,
+          catalogueNumber: release.catalogue_number,
+          dropboxUrl: release.dropbox_folder_url || '',
+          genre: release.genre || '',
+        }),
+      })
+      if (res.ok) sent++
+      else failed++
+    }
+
+    if (failed > 0) {
+      toast(`Sent ${sent}, failed ${failed}`, 'error')
+    } else {
+      toast(`Promo emails sent to ${sent} contacts`)
+    }
+  }
+
   const existingContactIds = new Set(promoList.map(p => p.contact_id))
   const availableContacts = contacts.filter(c => {
     if (existingContactIds.has(c.id)) return false
@@ -132,6 +173,15 @@ export default function PromoListPage() {
             <option value="">Select release...</option>
             {releases.map(r => <option key={r.id} value={r.id}>{r.catalogue_number} — {r.title}</option>)}
           </select>
+          {promoList.length > 0 && (
+            <button onClick={sendPromoEmails} style={{
+              padding: '8px 16px', background: '#0a1a2a',
+              border: '0.5px solid #1a3a5a', borderRadius: '8px',
+              color: '#7ab8f5', fontSize: '12px', fontWeight: '500', cursor: 'pointer'
+            }}>
+              Send promo emails
+            </button>
+          )}
           <button onClick={() => setShowAddPanel(!showAddPanel)} style={{
             padding: '8px 16px', background: showAddPanel ? 'var(--border-3)' : '#1D9E75',
             border: 'none', borderRadius: '8px', color: 'var(--text)',

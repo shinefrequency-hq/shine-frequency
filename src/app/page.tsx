@@ -174,7 +174,7 @@ export default function HomePage() {
 
       {/* Stats bar */}
       <section style={{ background: '#1a1a1a', padding: '2.5rem 2rem' }}>
-        <div style={{ maxWidth: '900px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '2rem', textAlign: 'center' }}>
+        <div className="shine-stats-grid" style={{ maxWidth: '900px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '2rem', textAlign: 'center' }}>
           {stats.map(s => (
             <div key={s.label}>
               <div style={{ fontSize: '32px', fontWeight: '800', color: '#F7C948', letterSpacing: '-0.02em' }}>{s.value}</div>
@@ -252,7 +252,7 @@ export default function HomePage() {
             <p style={{ fontSize: '15px', color: '#888', maxWidth: '520px', margin: '0 auto' }}>Every campaign comes with full transparency. You see exactly what's happening with your release.</p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
+          <div className="shine-services-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
             {[
               { title: 'Targeted promo distribution', desc: 'Your music sent to handpicked DJs, press and tastemakers — not a generic blast to thousands of irrelevant contacts.' },
               { title: 'Press & review coverage', desc: 'We chase Resident Advisor, DJ Mag, Mixmag, Inverted Audio and specialist outlets. Every review tracked and reported.' },
@@ -277,7 +277,7 @@ export default function HomePage() {
             <div style={{ fontSize: '12px', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#1D9E75', marginBottom: '0.75rem', fontWeight: '600' }}>Testimonials</div>
             <h2 style={{ fontSize: '32px', fontWeight: '700' }}>What people say</h2>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
+          <div className="shine-testimonials-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
             {testimonials.map(t => (
               <div key={t.name} style={{ background: '#fff', borderRadius: '12px', padding: '1.75rem', border: '1px solid #ddd' }}>
                 <div style={{ fontSize: '32px', color: '#F7C948', lineHeight: 1, marginBottom: '8px' }}>"</div>
@@ -319,7 +319,7 @@ export default function HomePage() {
           <p style={{ fontSize: '15px', color: '#888', maxWidth: '520px', margin: '0 auto 2.5rem', lineHeight: 1.7 }}>
             Your dedicated intelligence portal. See exactly what's happening with your music — who's playing it, where it's landing, and how it's performing.
           </p>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem', marginBottom: '2rem' }}>
+          <div className="shine-frequency-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem', marginBottom: '2rem' }}>
             {[
               { title: 'Release Intelligence', desc: "Who's playing, where it's charting, DJ quotes — all in one view." },
               { title: 'Discovery Scanner', desc: '8 platforms scanned to find every play and mention.' },
@@ -348,7 +348,7 @@ export default function HomePage() {
             <h2 style={{ fontSize: '32px', fontWeight: '700', marginBottom: '0.5rem' }}>Who we work with</h2>
             <p style={{ fontSize: '14px', color: '#888' }}>Underground House, Techno, Balearic and Disco</p>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.25rem' }}>
+          <div className="shine-artists-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.25rem' }}>
             {artists.map(a => (
               <div key={a.name} style={{ background: '#fff', borderRadius: '10px', overflow: 'hidden', border: '1px solid #ddd' }}>
                 <div style={{ height: '200px', background: '#eee', backgroundImage: `url(${a.image})`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
@@ -402,7 +402,7 @@ export default function HomePage() {
             </div>
           ) : (
             <div style={{ background: '#fff', border: '1px solid #ddd', borderRadius: '12px', padding: '2rem' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
+              <div className="shine-form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
                 <div>
                   <label style={{ fontSize: '12px', color: '#888', display: 'block', marginBottom: '5px' }}>Name *</label>
                   <input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="Your name" style={inp()} />
@@ -441,7 +441,7 @@ export default function HomePage() {
       {/* Footer */}
       <footer style={{ padding: '3rem 2rem 2rem', background: '#fff', borderTop: '1px solid #ddd' }}>
         <div style={{ maxWidth: '900px', margin: '0 auto' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '2rem', marginBottom: '2rem' }}>
+          <div className="shine-footer-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '2rem', marginBottom: '2rem' }}>
             <div>
               <img src="/logo.png" alt="Shine" style={{ width: '48px', height: '48px', borderRadius: '50%', marginBottom: '8px' }} />
               <div style={{ fontWeight: '900', fontSize: '16px', letterSpacing: '0.1em', background: 'linear-gradient(135deg, #FF6B35, #F7C948, #FF6B35)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>SHINE</div>
@@ -492,6 +492,29 @@ export default function HomePage() {
       <style>{`
         @media (max-width: 768px) {
           .shine-nav-links { display: none !important; }
+          .shine-stats-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 1rem !important; }
+          .shine-services-grid { grid-template-columns: 1fr !important; }
+          .shine-results-grid { grid-template-columns: 1fr !important; }
+          .shine-testimonials-grid { grid-template-columns: 1fr !important; }
+          .shine-frequency-grid { grid-template-columns: 1fr 1fr !important; }
+          .shine-artists-grid { grid-template-columns: 1fr !important; }
+          .shine-footer-grid { grid-template-columns: 1fr 1fr !important; gap: 1.5rem !important; }
+          .shine-form-grid { grid-template-columns: 1fr !important; }
+          .shine-two-col { grid-template-columns: 1fr !important; }
+          .shine-step-card { padding: 1rem 1.25rem !important; }
+          .shine-step-row { gap: 1rem !important; }
+          .shine-section { padding-left: 1rem !important; padding-right: 1rem !important; }
+          .shine-hero-content h1 br { display: none; }
+          .shine-cta-band h2 { font-size: 22px !important; }
+        }
+        @media (max-width: 480px) {
+          .shine-stats-grid { grid-template-columns: 1fr 1fr !important; }
+          .shine-frequency-grid { grid-template-columns: 1fr !important; }
+          .shine-footer-grid { grid-template-columns: 1fr !important; }
+        }
+        @keyframes bounce {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(6px); }
         }
       `}</style>
     </div>

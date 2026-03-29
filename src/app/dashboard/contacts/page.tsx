@@ -200,7 +200,7 @@ export default function ContactsPage() {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '10px' }}>
         <div>
           <div style={{ fontSize: '18px', fontWeight: '500' }}>Contacts</div>
-          <div style={{ fontSize: '12px', color: 'var(--text-3)', marginTop: '2px' }}>{contacts.length} total · {contacts.filter(c => c.is_on_promo_list).length} on promo list</div>
+          <div style={{ fontSize: '12px', color: 'var(--text-3)', marginTop: '2px' }}>{contacts.length} total · {contacts.filter(c => c.is_on_promo_list).length} on promo · Your DJs, press, venues and industry contacts</div>
         </div>
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
           <input placeholder="Search name, email, city..." value={search} onChange={e => setSearch(e.target.value)} style={{ ...inp({ width: '220px' }) }} />

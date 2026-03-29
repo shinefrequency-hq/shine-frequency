@@ -106,7 +106,7 @@ export default function ReviewsPage() {
         <div>
           <div style={{ fontSize: '18px', fontWeight: '500' }}>Reviews</div>
           <div style={{ fontSize: '12px', color: 'var(--text-3)', marginTop: '2px' }}>
-            {reviews.length} total · {pendingCount} pending approval
+            {reviews.length} total · {pendingCount} pending approval · Approve, reject and feature DJ reviews for your releases
           </div>
         </div>
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>

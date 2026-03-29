@@ -132,7 +132,7 @@ export default function MessagesPage() {
         <div>
           <div style={{ fontSize: '18px', fontWeight: '500' }}>Messages</div>
           <div style={{ fontSize: '12px', color: 'var(--text-3)', marginTop: '2px' }}>
-            {threads.length} threads · {totalUnread} unread
+            {threads.length} threads · {totalUnread} unread · Message history with contacts · Inbound and outbound
           </div>
         </div>
         <button onClick={() => setShowNewThread(!showNewThread)} style={{

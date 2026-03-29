@@ -138,7 +138,7 @@ export default function SettingsPage() {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
         <div>
           <div style={{ fontSize: '18px', fontWeight: '500' }}>Settings</div>
-          <div style={{ fontSize: '12px', color: 'var(--text-3)', marginTop: '2px' }}>Platform configuration</div>
+          <div style={{ fontSize: '12px', color: 'var(--text-3)', marginTop: '2px' }}>Platform settings and integrations</div>
         </div>
         <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
           {saved && <span style={{ fontSize: '12px', color: '#4ecca3' }}>Saved!</span>}

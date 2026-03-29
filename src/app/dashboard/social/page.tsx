@@ -146,7 +146,7 @@ export default function SocialPage() {
         <div>
           <div style={{ fontSize: '18px', fontWeight: '500' }}>Social scheduler</div>
           <div style={{ fontSize: '12px', color: 'var(--text-3)', marginTop: '2px' }}>
-            {posts.length} posts · {posts.filter(p => p.status === 'scheduled').length} scheduled
+            {posts.length} posts · {posts.filter(p => p.status === 'scheduled').length} scheduled · Schedule and track social media posts for your releases
           </div>
         </div>
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>

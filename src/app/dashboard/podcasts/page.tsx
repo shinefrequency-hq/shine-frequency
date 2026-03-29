@@ -133,7 +133,7 @@ export default function PodcastsPage() {
         <div>
           <div style={{ fontSize: '18px', fontWeight: '500' }}>Podcasts</div>
           <div style={{ fontSize: '12px', color: 'var(--text-3)', marginTop: '2px' }}>
-            {shows.length} shows · {episodes.length} episodes · {totalPlays.toLocaleString()} total plays
+            {shows.length} shows · {episodes.length} episodes · {totalPlays.toLocaleString()} total plays · Manage podcast shows and episodes
           </div>
         </div>
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>

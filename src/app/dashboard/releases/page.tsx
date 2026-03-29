@@ -169,7 +169,7 @@ export default function ReleasesPage() {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
         <div>
           <div style={{ fontSize: '18px', fontWeight: '500' }}>Release manager</div>
-          <div style={{ fontSize: '12px', color: 'var(--text-3)', marginTop: '2px' }}>{releases.length} total releases</div>
+          <div style={{ fontSize: '12px', color: 'var(--text-3)', marginTop: '2px' }}>{releases.length} releases · Add, edit and track all your catalogue releases</div>
         </div>
         <div style={{ display: 'flex', gap: '8px' }}>
           <input
@@ -178,12 +178,19 @@ export default function ReleasesPage() {
             onChange={e => setSearch(e.target.value)}
             style={{ ...inp({ width: '200px' }) }}
           />
+          <a href="/dashboard/releases/new" style={{
+            padding: '8px 16px', background: '#0a1a2a',
+            border: '0.5px solid #1a3a5a', borderRadius: '8px', color: '#7ab8f5',
+            fontSize: '12px', fontWeight: '500', cursor: 'pointer', textDecoration: 'none'
+          }}>
+            Wizard
+          </a>
           <button onClick={() => { setForm(EMPTY); setEditId(null); setShowForm(!showForm) }} style={{
             padding: '8px 16px', background: showForm ? 'var(--border-3)' : '#1D9E75',
             border: 'none', borderRadius: '8px', color: 'var(--text)',
             fontSize: '12px', fontWeight: '500', cursor: 'pointer'
           }}>
-            {showForm ? 'Cancel' : '+ New release'}
+            {showForm ? 'Cancel' : '+ Quick add'}
           </button>
         </div>
       </div>

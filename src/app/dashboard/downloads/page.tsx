@@ -86,7 +86,7 @@ export default function DownloadsPage() {
         <div>
           <div style={{ fontSize: '18px', fontWeight: '500' }}>Downloads</div>
           <div style={{ fontSize: '12px', color: 'var(--text-3)', marginTop: '2px' }}>
-            {timeFiltered.length} downloads{timeRange !== 'all' ? ` (${timeRange})` : ''}
+            {timeFiltered.length} downloads{timeRange !== 'all' ? ` (${timeRange})` : ''} · Track who downloaded what and when
           </div>
         </div>
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>

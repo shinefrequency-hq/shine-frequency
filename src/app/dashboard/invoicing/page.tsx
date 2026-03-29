@@ -209,7 +209,7 @@ export default function InvoicingPage() {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '10px' }}>
         <div>
           <div style={{ fontSize: '18px', fontWeight: '500' }}>Invoicing</div>
-          <div style={{ fontSize: '12px', color: 'var(--text-3)', marginTop: '2px' }}>{invoices.length} total · {overdueInvoices.length} overdue</div>
+          <div style={{ fontSize: '12px', color: 'var(--text-3)', marginTop: '2px' }}>{invoices.length} total · {overdueInvoices.length} overdue · Create, send and track invoices</div>
         </div>
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
           <input placeholder="Search invoices..." value={search} onChange={e => setSearch(e.target.value)} style={{ ...inp({ width: '200px' }) }} />

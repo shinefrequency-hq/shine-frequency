@@ -110,7 +110,7 @@ export default function HeatPage() {
         <div>
           <div style={{ fontSize: '18px', fontWeight: '500' }}>Heat tracker</div>
           <div style={{ fontSize: '12px', color: 'var(--text-3)', marginTop: '2px' }}>
-            {activeReleases.length} active releases · {releases.filter(r => r.heat_status === 'hot' || r.heat_status === 'critical').length} hot
+            {activeReleases.length} active releases · {releases.filter(r => r.heat_status === 'hot' || r.heat_status === 'critical').length} hot · Track promo momentum · See which releases are getting attention
           </div>
         </div>
         <div style={{ display: 'flex', gap: '8px' }}>

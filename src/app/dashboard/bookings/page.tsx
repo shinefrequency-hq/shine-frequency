@@ -167,7 +167,7 @@ export default function BookingsPage() {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '10px' }}>
         <div>
           <div style={{ fontSize: '18px', fontWeight: '500' }}>Bookings</div>
-          <div style={{ fontSize: '12px', color: 'var(--text-3)', marginTop: '2px' }}>{bookings.length} total · {bookings.filter(b => b.status === 'confirmed').length} confirmed</div>
+          <div style={{ fontSize: '12px', color: 'var(--text-3)', marginTop: '2px' }}>{bookings.length} total · {bookings.filter(b => b.status === 'confirmed').length} confirmed · Manage DJ bookings, contracts, travel and fees</div>
         </div>
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
           <input placeholder="Search bookings..." value={search} onChange={e => setSearch(e.target.value)} style={{ ...inp({ width: '200px' }) }} />

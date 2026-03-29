@@ -140,7 +140,7 @@ export default function CampaignsPage() {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '10px' }}>
         <div>
           <div style={{ fontSize: '18px', fontWeight: '500' }}>Campaigns</div>
-          <div style={{ fontSize: '12px', color: 'var(--text-3)', marginTop: '2px' }}>{campaigns.length} total · {campaigns.filter(c => c.status === 'sent').length} sent</div>
+          <div style={{ fontSize: '12px', color: 'var(--text-3)', marginTop: '2px' }}>{campaigns.length} total · {campaigns.filter(c => c.status === 'sent').length} sent · Schedule and track promo campaigns across platforms</div>
         </div>
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
           <input placeholder="Search campaigns..." value={search} onChange={e => setSearch(e.target.value)} style={{ ...inp({ width: '200px' }) }} />

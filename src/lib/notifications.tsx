@@ -117,7 +117,7 @@ export function NotificationBell() {
     }
 
     fetchNotifications()
-    const interval = setInterval(fetchNotifications, 60000)
+    const interval = setInterval(fetchNotifications, 5000)
     return () => clearInterval(interval)
   }, [])
 

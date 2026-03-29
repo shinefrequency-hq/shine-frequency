@@ -53,6 +53,17 @@ export default function ContactsPage() {
   const [selected, setSelected] = useState<Contact | null>(null)
   const [sortKey, setSortKey] = useState<string>('full_name')
   const [sortAsc, setSortAsc] = useState(true)
+  const [allTags, setAllTags] = useState<Record<string, string[]>>({}) // contact_id -> tag[]
+
+  async function loadTags() {
+    const { data } = await (supabase as any).from('contact_tags').select('contact_id, tag')
+    const map: Record<string, string[]> = {}
+    ;(data ?? []).forEach((t: any) => {
+      if (!map[t.contact_id]) map[t.contact_id] = []
+      map[t.contact_id].push(t.tag)
+    })
+    setAllTags(map)
+  }
 
   function toggleSort(key: string) {
     if (sortKey === key) setSortAsc(!sortAsc)
@@ -69,7 +80,19 @@ export default function ContactsPage() {
     setLoading(false)
   }
 
-  useEffect(() => { load() }, [])
+  async function addTag(contactId: string, tag: string) {
+    await (supabase as any).from('contact_tags').insert([{ contact_id: contactId, tag }])
+    loadTags()
+    toast(`Tagged: ${tag}`)
+  }
+
+  async function removeTag(contactId: string, tag: string) {
+    await (supabase as any).from('contact_tags').delete().eq('contact_id', contactId).eq('tag', tag)
+    loadTags()
+    toast('Tag removed')
+  }
+
+  useEffect(() => { load(); loadTags() }, [])
 
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
@@ -404,6 +427,9 @@ export default function ContactsPage() {
                           {c.is_high_value && <span style={{ padding: '1px 6px', borderRadius: '10px', fontSize: '9px', fontWeight: '500', background: '#0a2a1e', color: '#1D9E75' }}>High value</span>}
                           {c.is_trusted && <span style={{ padding: '1px 6px', borderRadius: '10px', fontSize: '9px', fontWeight: '500', background: '#1a1a2a', color: '#b8b4f0' }}>Trusted</span>}
                           {c.is_sf_artist && <span style={{ padding: '1px 6px', borderRadius: '10px', fontSize: '9px', fontWeight: '500', background: '#2a0a1a', color: '#f48fb1' }}>SF artist</span>}
+                          {(allTags[c.id] || []).map(tag => (
+                            <span key={tag} onClick={(e) => { e.stopPropagation(); removeTag(c.id, tag) }} style={{ padding: '1px 6px', borderRadius: '10px', fontSize: '9px', fontWeight: '500', background: '#1a1a2a', color: '#7ab8f5', cursor: 'pointer' }} title="Click to remove">{tag}</span>
+                          ))}
                         </div>
                       </td>
                       <td style={{ padding: '10px 14px', fontSize: '12px', color: 'var(--text-muted)' }}>{c.total_downloads}</td>
@@ -461,6 +487,23 @@ export default function ContactsPage() {
               {selected.instagram_handle && <div style={{ display: 'flex', gap: '8px' }}><span style={{ color: 'var(--text-3)', width: '80px' }}>Instagram</span><span style={{ color: '#f48fb1' }}>{selected.instagram_handle}</span></div>}
               {selected.soundcloud_url && <div style={{ display: 'flex', gap: '8px' }}><span style={{ color: 'var(--text-3)', width: '80px' }}>SoundCloud</span><a href={selected.soundcloud_url} target="_blank" rel="noreferrer" style={{ color: '#ff7043' }}>Link</a></div>}
               {selected.notes && <div style={{ marginTop: '4px', padding: '8px', background: 'var(--bg-4)', borderRadius: '6px', color: 'var(--text-faint)', fontSize: '11px', lineHeight: '1.5' }}>{selected.notes}</div>}
+            </div>
+
+            <div style={{ marginBottom: '1rem' }}>
+              <div style={{ fontSize: '11px', color: 'var(--text-3)', marginBottom: '6px' }}>Tags</div>
+              <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap', marginBottom: '8px' }}>
+                {(allTags[selected.id] || []).map(tag => (
+                  <span key={tag} style={{ padding: '2px 8px', borderRadius: '10px', fontSize: '10px', background: '#1a1a2a', color: '#7ab8f5', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    {tag}
+                    <button onClick={() => removeTag(selected.id, tag)} style={{ background: 'none', border: 'none', color: '#7ab8f5', cursor: 'pointer', fontSize: '12px', padding: 0 }}>×</button>
+                  </span>
+                ))}
+              </div>
+              <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+                {['Tier 1 DJ', 'Key Press', 'Berlin', 'London', 'Resident', 'Festival', 'Radio'].filter(t => !(allTags[selected.id] || []).includes(t)).map(tag => (
+                  <button key={tag} onClick={() => addTag(selected.id, tag)} style={{ padding: '2px 8px', borderRadius: '10px', fontSize: '9px', background: 'transparent', border: '0.5px solid var(--border-3)', color: 'var(--text-3)', cursor: 'pointer' }}>+ {tag}</button>
+                ))}
+              </div>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>

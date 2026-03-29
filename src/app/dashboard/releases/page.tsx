@@ -54,6 +54,7 @@ export default function ReleasesPage() {
   const [filterFormat, setFilterFormat] = useState<string>('all')
   const [sortKey, setSortKey] = useState<string>('created_at')
   const [sortAsc, setSortAsc] = useState(false)
+  const [selected, setSelected] = useState<Release | null>(null)
 
   function toggleSort(key: string) {
     if (sortKey === key) setSortAsc(!sortAsc)
@@ -74,13 +75,14 @@ export default function ReleasesPage() {
 
   useEffect(() => {
     function handleKey(e: KeyboardEvent) {
-      if (e.key === 'Escape' && showForm) {
-        setShowForm(false); setForm(EMPTY); setEditId(null)
+      if (e.key === 'Escape') {
+        if (showForm) { setShowForm(false); setForm(EMPTY); setEditId(null) }
+        else if (selected) { setSelected(null) }
       }
     }
     window.addEventListener('keydown', handleKey)
     return () => window.removeEventListener('keydown', handleKey)
-  }, [showForm])
+  }, [showForm, selected])
 
   async function save() {
     setSaving(true)
@@ -170,7 +172,7 @@ export default function ReleasesPage() {
   const lbl = { fontSize: '11px', color: 'var(--text-muted)', display: 'block', marginBottom: '4px' } as React.CSSProperties
 
   return (
-    <div style={{ padding: '1.5rem', maxWidth: '1100px' }}>
+    <div style={{ padding: '1.5rem', maxWidth: selected ? '1500px' : '1100px', transition: 'max-width 0.2s' }}>
 
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '10px' }}>
@@ -356,7 +358,8 @@ export default function ReleasesPage() {
         </div>
       )}
 
-      {/* Table */}
+      {/* Table + Detail panel grid */}
+      <div style={{ display: 'grid', gridTemplateColumns: selected ? '1fr 380px' : '1fr', gap: '1rem' }}>
       <div style={{ background: 'var(--bg-2)', border: '0.5px solid var(--border)', borderRadius: '12px', overflow: 'hidden' }}>
         {loading ? (
           <div style={{ padding: '3rem', textAlign: 'center', color: 'var(--text-3)', fontSize: '12px' }}>Loading releases...</div>
@@ -393,9 +396,9 @@ export default function ReleasesPage() {
                 const windowEnd = r.promo_window_end ? new Date(r.promo_window_end) : null
                 const daysLeft = windowEnd ? Math.ceil((windowEnd.getTime() - Date.now()) / 86400000) : null
                 return (
-                  <tr key={r.id} style={{ borderBottom: i < filtered.length - 1 ? '0.5px solid var(--row-border)' : 'none', transition: 'background 0.1s' }}
-                    onMouseEnter={e => (e.currentTarget.style.background = 'var(--row-hover)')}
-                    onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
+                  <tr key={r.id} onClick={() => setSelected(selected?.id === r.id ? null : r)} style={{ borderBottom: i < filtered.length - 1 ? '0.5px solid var(--row-border)' : 'none', transition: 'background 0.1s', cursor: 'pointer', background: selected?.id === r.id ? 'var(--row-selected)' : 'transparent' }}
+                    onMouseEnter={e => { if (selected?.id !== r.id) e.currentTarget.style.background = 'var(--row-hover)' }}
+                    onMouseLeave={e => { if (selected?.id !== r.id) e.currentTarget.style.background = 'transparent' }}
                   >
                     <td style={{ padding: '12px 14px', fontFamily: 'monospace', fontSize: '11px', color: 'var(--text-3)' }}>{r.catalogue_number}</td>
                     <td style={{ padding: '12px 14px' }}>
@@ -439,7 +442,7 @@ export default function ReleasesPage() {
                       </span>
                     </td>
                     <td style={{ padding: '12px 14px' }}>
-                      <div style={{ display: 'flex', gap: '6px' }}>
+                      <div onClick={e => e.stopPropagation()} style={{ display: 'flex', gap: '6px' }}>
                         <button onClick={() => editRelease(r)} style={{ padding: '4px 10px', background: 'transparent', border: '0.5px solid var(--border-3)', borderRadius: '6px', color: 'var(--text-faint)', fontSize: '11px', cursor: 'pointer' }}>Edit</button>
                         {!r.dropbox_folder_url && (
                           <button onClick={() => createDropboxFolder(r)} style={{ padding: '4px 10px', background: '#0a1a2a', border: '0.5px solid #1a3a5a', borderRadius: '6px', color: '#7ab8f5', fontSize: '11px', cursor: 'pointer' }}>+ Dropbox</button>
@@ -459,6 +462,100 @@ export default function ReleasesPage() {
             </tbody>
           </table>
         )}
+      </div>
+
+      {/* Detail panel */}
+      {selected && (
+        <div style={{ background: 'var(--bg-2)', border: '0.5px solid var(--border)', borderRadius: '12px', padding: '1.25rem', alignSelf: 'start', position: 'sticky', top: '1.5rem' }}>
+          {/* Close button */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
+            <div>
+              {selected.artwork_url && <img src={selected.artwork_url} alt="" style={{ width: '80px', height: '80px', borderRadius: '8px', marginBottom: '10px' }} />}
+              <div style={{ fontFamily: 'monospace', fontSize: '11px', color: '#1D9E75' }}>{selected.catalogue_number}</div>
+              <div style={{ fontWeight: '500', fontSize: '16px', marginTop: '2px' }}>{selected.artist_name}</div>
+              <div style={{ fontSize: '13px', color: 'var(--text-3)', marginTop: '2px' }}>{selected.title}</div>
+            </div>
+            <button onClick={() => setSelected(null)} style={{ background: 'transparent', border: 'none', color: 'var(--text-3)', fontSize: '16px', cursor: 'pointer' }}>×</button>
+          </div>
+
+          {/* Status + Heat badges */}
+          <div style={{ display: 'flex', gap: '6px', marginBottom: '1rem' }}>
+            <span style={{ padding: '3px 8px', borderRadius: '20px', fontSize: '10px', fontWeight: '500', background: STATUS_COLORS[selected.status].bg, color: STATUS_COLORS[selected.status].color }}>{selected.status.replace('_', ' ')}</span>
+            <span style={{ padding: '3px 8px', borderRadius: '20px', fontSize: '10px', fontWeight: '500', background: HEAT_COLORS[selected.heat_status].bg, color: HEAT_COLORS[selected.heat_status].color }}>{selected.heat_status}</span>
+          </div>
+
+          {/* Details grid */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', marginBottom: '1rem' }}>
+            {selected.format && <div style={{ display: 'flex', gap: '8px' }}><span style={{ color: 'var(--text-3)', width: '100px' }}>Format</span><span>{selected.format} · {selected.total_tracks} tracks</span></div>}
+            {selected.genre && <div style={{ display: 'flex', gap: '8px' }}><span style={{ color: 'var(--text-3)', width: '100px' }}>Genre</span><span>{selected.genre}</span></div>}
+            {selected.bpm_range && <div style={{ display: 'flex', gap: '8px' }}><span style={{ color: 'var(--text-3)', width: '100px' }}>BPM</span><span>{selected.bpm_range}</span></div>}
+            {selected.release_date && <div style={{ display: 'flex', gap: '8px' }}><span style={{ color: 'var(--text-3)', width: '100px' }}>Release date</span><span>{new Date(selected.release_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}</span></div>}
+            {selected.total_size_mb > 0 && <div style={{ display: 'flex', gap: '8px' }}><span style={{ color: 'var(--text-3)', width: '100px' }}>Size</span><span>{selected.total_size_mb} MB</span></div>}
+          </div>
+
+          {/* Promo window */}
+          {selected.promo_window_start && selected.promo_window_end && (
+            <div style={{ background: 'var(--bg-4)', borderRadius: '8px', padding: '10px', marginBottom: '1rem', fontSize: '12px' }}>
+              <div style={{ color: 'var(--text-3)', fontSize: '10px', marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Promo window</div>
+              <div>{new Date(selected.promo_window_start).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })} — {new Date(selected.promo_window_end).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</div>
+            </div>
+          )}
+
+          {/* Description */}
+          {selected.description && (
+            <div style={{ fontSize: '12px', color: 'var(--text-faint)', lineHeight: 1.6, marginBottom: '1rem', padding: '10px', background: 'var(--bg-4)', borderRadius: '8px' }}>
+              {selected.description}
+            </div>
+          )}
+
+          {/* Internal notes */}
+          {selected.internal_notes && (
+            <div style={{ fontSize: '11px', color: 'var(--text-3)', lineHeight: 1.6, marginBottom: '1rem', padding: '10px', background: 'var(--bg-4)', borderRadius: '8px', borderLeft: '2px solid #f5c842' }}>
+              <div style={{ fontSize: '10px', color: '#f5c842', marginBottom: '4px', textTransform: 'uppercase' }}>Internal notes</div>
+              {selected.internal_notes}
+            </div>
+          )}
+
+          {/* Social share */}
+          <div style={{ marginBottom: '1rem' }}>
+            <div style={{ fontSize: '10px', color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '6px' }}>Quick share</div>
+            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+              <button onClick={() => {
+                const text = `${selected.catalogue_number} — ${selected.artist_name} "${selected.title}" out now on Shine Frequency. ${selected.genre || 'Techno'}.`
+                window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank')
+              }} style={{ padding: '5px 12px', background: '#0a1a2a', border: '0.5px solid #1a3a5a', borderRadius: '6px', color: '#7ab8f5', fontSize: '11px', cursor: 'pointer' }}>
+                Post to X
+              </button>
+              <button onClick={() => {
+                const text = `${selected.catalogue_number} — ${selected.artist_name} "${selected.title}"\n\n${selected.description || ''}\n\n#techno #${selected.artist_name.replace(/\s+/g, '').toLowerCase()} #shinefrequency${selected.genre ? ' #' + selected.genre.split(',')[0].trim().replace(/\s+/g, '').toLowerCase() : ''}`
+                navigator.clipboard.writeText(text)
+                toast('Caption copied — paste into Instagram')
+              }} style={{ padding: '5px 12px', background: '#2a0a1a', border: '0.5px solid #5a1a3a', borderRadius: '6px', color: '#f48fb1', fontSize: '11px', cursor: 'pointer' }}>
+                Copy for IG
+              </button>
+              <button onClick={() => {
+                const text = `${selected.catalogue_number} — ${selected.artist_name} "${selected.title}" | ${selected.genre || 'Techno'} | ${selected.format} | Shine Frequency`
+                navigator.clipboard.writeText(text)
+                toast('Post text copied to clipboard')
+              }} style={{ padding: '5px 12px', background: 'transparent', border: '0.5px solid var(--border-3)', borderRadius: '6px', color: 'var(--text-3)', fontSize: '11px', cursor: 'pointer' }}>
+                Copy text
+              </button>
+              <a href={`/review?release=${selected.catalogue_number}`} target="_blank" style={{ padding: '5px 12px', background: '#0a2a1e', border: '0.5px solid #1D9E75', borderRadius: '6px', color: '#4ecca3', fontSize: '11px', cursor: 'pointer', textDecoration: 'none' }}>
+                DJ feedback link
+              </a>
+            </div>
+          </div>
+
+          {/* Action buttons */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <button onClick={() => editRelease(selected)} style={{ padding: '8px', background: '#1D9E75', border: 'none', borderRadius: '8px', color: '#fff', fontSize: '12px', fontWeight: '500', cursor: 'pointer' }}>Edit release</button>
+            <a href={`/dashboard/releases/promo?release=${selected.id}`} style={{ padding: '8px', background: 'transparent', border: '0.5px solid var(--border-3)', borderRadius: '8px', color: 'var(--text-faint)', fontSize: '12px', cursor: 'pointer', textAlign: 'center', textDecoration: 'none' }}>Manage promo list</a>
+            {selected.dropbox_folder_url && (
+              <a href={selected.dropbox_folder_url} target="_blank" rel="noreferrer" style={{ padding: '8px', background: 'transparent', border: '0.5px solid var(--border-3)', borderRadius: '8px', color: '#7ab8f5', fontSize: '12px', textAlign: 'center', textDecoration: 'none' }}>Open Dropbox folder</a>
+            )}
+          </div>
+        </div>
+      )}
       </div>
     </div>
   )

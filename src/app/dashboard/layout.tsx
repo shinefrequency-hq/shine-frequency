@@ -41,6 +41,7 @@ const NAV = [
     items: [
       { label: 'Bookings', href: '/dashboard/bookings' },
       { label: 'Calendar', href: '/dashboard/calendar' },
+      { label: 'Contracts', href: '/dashboard/contracts' },
       { label: 'Invoicing', href: '/dashboard/invoicing' },
       { label: 'Podcasts', href: '/dashboard/podcasts' },
     ]
@@ -161,18 +162,21 @@ export default async function DashboardLayout({
         {/* Nav */}
         <nav style={{ flex: 1, overflowY: 'auto', padding: '4px 0' }}>
           {NAV.map(group => (
-            <div key={group.section}>
-              <div style={{
+            <details key={group.section} open>
+              <summary style={{
                 fontSize: '9px', fontWeight: '500', letterSpacing: '0.1em',
                 textTransform: 'uppercase', color: 'var(--text-3)',
-                padding: '8px 1rem 3px'
+                padding: '8px 1rem 3px', cursor: 'pointer',
+                listStyle: 'none', display: 'flex', alignItems: 'center', gap: '4px',
+                userSelect: 'none',
               }}>
+                <span style={{ fontSize: '8px', transition: 'transform 0.2s' }}>&#9658;</span>
                 {group.section}
-              </div>
+              </summary>
               {group.items.map(item => (
                 <NavLink key={item.href} href={item.href} label={item.label} />
               ))}
-            </div>
+            </details>
           ))}
         </nav>
 
@@ -207,6 +211,16 @@ export default async function DashboardLayout({
           background: var(--bg-3);
           color: var(--text);
           border-left-color: var(--border-2) !important;
+        }
+        details[open] > summary span:first-child {
+          transform: rotate(90deg);
+        }
+        details > summary::-webkit-details-marker {
+          display: none;
+        }
+        details > summary::marker {
+          display: none;
+          content: '';
         }
       `}</style>
     </div>

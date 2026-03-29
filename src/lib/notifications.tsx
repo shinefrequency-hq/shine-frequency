@@ -62,7 +62,7 @@ export function NotificationBell() {
       // Pending reviews
       const { data: reviews } = await (supabase as any)
         .from('reviews')
-        .select('id, outlet, created_at')
+        .select('id, rating, created_at, contacts(full_name)')
         .eq('status', 'pending')
         .order('created_at', { ascending: false })
         .limit(10)
@@ -72,7 +72,7 @@ export function NotificationBell() {
           items.push({
             id: `review-${r.id}`,
             type: 'review',
-            text: `Review pending: ${r.outlet}`,
+            text: `Review pending: ${r.contacts?.full_name ?? 'Unknown'} (${r.rating}★)`,
             time: r.created_at,
             href: '/dashboard/reviews',
           })

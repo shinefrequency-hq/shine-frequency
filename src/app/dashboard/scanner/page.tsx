@@ -116,7 +116,7 @@ export default function ScannerPage() {
       if (!res.ok) throw new Error('Scan failed')
 
       const data = await res.json()
-      setResults(data)
+      setResults(data.results ?? data)
       toast('Scan complete', 'success')
     } catch (e: any) {
       toast(e.message || 'Scan failed', 'error')
@@ -364,7 +364,7 @@ export default function ScannerPage() {
           {/* YouTube section */}
           <Section title="Found on YouTube" accent="#7ab8f5" empty={ytCount === 0} platform="YouTube">
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
-              {results.youtube.map((yt, i) => (
+              {(results.youtube || []).map((yt, i) => (
                 <div key={i} style={{
                   display: 'flex',
                   gap: '12px',
@@ -431,7 +431,7 @@ export default function ScannerPage() {
           {/* Mixcloud section */}
           <Section title="Found on Mixcloud" accent="#b8b4f0" empty={mcCount === 0} platform="Mixcloud">
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
-              {results.mixcloud.map((mc, i) => (
+              {(results.mixcloud || []).map((mc, i) => (
                 <div key={i} style={{
                   background: 'var(--bg-2)',
                   border: '0.5px solid var(--border)',
@@ -483,7 +483,7 @@ export default function ScannerPage() {
           {/* Discogs section */}
           <Section title="Found on Discogs" accent="#4ecca3" empty={dcCount === 0} platform="Discogs">
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              {results.discogs.map((dc, i) => (
+              {(results.discogs || []).map((dc, i) => (
                 <div key={i} style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -547,7 +547,7 @@ export default function ScannerPage() {
           {/* 1001Tracklists section */}
           <Section title="Found in DJ Sets" accent="#ff7043" empty={tlCount === 0} platform="1001Tracklists">
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-              {results.tracklists.map((tl, i) => (
+              {(results.tracklists || []).map((tl, i) => (
                 <div key={i} style={{
                   display: 'flex',
                   alignItems: 'center',

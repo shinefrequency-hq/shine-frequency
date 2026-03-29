@@ -10,11 +10,23 @@ function getServiceClient() {
 async function getAccessToken(supabase: any, userId: string) {
   // Use service role to bypass RLS for reading tokens
   const service = getServiceClient()
-  const { data: staff } = await service
+  // Try by auth_user_id first, fallback to first staff with a token
+  let { data: staff } = await service
     .from('staff')
     .select('id, dropbox_access_token, dropbox_refresh_token')
     .eq('auth_user_id', userId)
     .single()
+
+  // Fallback: get any staff with dropbox tokens (single-user setup)
+  if (!staff?.dropbox_access_token) {
+    const { data: anyStaff } = await service
+      .from('staff')
+      .select('id, dropbox_access_token, dropbox_refresh_token')
+      .not('dropbox_access_token', 'is', null)
+      .limit(1)
+      .single()
+    if (anyStaff?.dropbox_access_token) staff = anyStaff
+  }
 
   if (!staff?.dropbox_access_token) {
     return { token: null, staffId: staff?.id }

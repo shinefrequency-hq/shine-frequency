@@ -141,9 +141,26 @@ export default function OnboardPage() {
 
   return (
     <div style={{
-      minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center',
-      background: '#0a0a0a', fontFamily: 'system-ui, sans-serif', padding: '2rem 1rem',
+      minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+      background: '#0a0a0a', fontFamily: 'system-ui, sans-serif', padding: '0',
     }}>
+      {/* Nav */}
+      <div style={{
+        padding: '12px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        borderBottom: '0.5px solid #1a1a1a', background: 'rgba(10,10,10,0.95)',
+        position: 'sticky', top: 0, zIndex: 50, width: '100%',
+      }}>
+        <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', color: '#fff' }}>
+          <img src="/logo.png" alt="Shine" style={{ width: '24px', height: '24px', borderRadius: '50%' }} />
+          <span style={{ fontSize: '13px', fontWeight: '500' }}>Shine Frequency</span>
+        </a>
+        <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+          <a href="/" style={{ fontSize: '12px', color: '#888', textDecoration: 'none' }}>Home</a>
+          <a href="/portal" style={{ fontSize: '12px', color: '#888', textDecoration: 'none' }}>Artist Login</a>
+          <a href="/join" style={{ fontSize: '12px', color: '#1D9E75', textDecoration: 'none' }}>DJ Sign Up</a>
+        </div>
+      </div>
+      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem 1rem', width: '100%' }}>
       <div style={{
         width: '100%', maxWidth: '480px', padding: '2.5rem',
         background: '#111', border: '0.5px solid #222', borderRadius: '16px',
@@ -315,6 +332,7 @@ export default function OnboardPage() {
         <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '11px', color: '#444' }}>
           Shine Frequency — London, UK
         </div>
+      </div>
       </div>
     </div>
   )

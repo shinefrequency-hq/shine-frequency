@@ -175,7 +175,23 @@ function DownloadPage() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0a0a0a', fontFamily: 'system-ui, sans-serif', padding: '2rem 1rem' }}>
+    <div style={{ minHeight: '100vh', background: '#0a0a0a', fontFamily: 'system-ui, sans-serif', padding: '0' }}>
+      {/* Nav */}
+      <div style={{
+        padding: '12px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        borderBottom: '0.5px solid #1a1a1a', background: 'rgba(10,10,10,0.95)',
+        position: 'sticky', top: 0, zIndex: 50,
+      }}>
+        <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', color: '#fff' }}>
+          <img src="/logo.png" alt="Shine" style={{ width: '24px', height: '24px', borderRadius: '50%' }} />
+          <span style={{ fontSize: '13px', fontWeight: '500' }}>Shine Frequency</span>
+        </a>
+        <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+          <a href="/" style={{ fontSize: '12px', color: '#888', textDecoration: 'none' }}>Home</a>
+          <a href="/review" style={{ fontSize: '12px', color: '#1D9E75', textDecoration: 'none' }}>Leave Feedback</a>
+        </div>
+      </div>
+      <div style={{ padding: '2rem 1rem' }}>
       <div style={{ width: '100%', maxWidth: '560px', margin: '0 auto' }}>
 
         {/* Header */}
@@ -319,6 +335,7 @@ function DownloadPage() {
         <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '11px', color: '#333' }}>
           Shine Frequency — London, UK
         </div>
+      </div>
       </div>
     </div>
   )

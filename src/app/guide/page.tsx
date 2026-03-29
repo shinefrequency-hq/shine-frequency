@@ -335,6 +335,22 @@ Results are grouped by type. Click a result to jump to that section.`
       minHeight: '100vh', background: '#fff', fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
       color: '#1a1a1a', lineHeight: 1.7,
     }}>
+      {/* Nav */}
+      <div style={{
+        padding: '12px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        borderBottom: '1px solid #eee', background: 'rgba(255,255,255,0.95)',
+        position: 'sticky', top: 0, zIndex: 50,
+      }}>
+        <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', color: '#1a1a1a' }}>
+          <img src="/logo.png" alt="Shine" style={{ width: '24px', height: '24px', borderRadius: '50%' }} />
+          <span style={{ fontSize: '13px', fontWeight: '500' }}>Shine Frequency</span>
+        </a>
+        <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+          <a href="/" style={{ fontSize: '12px', color: '#888', textDecoration: 'none' }}>Home</a>
+          <a href="/portal" style={{ fontSize: '12px', color: '#888', textDecoration: 'none' }}>Login</a>
+          <a href="/onboard" style={{ fontSize: '12px', color: '#1D9E75', textDecoration: 'none' }}>Join</a>
+        </div>
+      </div>
       {/* Header */}
       <div style={{
         background: '#0a0a0a', padding: '3rem 2rem', textAlign: 'center',

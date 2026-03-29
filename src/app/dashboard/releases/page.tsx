@@ -47,6 +47,13 @@ export default function ReleasesPage() {
   const [error, setError] = useState('')
   const [editId, setEditId] = useState<string | null>(null)
   const [search, setSearch] = useState('')
+  const [sortKey, setSortKey] = useState<string>('created_at')
+  const [sortAsc, setSortAsc] = useState(false)
+
+  function toggleSort(key: string) {
+    if (sortKey === key) setSortAsc(!sortAsc)
+    else { setSortKey(key); setSortAsc(true) }
+  }
 
   async function load() {
     setLoading(true)
@@ -99,7 +106,12 @@ export default function ReleasesPage() {
     r.title.toLowerCase().includes(search.toLowerCase()) ||
     r.artist_name.toLowerCase().includes(search.toLowerCase()) ||
     r.catalogue_number.toLowerCase().includes(search.toLowerCase())
-  )
+  ).sort((a, b) => {
+    const av = (a as any)[sortKey] ?? ''
+    const bv = (b as any)[sortKey] ?? ''
+    const cmp = typeof av === 'number' ? av - bv : String(av).localeCompare(String(bv))
+    return sortAsc ? cmp : -cmp
+  })
 
   const inp = (style = {}) => ({
     width: '100%', padding: '8px 12px',
@@ -274,8 +286,20 @@ export default function ReleasesPage() {
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr style={{ borderBottom: '0.5px solid var(--border)' }}>
-                {['Cat #', 'Release', 'Format', 'Tracks', 'Size', 'Promo window', 'Status', 'Heat', 'Actions'].map(h => (
-                  <th key={h} style={{ textAlign: 'left', padding: '10px 14px', fontSize: '10px', fontWeight: '500', letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--text-3)' }}>{h}</th>
+                {[
+                  { label: 'Cat #', key: 'catalogue_number' },
+                  { label: 'Release', key: 'artist_name' },
+                  { label: 'Format', key: 'format' },
+                  { label: 'Tracks', key: 'total_tracks' },
+                  { label: 'Size', key: 'total_size_mb' },
+                  { label: 'Promo window', key: 'promo_window_end' },
+                  { label: 'Status', key: 'status' },
+                  { label: 'Heat', key: 'heat_status' },
+                  { label: 'Actions', key: '' },
+                ].map(h => (
+                  <th key={h.label} onClick={() => h.key && toggleSort(h.key)} style={{ textAlign: 'left', padding: '10px 14px', fontSize: '10px', fontWeight: '500', letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--text-3)', cursor: h.key ? 'pointer' : 'default', userSelect: 'none' }}>
+                    {h.label}{sortKey === h.key ? (sortAsc ? ' ▲' : ' ▼') : ''}
+                  </th>
                 ))}
               </tr>
             </thead>

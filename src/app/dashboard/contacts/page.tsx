@@ -48,6 +48,13 @@ export default function ContactsPage() {
   const [filterType, setFilterType] = useState<string>('all')
   const [filterPromo, setFilterPromo] = useState(false)
   const [selected, setSelected] = useState<Contact | null>(null)
+  const [sortKey, setSortKey] = useState<string>('full_name')
+  const [sortAsc, setSortAsc] = useState(true)
+
+  function toggleSort(key: string) {
+    if (sortKey === key) setSortAsc(!sortAsc)
+    else { setSortKey(key); setSortAsc(true) }
+  }
 
   async function load() {
     setLoading(true)
@@ -105,6 +112,11 @@ export default function ContactsPage() {
     const matchType = filterType === 'all' || c.type === filterType
     const matchPromo = !filterPromo || c.is_on_promo_list
     return matchSearch && matchType && matchPromo
+  }).sort((a, b) => {
+    const av = (a as any)[sortKey] ?? ''
+    const bv = (b as any)[sortKey] ?? ''
+    const cmp = typeof av === 'number' ? av - bv : String(av).localeCompare(String(bv))
+    return sortAsc ? cmp : -cmp
   })
 
   const inp = (style = {}) => ({
@@ -283,8 +295,18 @@ export default function ContactsPage() {
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
                 <tr style={{ borderBottom: '0.5px solid var(--border)' }}>
-                  {['Contact', 'Type', 'Location', 'Tags', 'Downloads', 'Last active', ''].map(h => (
-                    <th key={h} style={{ textAlign: 'left', padding: '10px 14px', fontSize: '10px', fontWeight: '500', letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--text-3)' }}>{h}</th>
+                  {[
+                    { label: 'Contact', key: 'full_name' },
+                    { label: 'Type', key: 'type' },
+                    { label: 'Location', key: 'city' },
+                    { label: 'Tags', key: '' },
+                    { label: 'Downloads', key: 'total_downloads' },
+                    { label: 'Last active', key: 'last_active_at' },
+                    { label: '', key: '' },
+                  ].map(h => (
+                    <th key={h.label} onClick={() => h.key && toggleSort(h.key)} style={{ textAlign: 'left', padding: '10px 14px', fontSize: '10px', fontWeight: '500', letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--text-3)', cursor: h.key ? 'pointer' : 'default', userSelect: 'none' }}>
+                      {h.label}{sortKey === h.key ? (sortAsc ? ' ▲' : ' ▼') : ''}
+                    </th>
                   ))}
                 </tr>
               </thead>

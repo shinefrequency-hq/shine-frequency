@@ -53,6 +53,13 @@ export default function BookingsPage() {
   const [editId, setEditId] = useState<string | null>(null)
   const [search, setSearch] = useState('')
   const [filterStatus, setFilterStatus] = useState<string>('all')
+  const [sortKey, setSortKey] = useState<string>('event_date')
+  const [sortAsc, setSortAsc] = useState(true)
+
+  function toggleSort(key: string) {
+    if (sortKey === key) setSortAsc(!sortAsc)
+    else { setSortKey(key); setSortAsc(true) }
+  }
 
   async function load() {
     setLoading(true)
@@ -119,6 +126,11 @@ export default function BookingsPage() {
       (b.contact_name ?? '').toLowerCase().includes(search.toLowerCase())
     const matchStatus = filterStatus === 'all' || b.status === filterStatus
     return matchSearch && matchStatus
+  }).sort((a, b) => {
+    const av = (a as any)[sortKey] ?? ''
+    const bv = (b as any)[sortKey] ?? ''
+    const cmp = typeof av === 'number' ? av - bv : String(av).localeCompare(String(bv))
+    return sortAsc ? cmp : -cmp
   })
 
   const totalFees = bookings.filter(b => b.status === 'confirmed' || b.status === 'completed').reduce((s, b) => s + (b.fee ?? 0), 0)
@@ -308,8 +320,20 @@ export default function BookingsPage() {
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr style={{ borderBottom: '0.5px solid var(--border)' }}>
-                {['Date', 'Artist', 'Venue', 'Fee', 'Status', 'Contract', 'Rider', 'Travel', 'Actions'].map(h => (
-                  <th key={h} style={{ textAlign: 'left', padding: '10px 14px', fontSize: '10px', fontWeight: '500', letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--text-3)' }}>{h}</th>
+                {[
+                  { label: 'Date', key: 'event_date' },
+                  { label: 'Artist', key: 'artist_name' },
+                  { label: 'Venue', key: 'venue_name' },
+                  { label: 'Fee', key: 'fee' },
+                  { label: 'Status', key: 'status' },
+                  { label: 'Contract', key: 'contract_status' },
+                  { label: 'Rider', key: '' },
+                  { label: 'Travel', key: '' },
+                  { label: 'Actions', key: '' },
+                ].map(h => (
+                  <th key={h.label} onClick={() => h.key && toggleSort(h.key)} style={{ textAlign: 'left', padding: '10px 14px', fontSize: '10px', fontWeight: '500', letterSpacing: '0.06em', textTransform: 'uppercase', color: 'var(--text-3)', cursor: h.key ? 'pointer' : 'default', userSelect: 'none' }}>
+                    {h.label}{sortKey === h.key ? (sortAsc ? ' ▲' : ' ▼') : ''}
+                  </th>
                 ))}
               </tr>
             </thead>

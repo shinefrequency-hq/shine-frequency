@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase-server'
 import { redirect } from 'next/navigation'
 import { ThemeToggle } from '@/lib/theme'
 import { NavLink } from '@/lib/nav-link'
+import { MobileMenuButton } from '@/lib/mobile-menu'
 import type { Staff } from '@/types/database'
 
 const NAV = [
@@ -73,8 +74,9 @@ export default async function DashboardLayout({
       overflow: 'hidden',
       background: 'var(--bg)'
     }}>
+      <MobileMenuButton />
       {/* SIDEBAR */}
-      <aside style={{
+      <aside className="dashboard-sidebar" style={{
         width: '200px',
         flexShrink: 0,
         background: 'var(--bg-2)',

@@ -25,6 +25,7 @@ const NAV = [
       { label: 'Heat tracker', href: '/dashboard/heat' },
       { label: 'Reviews', href: '/dashboard/reviews' },
       { label: 'Downloads', href: '/dashboard/downloads' },
+      { label: 'Discovery', href: '/dashboard/scanner' },
       { label: 'Campaigns', href: '/dashboard/campaigns' },
     ]
   },

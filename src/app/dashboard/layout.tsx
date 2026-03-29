@@ -52,6 +52,7 @@ const NAV = [
       { label: 'Audit log', href: '/dashboard/audit' },
       { label: 'ISO 27001', href: '/dashboard/iso' },
       { label: 'Settings', href: '/dashboard/settings' },
+      { label: 'Help', href: '/dashboard/help' },
     ]
   },
 ]

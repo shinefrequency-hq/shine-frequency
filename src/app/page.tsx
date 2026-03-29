@@ -448,8 +448,26 @@ export default function HomePage() {
               <a href="mailto:shineprdev@gmail.com" style={{ display: 'block', fontSize: '12px', color: '#666', textDecoration: 'none', padding: '3px 0' }}>shineprdev@gmail.com</a>
             </div>
           </div>
-          <div style={{ borderTop: '1px solid #eee', paddingTop: '1.5rem', textAlign: 'center', fontSize: '11px', color: '#bbb' }}>
-            Shine Music Ltd. All rights reserved.
+          {/* Social links */}
+          <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', marginBottom: '1.5rem' }}>
+            <a href="https://soundcloud.com/shinemusic" target="_blank" rel="noreferrer" style={{ fontSize: '12px', color: '#888', textDecoration: 'none' }}>SoundCloud</a>
+            <a href="https://instagram.com/shinemusic" target="_blank" rel="noreferrer" style={{ fontSize: '12px', color: '#888', textDecoration: 'none' }}>Instagram</a>
+            <a href="https://facebook.com/shinemusic" target="_blank" rel="noreferrer" style={{ fontSize: '12px', color: '#888', textDecoration: 'none' }}>Facebook</a>
+          </div>
+
+          {/* Legal */}
+          <div style={{ borderTop: '1px solid #eee', paddingTop: '1.5rem', textAlign: 'center' }}>
+            <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', marginBottom: '10px', flexWrap: 'wrap' }}>
+              <a href="/privacy" style={{ fontSize: '11px', color: '#bbb', textDecoration: 'none' }}>Privacy Policy</a>
+              <a href="/terms" style={{ fontSize: '11px', color: '#bbb', textDecoration: 'none' }}>Terms & Conditions</a>
+              <a href="/cookies" style={{ fontSize: '11px', color: '#bbb', textDecoration: 'none' }}>Cookie Policy</a>
+            </div>
+            <div style={{ fontSize: '11px', color: '#ccc', lineHeight: 1.6 }}>
+              Shine Music Ltd. All rights reserved. Registered in England & Wales.
+            </div>
+            <div style={{ fontSize: '10px', color: '#ddd', marginTop: '4px' }}>
+              This site uses cookies to improve your experience. By continuing to use this site you consent to our use of cookies.
+            </div>
           </div>
         </div>
       </footer>

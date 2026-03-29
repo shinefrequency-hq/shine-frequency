@@ -93,7 +93,7 @@ export default function HomePage() {
             PR & Artist Agency
           </div>
           <h1 style={{ fontSize: '42px', fontWeight: '600', lineHeight: 1.2, marginBottom: '1.5rem', letterSpacing: '-0.02em' }}>
-            A hell of a lot of passion<br />and enthusiasm
+            Connecting electronic music with<br />the people who move it forward
           </h1>
           <p style={{ fontSize: '16px', color: '#888', lineHeight: 1.7, marginBottom: '2rem', maxWidth: '520px', margin: '0 auto 2rem' }}>
             Press and promotional campaigns for Underground House, Techno, Balearic and Disco. A very personal approach — working with friends and contacts, simply sharing great music over a chat.

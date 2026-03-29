@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase'
+import { useToast } from '@/lib/toast'
 import type { Booking, BookingStatus, ContractStatus } from '@/types/database'
 
 const STATUS_COLORS: Record<BookingStatus, { bg: string; color: string }> = {
@@ -43,6 +44,7 @@ const EMPTY: Partial<Booking> = {
 
 export default function BookingsPage() {
   const supabase = createClient()
+  const { toast } = useToast()
   const [bookings, setBookings] = useState<BookingRow[]>([])
   const [artists, setArtists] = useState<{ id: string; stage_name: string }[]>([])
   const [loading, setLoading] = useState(true)
@@ -84,6 +86,18 @@ export default function BookingsPage() {
 
   useEffect(() => { load() }, [])
 
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape' && showForm) {
+        setShowForm(false)
+        setForm(EMPTY)
+        setEditId(null)
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [showForm])
+
   async function save() {
     setSaving(true)
     setError('')
@@ -104,12 +118,14 @@ export default function BookingsPage() {
     setEditId(null)
     setSaving(false)
     load()
+    toast(editId ? 'Booking updated' : 'Booking created')
   }
 
   async function deleteBooking(id: string) {
     if (!confirm('Delete this booking?')) return
     await (supabase as any).from('bookings').delete().eq('id', id)
     load()
+    toast('Booking deleted')
   }
 
   function editBooking(b: Booking) {

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase'
+import { useToast } from '@/lib/toast'
 import type { PodcastShow, PodcastEpisode, PodcastStatus } from '@/types/database'
 
 const STATUS_COLORS: Record<PodcastStatus, { bg: string; color: string }> = {
@@ -24,6 +25,7 @@ const EMPTY_EPISODE: Partial<PodcastEpisode> = {
 
 export default function PodcastsPage() {
   const supabase = createClient()
+  const { toast } = useToast()
   const [shows, setShows] = useState<PodcastShow[]>([])
   const [episodes, setEpisodes] = useState<(PodcastEpisode & { show_name?: string })[]>([])
   const [loading, setLoading] = useState(true)
@@ -74,6 +76,7 @@ export default function PodcastsPage() {
       const { error } = await (supabase as any).from('podcast_episodes').insert([form])
       if (error) { setError(error.message); setSaving(false); return }
     }
+    toast(editId ? 'Episode updated' : 'Episode created')
     setForm(EMPTY_EPISODE)
     setShowForm(false)
     setEditId(null)
@@ -84,6 +87,7 @@ export default function PodcastsPage() {
   async function deleteEpisode(id: string) {
     if (!confirm('Delete this episode?')) return
     await (supabase as any).from('podcast_episodes').delete().eq('id', id)
+    toast('Episode deleted')
     load()
   }
 

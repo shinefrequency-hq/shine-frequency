@@ -1,7 +1,8 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { createClient } from '@/lib/supabase'
+import { useToast } from '@/lib/toast'
 import type { Contact, ContactType } from '@/types/database'
 
 const TYPE_COLORS: Record<ContactType, { bg: string; color: string }> = {
@@ -37,6 +38,8 @@ const EMPTY: Partial<Contact> = {
 
 export default function ContactsPage() {
   const supabase = createClient()
+  const { toast } = useToast()
+  const fileRef = useRef<HTMLInputElement>(null)
   const [contacts, setContacts] = useState<Contact[]>([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
@@ -68,6 +71,51 @@ export default function ContactsPage() {
 
   useEffect(() => { load() }, [])
 
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape' && showForm) {
+        setShowForm(false)
+        setForm(EMPTY)
+        setEditId(null)
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [showForm])
+
+  async function handleCSV(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    const text = await file.text()
+    const lines = text.split('\n').filter(l => l.trim())
+    if (lines.length < 2) { toast('CSV must have header + data rows', 'error'); return }
+    const headers = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/\s+/g, '_'))
+    const rows = []
+    for (let i = 1; i < lines.length; i++) {
+      const vals = lines[i].split(',').map(v => v.trim().replace(/^"|"$/g, ''))
+      const row: any = {}
+      headers.forEach((h, j) => {
+        if (h === 'name' || h === 'full_name') row.full_name = vals[j]
+        else if (h === 'email') row.email = vals[j]
+        else if (h === 'phone') row.phone = vals[j]
+        else if (h === 'type') row.type = vals[j] || 'dj'
+        else if (h === 'organisation' || h === 'organization' || h === 'org') row.organisation = vals[j]
+        else if (h === 'city') row.city = vals[j]
+        else if (h === 'country' || h === 'country_code') row.country_code = vals[j]
+      })
+      if (row.full_name) {
+        if (!row.type) row.type = 'dj'
+        rows.push(row)
+      }
+    }
+    if (rows.length === 0) { toast('No valid contacts found in CSV', 'error'); return }
+    const { error } = await (supabase as any).from('contacts').insert(rows)
+    if (error) { toast(error.message, 'error'); return }
+    toast(`Imported ${rows.length} contacts`)
+    load()
+    if (fileRef.current) fileRef.current.value = ''
+  }
+
   async function save() {
     setSaving(true)
     setError('')
@@ -83,6 +131,7 @@ export default function ContactsPage() {
       const { error } = await (supabase as any).from('contacts').insert([form])
       if (error) { setError(error.message); setSaving(false); return }
     }
+    toast(editId ? 'Contact updated' : 'Contact added')
     setForm(EMPTY)
     setShowForm(false)
     setEditId(null)
@@ -93,6 +142,7 @@ export default function ContactsPage() {
   async function deleteContact(id: string) {
     if (!confirm('Delete this contact?')) return
     await (supabase as any).from('contacts').delete().eq('id', id)
+    toast('Contact deleted')
     if (selected?.id === id) setSelected(null)
     load()
   }
@@ -169,6 +219,14 @@ export default function ContactsPage() {
             <input type="checkbox" checked={filterPromo} onChange={() => setFilterPromo(!filterPromo)} style={{ accentColor: '#1D9E75' }} />
             Promo only
           </label>
+          <input ref={fileRef} type="file" accept=".csv" onChange={handleCSV} style={{ display: 'none' }} />
+          <button onClick={() => fileRef.current?.click()} style={{
+            padding: '8px 16px', background: 'transparent',
+            border: '0.5px solid var(--border-3)', borderRadius: '8px',
+            color: 'var(--text-muted)', fontSize: '12px', cursor: 'pointer'
+          }}>
+            Import CSV
+          </button>
           <button onClick={() => { setForm(EMPTY); setEditId(null); setSelected(null); setShowForm(!showForm) }} style={{
             padding: '8px 16px', background: showForm ? 'var(--border-3)' : '#1D9E75',
             border: 'none', borderRadius: '8px', color: 'var(--text)',

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase'
+import { useToast } from '@/lib/toast'
 import type { Invoice, InvoiceStatus, LineItem } from '@/types/database'
 
 const STATUS_COLORS: Record<InvoiceStatus, { bg: string; color: string }> = {
@@ -39,6 +40,7 @@ function recalc(items: LineItem[], taxRate: number) {
 
 export default function InvoicingPage() {
   const supabase = createClient()
+  const { toast } = useToast()
   const [invoices, setInvoices] = useState<Invoice[]>([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
@@ -60,6 +62,18 @@ export default function InvoicingPage() {
   }
 
   useEffect(() => { load() }, [])
+
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape' && showForm) {
+        setShowForm(false)
+        setForm(EMPTY)
+        setEditId(null)
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [showForm])
 
   function updateLineItem(index: number, field: keyof LineItem, value: string | number) {
     setForm(f => {
@@ -109,12 +123,14 @@ export default function InvoicingPage() {
     setEditId(null)
     setSaving(false)
     load()
+    toast(editId ? 'Invoice updated' : 'Invoice created')
   }
 
   async function deleteInvoice(id: string) {
     if (!confirm('Delete this invoice?')) return
     await (supabase as any).from('invoices').delete().eq('id', id)
     load()
+    toast('Invoice deleted')
   }
 
   function editInvoice(inv: Invoice) {

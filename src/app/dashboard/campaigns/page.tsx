@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase'
+import { useToast } from '@/lib/toast'
 import type { Campaign, CampaignStatus, CampaignPlatform } from '@/types/database'
 
 const STATUS_COLORS: Record<CampaignStatus, { bg: string; color: string }> = {
@@ -39,6 +40,7 @@ const EMPTY: Partial<Campaign> = {
 
 export default function CampaignsPage() {
   const supabase = createClient()
+  const { toast } = useToast()
   const [campaigns, setCampaigns] = useState<CampaignRow[]>([])
   const [releases, setReleases] = useState<{ id: string; title: string; catalogue_number: string }[]>([])
   const [loading, setLoading] = useState(true)
@@ -88,6 +90,7 @@ export default function CampaignsPage() {
       const { error } = await (supabase as any).from('campaigns').insert([form])
       if (error) { setError(error.message); setSaving(false); return }
     }
+    toast(editId ? 'Campaign updated' : 'Campaign created')
     setForm(EMPTY)
     setShowForm(false)
     setEditId(null)
@@ -98,6 +101,7 @@ export default function CampaignsPage() {
   async function deleteCampaign(id: string) {
     if (!confirm('Delete this campaign?')) return
     await (supabase as any).from('campaigns').delete().eq('id', id)
+    toast('Campaign deleted')
     load()
   }
 

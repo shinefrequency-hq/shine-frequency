@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase'
+import { useToast } from '@/lib/toast'
 import type { Message, Contact } from '@/types/database'
 
 type Thread = {
@@ -13,6 +14,7 @@ type Thread = {
 
 export default function MessagesPage() {
   const supabase = createClient()
+  const { toast } = useToast()
   const [threads, setThreads] = useState<Thread[]>([])
   const [contacts, setContacts] = useState<Contact[]>([])
   const [loading, setLoading] = useState(true)
@@ -79,6 +81,7 @@ export default function MessagesPage() {
     setBody('')
     setSending(false)
     load()
+    toast('Message sent')
   }
 
   async function startNewThread() {
@@ -96,6 +99,7 @@ export default function MessagesPage() {
       .eq('direction', 'inbound')
       .eq('is_read', false)
     load()
+    toast('Marked as read')
   }
 
   function selectThread(contactId: string) {

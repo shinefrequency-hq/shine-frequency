@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase'
+import { useToast } from '@/lib/toast'
 import type { SocialPost, SocialPostStatus, CampaignPlatform } from '@/types/database'
 
 const STATUS_COLORS: Record<SocialPostStatus, { bg: string; color: string }> = {
@@ -38,6 +39,7 @@ const EMPTY: Partial<SocialPost> = {
 
 export default function SocialPage() {
   const supabase = createClient()
+  const { toast } = useToast()
   const [posts, setPosts] = useState<PostRow[]>([])
   const [releases, setReleases] = useState<{ id: string; title: string }[]>([])
   const [loading, setLoading] = useState(true)
@@ -92,6 +94,7 @@ export default function SocialPage() {
       const { error } = await (supabase as any).from('social_posts').insert([payload])
       if (error) { setError(error.message); setSaving(false); return }
     }
+    toast(editId ? 'Post updated' : 'Post created')
     setForm(EMPTY)
     setHashtagInput('')
     setShowForm(false)
@@ -103,6 +106,7 @@ export default function SocialPage() {
   async function deletePost(id: string) {
     if (!confirm('Delete this post?')) return
     await (supabase as any).from('social_posts').delete().eq('id', id)
+    toast('Post deleted')
     load()
   }
 

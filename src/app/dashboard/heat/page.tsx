@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase'
+import { useToast } from '@/lib/toast'
 import type { Release, HeatStatus } from '@/types/database'
 
 const HEAT_COLORS: Record<HeatStatus, { bg: string; color: string }> = {
@@ -42,6 +43,7 @@ function progressBar(current: number, max: number, color: string) {
 
 export default function HeatPage() {
   const supabase = createClient()
+  const { toast } = useToast()
   const [releases, setReleases] = useState<HeatRow[]>([])
   const [loading, setLoading] = useState(true)
   const [filterHeat, setFilterHeat] = useState<string>('all')
@@ -84,6 +86,7 @@ export default function HeatPage() {
   async function updateHeat(id: string, heat: HeatStatus) {
     await (supabase as any).from('releases').update({ heat_status: heat }).eq('id', id)
     load()
+    toast('Heat status updated')
   }
 
   const filtered = releases.filter(r =>

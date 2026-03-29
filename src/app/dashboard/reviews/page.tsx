@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase'
+import { useToast } from '@/lib/toast'
 import type { Review, ReviewStatus } from '@/types/database'
 
 const STATUS_COLORS: Record<ReviewStatus, { bg: string; color: string }> = {
@@ -19,6 +20,7 @@ type ReviewRow = Review & {
 
 export default function ReviewsPage() {
   const supabase = createClient()
+  const { toast } = useToast()
   const [reviews, setReviews] = useState<ReviewRow[]>([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
@@ -49,6 +51,7 @@ export default function ReviewsPage() {
   async function approve(id: string) {
     await (supabase as any).from('reviews').update({ status: 'approved', approved_at: new Date().toISOString() }).eq('id', id)
     load()
+    toast('Review approved')
   }
 
   async function reject(id: string) {
@@ -56,11 +59,13 @@ export default function ReviewsPage() {
     setShowRejectModal(null)
     setRejectReason('')
     load()
+    toast('Review rejected')
   }
 
   async function toggleFeatured(id: string, current: boolean) {
     await (supabase as any).from('reviews').update({ is_featured: !current }).eq('id', id)
     load()
+    toast('Featured status updated')
   }
 
   async function deleteReview(id: string) {
@@ -68,6 +73,7 @@ export default function ReviewsPage() {
     await (supabase as any).from('reviews').delete().eq('id', id)
     if (selected?.id === id) setSelected(null)
     load()
+    toast('Review deleted')
   }
 
   const filtered = reviews.filter(r => {

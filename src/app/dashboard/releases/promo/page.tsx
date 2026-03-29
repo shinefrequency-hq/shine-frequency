@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase'
+import { useToast } from '@/lib/toast'
 import { useSearchParams } from 'next/navigation'
 import type { Release, Contact, PromoList } from '@/types/database'
 
@@ -13,6 +14,7 @@ type PromoRow = PromoList & {
 
 export default function PromoListPage() {
   const supabase = createClient()
+  const { toast } = useToast()
   const searchParams = useSearchParams()
   const releaseIdParam = searchParams.get('release')
 
@@ -73,6 +75,7 @@ export default function PromoListPage() {
       contact_id: contactId,
     }))
     await (supabase as any).from('promo_lists').upsert(rows, { onConflict: 'release_id,contact_id' })
+    toast(`Added ${selectedContacts.size} contacts to promo list`)
     setAdding(false)
     setShowAddPanel(false)
     setSelectedContacts(new Set())
@@ -82,6 +85,7 @@ export default function PromoListPage() {
   async function removeFromPromo(id: string) {
     if (!confirm('Remove from promo list?')) return
     await (supabase as any).from('promo_lists').delete().eq('id', id)
+    toast('Removed from promo list')
     loadPromoList()
   }
 
@@ -172,6 +176,44 @@ export default function PromoListPage() {
             }}>
               {adding ? 'Adding...' : `Add ${selectedContacts.size} contacts`}
             </button>
+          </div>
+          <div style={{ display: 'flex', gap: '6px', marginBottom: '8px' }}>
+            {[1, 2, 3].map(tier => {
+              const tierContacts = availableContacts.filter(c => (c.promo_tier ?? 1) === tier)
+              return (
+                <button key={tier} onClick={() => {
+                  const next = new Set(selectedContacts)
+                  tierContacts.forEach(c => next.add(c.id))
+                  setSelectedContacts(next)
+                }} style={{
+                  padding: '5px 12px', background: 'transparent',
+                  border: '0.5px solid var(--border-3)', borderRadius: '6px',
+                  color: 'var(--text-muted)', fontSize: '11px', cursor: 'pointer'
+                }}>
+                  Select Tier {tier} ({tierContacts.length})
+                </button>
+              )
+            })}
+            <button onClick={() => {
+              const next = new Set(selectedContacts)
+              availableContacts.forEach(c => next.add(c.id))
+              setSelectedContacts(next)
+            }} style={{
+              padding: '5px 12px', background: 'transparent',
+              border: '0.5px solid var(--border-3)', borderRadius: '6px',
+              color: 'var(--text-muted)', fontSize: '11px', cursor: 'pointer'
+            }}>
+              Select all ({availableContacts.length})
+            </button>
+            {selectedContacts.size > 0 && (
+              <button onClick={() => setSelectedContacts(new Set())} style={{
+                padding: '5px 12px', background: 'transparent',
+                border: '0.5px solid var(--red-muted-border)', borderRadius: '6px',
+                color: 'var(--red-muted)', fontSize: '11px', cursor: 'pointer'
+              }}>
+                Clear
+              </button>
+            )}
           </div>
           <div style={{ maxHeight: '250px', overflowY: 'auto' }}>
             {availableContacts.map(c => (

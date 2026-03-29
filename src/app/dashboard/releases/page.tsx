@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase'
+import { useToast } from '@/lib/toast'
 import type { Release, ReleaseStatus, HeatStatus } from '@/types/database'
 
 const STATUS_COLORS: Record<ReleaseStatus, { bg: string; color: string }> = {
@@ -39,6 +40,7 @@ const EMPTY: Partial<Release> = {
 
 export default function ReleasesPage() {
   const supabase = createClient()
+  const { toast } = useToast()
   const [releases, setReleases] = useState<Release[]>([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
@@ -67,6 +69,16 @@ export default function ReleasesPage() {
 
   useEffect(() => { load() }, [])
 
+  useEffect(() => {
+    function handleKey(e: KeyboardEvent) {
+      if (e.key === 'Escape' && showForm) {
+        setShowForm(false); setForm(EMPTY); setEditId(null)
+      }
+    }
+    window.addEventListener('keydown', handleKey)
+    return () => window.removeEventListener('keydown', handleKey)
+  }, [showForm])
+
   async function save() {
     setSaving(true)
     setError('')
@@ -77,22 +89,25 @@ export default function ReleasesPage() {
     }
     if (editId) {
       const { error } = await (supabase as any).from('releases').update(form as any).eq('id', editId)
-      if (error) { setError(error.message); setSaving(false); return }
+      if (error) { setError(error.message); toast(error.message, 'error'); setSaving(false); return }
     } else {
       const { error } = await (supabase as any).from('releases').insert([form as any])
-      if (error) { setError(error.message); setSaving(false); return }
+      if (error) { setError(error.message); toast(error.message, 'error'); setSaving(false); return }
     }
+    const wasEdit = !!editId
     setForm(EMPTY)
     setShowForm(false)
     setEditId(null)
     setSaving(false)
     load()
+    toast(wasEdit ? 'Release updated' : 'Release created')
   }
 
   async function deleteRelease(id: string) {
     if (!confirm('Delete this release? This cannot be undone.')) return
     await (supabase as any).from('releases').delete().eq('id', id)
     load()
+    toast('Release deleted')
   }
 
   function editRelease(r: Release) {
@@ -150,7 +165,7 @@ export default function ReleasesPage() {
 
       {/* Form */}
       {showForm && (
-        <div style={{
+        <div onKeyDown={e => e.key === 'Enter' && e.metaKey && save()} style={{
           background: 'var(--bg-2)', border: '0.5px solid var(--border-2)',
           borderRadius: '12px', padding: '1.25rem', marginBottom: '1.25rem'
         }}>

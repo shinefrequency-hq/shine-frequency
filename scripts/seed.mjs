@@ -158,6 +158,150 @@ async function seed() {
   if (epErr) console.log('Episodes error:', epErr.message)
   else console.log(`✓ ${epData.length} podcast episodes`)
 
+  // --- PROMO LISTS ---
+  const promoContacts = ['Ben Klock', 'Marcel Dettmann', 'Helena Hauff', 'Perc', 'Ansome',
+    'Lauren Lo Sung', 'Dax J', 'Speedy J', 'Amelie Lens', 'VTSS', 'Jeff Mills',
+    'DJ Stingray', 'Resident Advisor', 'Inverted Audio', 'Objekt']
+  const promoRows = []
+  for (const cat of ['SF-041', 'SF-042']) {
+    for (const name of promoContacts) {
+      if (!contactMap[name] || !releaseMap[cat]) continue
+      const downloaded = Math.random() > 0.3
+      const reviewed = downloaded && Math.random() > 0.5
+      promoRows.push({
+        release_id: releaseMap[cat],
+        contact_id: contactMap[name],
+        invited_at: cat === 'SF-041' ? '2026-02-15T10:00:00Z' : '2026-02-24T10:00:00Z',
+        downloaded_at: downloaded ? (cat === 'SF-041' ? '2026-02-16T14:00:00Z' : '2026-02-25T18:00:00Z') : null,
+        reviewed_at: reviewed ? (cat === 'SF-041' ? '2026-02-20T10:00:00Z' : '2026-03-01T10:00:00Z') : null,
+        download_count: downloaded ? Math.floor(Math.random() * 5) + 1 : 0,
+      })
+    }
+  }
+  const { data: plData, error: plErr } = await supabase.from('promo_lists').upsert(promoRows, { onConflict: 'release_id,contact_id' }).select()
+  if (plErr) console.log('Promo lists error:', plErr.message)
+  else console.log(`✓ ${plData.length} promo list entries`)
+
+  // --- DOWNLOAD EVENTS ---
+  const dlEvents = []
+  for (const cat of ['SF-041', 'SF-042']) {
+    for (const name of ['Ben Klock', 'Marcel Dettmann', 'Lauren Lo Sung', 'Perc', 'Speedy J', 'Helena Hauff', 'Dax J']) {
+      if (!contactMap[name] || !releaseMap[cat]) continue
+      dlEvents.push({
+        release_id: releaseMap[cat],
+        contact_id: contactMap[name],
+        delivery_method: 'dropbox',
+        file_size_mb: Math.round(Math.random() * 50 + 30),
+        downloaded_at: cat === 'SF-041' ? '2026-02-16T14:00:00Z' : '2026-02-25T18:00:00Z',
+      })
+    }
+  }
+  const { data: dlData, error: dlErr } = await supabase.from('download_events').insert(dlEvents).select()
+  if (dlErr) console.log('Downloads error:', dlErr.message)
+  else console.log(`✓ ${dlData.length} download events`)
+
+  // --- MESSAGES ---
+  const msgs = [
+    { contact_id: contactMap['Ben Klock'], direction: 'outbound', channel: 'email', body: 'Hey Ben — SF-041 is ready for you. Private Dropbox link in the promo email. Let me know what you think!', is_read: true, created_at: '2026-02-15T10:30:00Z' },
+    { contact_id: contactMap['Ben Klock'], direction: 'inbound', channel: 'email', body: 'Sharon, this is massive! A1 is going straight into my Berghain set this weekend. Will send a full review tomorrow.', is_read: true, created_at: '2026-02-16T16:00:00Z' },
+    { contact_id: contactMap['Ben Klock'], direction: 'inbound', channel: 'email', body: 'Review submitted — 5 stars. Also charted it in my March Berghain chart. Absolute weapon.', is_read: true, created_at: '2026-02-18T09:00:00Z' },
+    { contact_id: contactMap['Lauren Lo Sung'], direction: 'outbound', channel: 'email', body: 'Lauren — SF-042 from Paula Temple dropping soon. Sending you early access. This one is FIERCE.', is_read: true, created_at: '2026-02-24T11:00:00Z' },
+    { contact_id: contactMap['Lauren Lo Sung'], direction: 'inbound', channel: 'email', body: 'OMG Sharon this is incredible! Played A1 at fabric last night and the room went MENTAL. Review incoming.', is_read: true, created_at: '2026-02-26T02:00:00Z' },
+    { contact_id: contactMap['Lauren Lo Sung'], direction: 'inbound', channel: 'email', body: 'Review done — 5 stars, charted it in my March top 10. Can you send me the artwork for an IG story?', is_read: false, created_at: '2026-03-12T09:30:00Z' },
+    { contact_id: contactMap['Perc'], direction: 'outbound', channel: 'email', body: 'Ali — SF-042 is out to Tier 1 now. Think you\'ll love this one. Paula at her most ferocious.', is_read: true, created_at: '2026-02-24T11:15:00Z' },
+    { contact_id: contactMap['Perc'], direction: 'inbound', channel: 'email', body: 'Cheers Sharon. Downloaded. Will give it a proper listen over the weekend and write something up.', is_read: true, created_at: '2026-02-25T19:00:00Z' },
+    { contact_id: contactMap['Perc'], direction: 'inbound', channel: 'email', body: 'Review sent — A2 is absolutely devastating. Sound design is next level. One of the best this year.', is_read: false, created_at: '2026-03-15T10:00:00Z' },
+    { contact_id: contactMap['Fabric London'], direction: 'outbound', channel: 'email', body: 'Hi — following up on the Paula Temple booking for 25 April. Can you confirm the contract is with your legal team? Need it signed by end of week ideally.', is_read: true, created_at: '2026-03-20T09:00:00Z' },
+    { contact_id: contactMap['Fabric London'], direction: 'inbound', channel: 'email', body: 'Hi Sharon, contract is with our bookings manager. Should have it back to you by Thursday. All looks fine our end.', is_read: true, created_at: '2026-03-21T11:00:00Z' },
+    { contact_id: contactMap['Berghain Bookings'], direction: 'inbound', channel: 'email', body: 'Payment for Surgeon booking has been processed. Invoice SF-INV-001 marked as paid. Thank you.', is_read: true, created_at: '2026-03-15T09:30:00Z' },
+    { contact_id: contactMap['Resident Advisor'], direction: 'outbound', channel: 'email', body: 'Hi RA team — SF-042 from Paula Temple is out now. Press assets and streaming links attached. Happy to arrange an interview if you\'re interested.', is_read: true, created_at: '2026-03-10T10:00:00Z' },
+    { contact_id: contactMap['Resident Advisor'], direction: 'inbound', channel: 'email', body: 'Thanks Sharon. We\'ll have a review up within the next week. Strong release — the team is impressed.', is_read: false, created_at: '2026-03-11T15:00:00Z' },
+    { contact_id: contactMap['Amelie Lens'], direction: 'outbound', channel: 'email', body: 'Hey Amelie — sending you SF-041 and SF-042. Think these would work perfectly in your sets. Let me know!', is_read: true, created_at: '2026-02-24T12:00:00Z' },
+    { contact_id: contactMap['Jeff Mills'], direction: 'outbound', channel: 'email', body: 'Jeff — new Surgeon EP on Shine Frequency. Four tracks of industrial techno. Thought you\'d appreciate this one. Dropbox link in the promo email.', is_read: true, created_at: '2026-02-15T11:00:00Z' },
+  ]
+  const validMsgs = msgs.filter(m => m.contact_id)
+  const { data: msgData, error: msgErr } = await supabase.from('messages').insert(validMsgs).select()
+  if (msgErr) console.log('Messages error:', msgErr.message)
+  else console.log(`✓ ${msgData.length} messages`)
+
+  // --- SOCIAL POSTS ---
+  const socialPosts = [
+    { release_id: releaseMap['SF-041'], platform: 'instagram', status: 'published', caption: 'SF-041 OUT NOW 🔊 Surgeon - Pressure Systems. Four tracks of relentless industrial techno. Link in bio.', hashtags: ['techno', 'industrialtechno', 'surgeon', 'shinefrequency', 'newrelease'], scheduled_at: '2026-03-01T12:00:00Z', published_at: '2026-03-01T12:00:00Z', like_count: 847, comment_count: 32, share_count: 156, reach: 12400 },
+    { release_id: releaseMap['SF-041'], platform: 'twitter', status: 'published', caption: 'SF-041 — Surgeon "Pressure Systems" is out now. Industrial techno at its finest. Available on all platforms.', hashtags: ['techno', 'surgeon'], scheduled_at: '2026-03-01T12:05:00Z', published_at: '2026-03-01T12:05:00Z', like_count: 234, comment_count: 18, share_count: 89, reach: 5600 },
+    { release_id: releaseMap['SF-042'], platform: 'instagram', status: 'published', caption: 'SF-042 🔥 Paula Temple - Deconstructed. Five tracks of noise, EBM and broken techno. This one is FIERCE.', hashtags: ['paulatemple', 'noisetechno', 'ebm', 'shinefrequency', 'deconstructed'], scheduled_at: '2026-03-10T12:00:00Z', published_at: '2026-03-10T12:00:00Z', like_count: 1203, comment_count: 56, share_count: 289, reach: 18700 },
+    { release_id: releaseMap['SF-042'], platform: 'twitter', status: 'published', caption: 'SF-042 — Paula Temple "Deconstructed" out now. Noise meets dancefloor. Not for the faint-hearted.', hashtags: ['paulatemple', 'techno'], scheduled_at: '2026-03-10T12:05:00Z', published_at: '2026-03-10T12:05:00Z', like_count: 312, comment_count: 24, share_count: 134, reach: 7800 },
+    { release_id: releaseMap['SF-042'], platform: 'soundcloud', status: 'published', caption: 'Preview — Paula Temple "Deconstructed" EP. Full release out now on Shine Frequency.', hashtags: ['paulatemple', 'shinefrequency'], scheduled_at: '2026-03-10T13:00:00Z', published_at: '2026-03-10T13:00:00Z', like_count: 567, comment_count: 43, share_count: 0, reach: 9200 },
+    { release_id: releaseMap['SF-043'], platform: 'instagram', status: 'scheduled', caption: 'SF-043 — Rebekah "Magnetic North" LP. Full album coming 18 April. Pre-save link in bio.', hashtags: ['rebekah', 'techno', 'album', 'shinefrequency', 'magneticnorth'], scheduled_at: '2026-04-04T12:00:00Z', like_count: 0, comment_count: 0, share_count: 0, reach: 0 },
+    { release_id: releaseMap['SF-043'], platform: 'twitter', status: 'scheduled', caption: 'Incoming: Rebekah "Magnetic North" LP on Shine Frequency. 8 tracks of darker-shade techno. 18 April.', hashtags: ['rebekah', 'techno'], scheduled_at: '2026-04-04T12:05:00Z', like_count: 0, comment_count: 0, share_count: 0, reach: 0 },
+    { release_id: releaseMap['SF-041'], platform: 'instagram', status: 'published', caption: 'Ben Klock charted SF-041 in his March Berghain chart 🙌 "Absolutely massive — pure Berghain material"', hashtags: ['benklock', 'berghain', 'surgeon', 'shinefrequency', 'charted'], scheduled_at: '2026-03-06T15:00:00Z', published_at: '2026-03-06T15:00:00Z', like_count: 1456, comment_count: 67, share_count: 312, reach: 22100 },
+  ]
+  const { data: spData, error: spErr } = await supabase.from('social_posts').insert(socialPosts).select()
+  if (spErr) console.log('Social posts error:', spErr.message)
+  else console.log(`✓ ${spData.length} social posts`)
+
+  // --- CAMPAIGNS ---
+  const campaigns = [
+    { release_id: releaseMap['SF-041'], name: 'SF-041 Tier 1 Dropbox blast', platform: 'dropbox', status: 'sent', sent_at: '2026-02-15T10:00:00Z', recipient_count: 12, open_count: 11, click_count: 9 },
+    { release_id: releaseMap['SF-041'], name: 'SF-041 Tier 2 follow-up', platform: 'dropbox', status: 'sent', sent_at: '2026-02-18T10:00:00Z', recipient_count: 8, open_count: 6, click_count: 4 },
+    { release_id: releaseMap['SF-042'], name: 'SF-042 Tier 1 Dropbox blast', platform: 'dropbox', status: 'sent', sent_at: '2026-02-24T10:00:00Z', recipient_count: 12, open_count: 10, click_count: 8 },
+    { release_id: releaseMap['SF-042'], name: 'SF-042 SoundCloud promo', platform: 'soundcloud', status: 'sent', sent_at: '2026-03-10T13:00:00Z', recipient_count: 20, open_count: 15, click_count: 12 },
+    { release_id: releaseMap['SF-043'], name: 'SF-043 Tier 1 pre-release', platform: 'dropbox', status: 'scheduled', scheduled_at: '2026-04-01T10:00:00Z', recipient_count: 12 },
+  ]
+  const { data: cpData, error: cpErr } = await supabase.from('campaigns').insert(campaigns).select()
+  if (cpErr) console.log('Campaigns error:', cpErr.message)
+  else console.log(`✓ ${cpData.length} campaigns`)
+
+  // --- TRACKS ---
+  const tracks = [
+    // SF-041 Surgeon
+    { release_id: releaseMap['SF-041'], position: 'A1', title: 'Pressure Lock', duration_seconds: 412, bpm: 138, key: 'Am', file_size_mb: 22.1, download_count: 9, play_count: 47, review_count: 4, charted_count: 3 },
+    { release_id: releaseMap['SF-041'], position: 'A2', title: 'Compression Wave', duration_seconds: 387, bpm: 140, key: 'Bm', file_size_mb: 20.8, download_count: 7, play_count: 31, review_count: 2, charted_count: 1 },
+    { release_id: releaseMap['SF-041'], position: 'B1', title: 'Raw Signal', duration_seconds: 445, bpm: 135, key: 'Dm', file_size_mb: 21.3, download_count: 8, play_count: 38, review_count: 3, charted_count: 2 },
+    { release_id: releaseMap['SF-041'], position: 'B2', title: 'Hydraulic', duration_seconds: 398, bpm: 142, key: 'Em', file_size_mb: 18.3, download_count: 6, play_count: 22, review_count: 1, charted_count: 1 },
+    // SF-042 Paula Temple
+    { release_id: releaseMap['SF-042'], position: 'A1', title: 'Deconstruct', duration_seconds: 456, bpm: 145, key: 'Cm', file_size_mb: 24.5, download_count: 8, play_count: 52, review_count: 3, charted_count: 2 },
+    { release_id: releaseMap['SF-042'], position: 'A2', title: 'Noise Architecture', duration_seconds: 410, bpm: 142, key: 'Am', file_size_mb: 22.0, download_count: 7, play_count: 41, review_count: 4, charted_count: 1 },
+    { release_id: releaseMap['SF-042'], position: 'B1', title: 'EBM Protocol', duration_seconds: 378, bpm: 140, key: 'Fm', file_size_mb: 19.8, download_count: 6, play_count: 28, review_count: 2, charted_count: 1 },
+    { release_id: releaseMap['SF-042'], position: 'B2', title: 'Fractured State', duration_seconds: 425, bpm: 148, key: 'Gm', file_size_mb: 21.2, download_count: 5, play_count: 19, review_count: 2, charted_count: 0 },
+    { release_id: releaseMap['SF-042'], position: 'C1', title: 'Aftermath', duration_seconds: 502, bpm: 150, key: 'Dm', file_size_mb: 17.8, download_count: 4, play_count: 15, review_count: 1, charted_count: 0 },
+  ]
+  const validTracks = tracks.filter(t => t.release_id)
+  const { data: trData, error: trErr } = await supabase.from('tracks').insert(validTracks).select()
+  if (trErr) console.log('Tracks error:', trErr.message)
+  else console.log(`✓ ${trData.length} tracks`)
+
+  // --- AUDIT LOG ---
+  const auditEntries = [
+    { actor_email: 'shineprdev@gmail.com', action: 'create', module: 'releases', record_type: 'release', created_at: '2026-02-10T09:00:00Z' },
+    { actor_email: 'shineprdev@gmail.com', action: 'update', module: 'releases', record_type: 'release', created_at: '2026-02-15T10:00:00Z' },
+    { actor_email: 'shineprdev@gmail.com', action: 'create', module: 'bookings', record_type: 'booking', created_at: '2026-02-20T14:00:00Z' },
+    { actor_email: 'shineprdev@gmail.com', action: 'create', module: 'invoices', record_type: 'invoice', created_at: '2026-03-02T10:00:00Z' },
+    { actor_email: 'shineprdev@gmail.com', action: 'approve', module: 'reviews', record_type: 'review', created_at: '2026-03-05T10:00:00Z' },
+    { actor_email: 'shineprdev@gmail.com', action: 'update', module: 'bookings', record_type: 'booking', created_at: '2026-03-10T11:00:00Z' },
+    { actor_email: 'shineprdev@gmail.com', action: 'create', module: 'contacts', record_type: 'contact', created_at: '2026-03-12T09:00:00Z' },
+    { actor_email: 'shineprdev@gmail.com', action: 'send', module: 'campaigns', record_type: 'campaign', created_at: '2026-03-15T10:00:00Z' },
+  ]
+  const { error: auditErr } = await supabase.from('audit_log').insert(auditEntries)
+  if (auditErr) console.log('Audit log error:', auditErr.message)
+  else console.log(`✓ ${auditEntries.length} audit log entries`)
+
+  // --- UPDATE CONTACT STATS ---
+  // Update download/review counts on contacts based on the data we inserted
+  for (const name of Object.keys(contactMap)) {
+    const cid = contactMap[name]
+    const { count: dlCount } = await supabase.from('download_events').select('*', { count: 'exact', head: true }).eq('contact_id', cid)
+    const { count: rvCount } = await supabase.from('reviews').select('*', { count: 'exact', head: true }).eq('contact_id', cid)
+    const { data: rvAvg } = await supabase.from('reviews').select('rating').eq('contact_id', cid)
+    const avg = rvAvg && rvAvg.length > 0 ? (rvAvg.reduce((s, r) => s + (r.rating ?? 0), 0) / rvAvg.length).toFixed(2) : null
+    await supabase.from('contacts').update({
+      total_downloads: dlCount ?? 0,
+      total_reviews: rvCount ?? 0,
+      avg_rating: avg,
+      last_active_at: dlCount > 0 ? '2026-03-15T10:00:00Z' : null,
+    }).eq('id', cid)
+  }
+  console.log('✓ Contact stats updated')
+
   console.log('\n✅ Seed complete!')
 }
 

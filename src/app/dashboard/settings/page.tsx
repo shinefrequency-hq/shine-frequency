@@ -160,7 +160,7 @@ export default function SettingsPage() {
   } as React.CSSProperties)
 
   return (
-    <div style={{ padding: '1.5rem', maxWidth: '800px' }}>
+    <div style={{ padding: '1.5rem' }}>
 
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
         <div>

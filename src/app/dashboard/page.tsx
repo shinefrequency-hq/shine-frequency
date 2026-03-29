@@ -42,7 +42,7 @@ export default async function DashboardPage() {
   const daysUntil = (d: string) => Math.ceil((new Date(d).getTime() - now) / 86400000)
 
   return (
-    <div style={{ padding: '1.5rem', maxWidth: '1000px' }}>
+    <div style={{ padding: '1.5rem' }}>
 
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '1.5rem' }}>

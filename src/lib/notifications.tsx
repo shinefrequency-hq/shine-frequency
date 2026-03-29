@@ -185,17 +185,18 @@ export function NotificationBell() {
 
       {open && (
         <div style={{
-          position: 'absolute',
-          bottom: '100%',
-          left: 0,
-          marginBottom: '6px',
-          width: '280px',
+          position: 'fixed',
+          bottom: '60px',
+          left: '210px',
+          width: '320px',
           background: '#1a1a2e',
           border: '0.5px solid rgba(255,255,255,0.1)',
-          borderRadius: '8px',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
-          zIndex: 999,
+          borderRadius: '10px',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.6)',
+          zIndex: 9999,
           overflow: 'hidden',
+          maxHeight: '400px',
+          overflowY: 'auto',
         }}>
           {/* Header */}
           <div style={{

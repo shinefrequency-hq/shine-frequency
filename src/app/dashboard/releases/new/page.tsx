@@ -190,7 +190,7 @@ export default function NewReleaseWizard() {
   )
 
   return (
-    <div style={{ padding: '1.5rem', maxWidth: '720px' }}>
+    <div style={{ padding: '1.5rem', maxWidth: '800px' }}>
 
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>

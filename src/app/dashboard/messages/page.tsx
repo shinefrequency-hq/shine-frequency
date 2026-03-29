@@ -149,7 +149,7 @@ export default function MessagesPage() {
   } as React.CSSProperties)
 
   return (
-    <div style={{ padding: '1.5rem', maxWidth: '1200px', height: 'calc(100vh - 3rem)', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ padding: '1.5rem', height: 'calc(100vh - 3rem)', display: 'flex', flexDirection: 'column' }}>
 
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', flexShrink: 0 }}>

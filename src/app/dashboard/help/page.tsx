@@ -233,7 +233,7 @@ export default function HelpPage() {
   }
 
   return (
-    <div style={{ padding: '2rem', maxWidth: '800px' }}>
+    <div style={{ padding: '2rem' }}>
       <h1 style={{ fontSize: '22px', fontWeight: '600', color: 'var(--text)', marginBottom: '4px' }}>
         Help & Knowledge Base
       </h1>

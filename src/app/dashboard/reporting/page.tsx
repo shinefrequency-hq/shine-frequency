@@ -110,7 +110,7 @@ export default async function ReportingPage() {
   }
 
   return (
-    <div style={{ padding: '1.5rem', maxWidth: '1000px' }}>
+    <div style={{ padding: '1.5rem' }}>
 
       {/* Header */}
       <div style={{ marginBottom: '1.5rem' }}>

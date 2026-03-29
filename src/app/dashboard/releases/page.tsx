@@ -180,7 +180,7 @@ export default function ReleasesPage() {
   const lbl = { fontSize: '11px', color: 'var(--text-muted)', display: 'block', marginBottom: '4px' } as React.CSSProperties
 
   return (
-    <div style={{ padding: '1.5rem', maxWidth: selected ? '1500px' : '1100px', transition: 'max-width 0.2s' }}>
+    <div style={{ padding: '1.5rem' }}>
 
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '10px' }}>

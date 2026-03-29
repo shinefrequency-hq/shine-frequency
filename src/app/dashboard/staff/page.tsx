@@ -89,7 +89,7 @@ export default function StaffPage() {
   const lbl = { fontSize: '11px', color: 'var(--text-muted)', display: 'block', marginBottom: '4px' } as React.CSSProperties
 
   return (
-    <div style={{ padding: '1.5rem', maxWidth: '1100px' }}>
+    <div style={{ padding: '1.5rem' }}>
 
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
         <div>

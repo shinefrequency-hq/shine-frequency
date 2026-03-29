@@ -185,7 +185,7 @@ export default function AudiencesPage() {
   }
 
   return (
-    <div style={{ padding: '1.5rem', maxWidth: '1200px' }}>
+    <div style={{ padding: '1.5rem' }}>
 
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '10px' }}>

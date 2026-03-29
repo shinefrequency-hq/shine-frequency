@@ -99,7 +99,7 @@ export default function BroadcastPage() {
   const lbl = { fontSize: '11px', color: 'var(--text-muted)', display: 'block', marginBottom: '4px' } as React.CSSProperties
 
   return (
-    <div style={{ padding: '1.5rem', maxWidth: '1100px' }}>
+    <div style={{ padding: '1.5rem' }}>
 
       {/* Header */}
       <div style={{ marginBottom: '1.25rem' }}>

@@ -341,10 +341,7 @@ Results are grouped by type. Click a result to jump to that section.`
         borderBottom: '1px solid #eee', background: 'rgba(255,255,255,0.95)',
         position: 'sticky', top: 0, zIndex: 50,
       }}>
-        <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', color: '#1a1a1a' }}>
-          <div style={{ fontWeight: '900', fontSize: '16px', letterSpacing: '0.12em', color: '#FF6B35' }}>SHINE</div>
-          <span style={{ fontSize: '13px', fontWeight: '500' }}>Shine Frequency</span>
-        </a>
+        <a href="/" style={{ fontSize: '12px', color: '#888', textDecoration: 'none' }}>Home</a>
         <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
           <a href="/" style={{ fontSize: '12px', color: '#888', textDecoration: 'none' }}>Home</a>
           <a href="/portal" style={{ fontSize: '12px', color: '#888', textDecoration: 'none' }}>Login</a>

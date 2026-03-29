@@ -142,9 +142,7 @@ export default function HomePage() {
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
           padding: '16px 24px',
         }}>
-          <a href="/" style={{ textDecoration: 'none', fontWeight: '900', fontSize: '20px', letterSpacing: '0.12em', color: '#fff', textShadow: '0 1px 8px rgba(0,0,0,0.3)' }}>
-            SHINE
-          </a>
+          <a href="/" style={{ fontSize: '12px', color: 'rgba(255,255,255,0.85)', textDecoration: 'none' }}>Home</a>
           <button className="shine-hamburger" onClick={() => setMobileMenu(!mobileMenu)} style={{
             display: 'none', background: 'none', border: 'none', cursor: 'pointer',
             color: '#fff', fontSize: '22px', padding: '4px',
@@ -342,12 +340,16 @@ export default function HomePage() {
       <section id="about" style={{ padding: '4rem 2rem', background: '#fff' }}>
         <div style={{ maxWidth: '700px', margin: '0 auto', textAlign: 'center' }}>
           <div style={{ fontSize: '12px', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#1D9E75', marginBottom: '0.75rem', fontWeight: '600' }}>About</div>
-          <h2 style={{ fontSize: '28px', fontWeight: '700', marginBottom: '1.5rem' }}>Only music I adore</h2>
+          <h2 style={{ fontSize: '28px', fontWeight: '700', marginBottom: '0.5rem' }}>Sharon Andrews</h2>
+          <div style={{ fontSize: '13px', color: '#1D9E75', fontWeight: '500', marginBottom: '1.5rem' }}>CEO, Shine PR</div>
           <p style={{ fontSize: '15px', color: '#666', lineHeight: 1.8, marginBottom: '1rem' }}>
-            I choose only to work with music I adore, so you can be sure I'll be passionate when promoting your stuff. I'd like to think I have a very personal approach — working with friends and contacts, simply sharing great music over a chat.
+            I only work with music I genuinely believe in. That selectivity is central to everything I do, ensuring each project is supported with real conviction, thoughtful strategy, and a personal level of care.
           </p>
           <p style={{ fontSize: '15px', color: '#666', lineHeight: 1.8, marginBottom: '1rem' }}>
-            It's hard to predict exactly what we'll achieve — but what I can promise is a hell of a lot of passion and enthusiasm. And that, coupled with my track record so far, the result shouldn't be too shabby.
+            I've always believed the strongest campaigns are built through trusted relationships, informed instinct, and meaningful conversations — not a one-size-fits-all approach. That is why every release I take on is represented with focus, integrity, and intent.
+          </p>
+          <p style={{ fontSize: '15px', color: '#666', lineHeight: 1.8, marginBottom: '1rem' }}>
+            Backed by an established network and a proven track record, I give every project the energy, credibility, and attention needed to make a lasting impact.
           </p>
           <div style={{ marginTop: '1.5rem', padding: '1rem 1.5rem', background: '#f8f8f8', borderRadius: '8px', fontSize: '14px', color: '#666', display: 'inline-block' }}>
             Get in touch: <a href="mailto:shineprdev@gmail.com" style={{ color: '#1D9E75', textDecoration: 'none', fontWeight: '600' }}>shineprdev@gmail.com</a>

@@ -112,46 +112,55 @@ export default function HomePage() {
       <nav style={{
         position: 'sticky', top: 0, zIndex: 100,
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '0 32px', height: '56px', background: '#fff',
+        padding: '0 24px', height: '52px', background: '#fff',
         borderBottom: '1px solid #e0e0e0',
       }}>
-        <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', color: '#1a1a1a' }}>
-          <div style={{ background: '#1D9E75', color: '#fff', fontWeight: '800', fontSize: '12px', letterSpacing: '0.12em', padding: '4px 8px', borderRadius: '3px' }}>SHINE</div>
+        <a href="/" style={{ textDecoration: 'none', fontWeight: '900', fontSize: '18px', letterSpacing: '0.12em', background: 'linear-gradient(135deg, #FF6B35, #F7C948, #FF6B35)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+          SHINE
         </a>
-        <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
-          <a href="#about" style={{ fontSize: '13px', color: '#555', textDecoration: 'none' }}>About</a>
-          <a href="#services" style={{ fontSize: '13px', color: '#555', textDecoration: 'none' }}>Services</a>
-          <a href="#artists" style={{ fontSize: '13px', color: '#555', textDecoration: 'none' }}>Artists</a>
-          <a href="#contact" style={{ fontSize: '13px', color: '#555', textDecoration: 'none' }}>Contact</a>
-          <span style={{ width: '1px', height: '20px', background: '#ddd' }} />
-          <a href="/onboard" style={{ fontSize: '13px', color: '#555', textDecoration: 'none' }}>Artist Sign Up</a>
-          <a href="/portal" style={{ fontSize: '13px', color: '#555', textDecoration: 'none' }}>Artist Login</a>
-          <a href="/join" style={{ fontSize: '13px', color: '#555', textDecoration: 'none' }}>DJ / Press Sign Up</a>
+        <div className="shine-nav-links" style={{ display: 'flex', gap: '20px', alignItems: 'center', flexWrap: 'wrap' }}>
+          <a href="#about" style={{ fontSize: '12px', color: '#555', textDecoration: 'none' }}>About</a>
+          <a href="#services" style={{ fontSize: '12px', color: '#555', textDecoration: 'none' }}>Services</a>
+          <a href="#artists" style={{ fontSize: '12px', color: '#555', textDecoration: 'none' }}>Artists</a>
+          <a href="#contact" style={{ fontSize: '12px', color: '#555', textDecoration: 'none' }}>Contact</a>
+          <span style={{ width: '1px', height: '16px', background: '#ddd' }} />
+          <a href="/onboard" style={{ fontSize: '12px', color: '#555', textDecoration: 'none' }}>Artist Sign Up</a>
+          <a href="/portal" style={{ fontSize: '12px', color: '#555', textDecoration: 'none' }}>Artist Login</a>
+          <a href="/join" style={{ fontSize: '12px', color: '#555', textDecoration: 'none' }}>DJ / Press Sign Up</a>
         </div>
       </nav>
 
       {/* Hero */}
       <section style={{
         background: '#fff',
-        padding: '5rem 2rem 4.5rem',
+        padding: '5rem 2rem 4rem',
         textAlign: 'center',
       }}>
-        <div style={{ maxWidth: '640px', margin: '0 auto' }}>
-          <div style={{ background: '#1D9E75', color: '#fff', fontWeight: '800', fontSize: '36px', letterSpacing: '0.15em', padding: '14px 28px', borderRadius: '6px', display: 'inline-block', marginBottom: '1.5rem' }}>SHINE</div>
+        <div style={{ maxWidth: '700px', margin: '0 auto' }}>
           <div style={{
-            fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase',
-            color: '#1D9E75', marginBottom: '1rem', fontWeight: '600',
+            fontWeight: '900', fontSize: 'clamp(56px, 12vw, 96px)',
+            letterSpacing: '0.08em', lineHeight: 1,
+            background: 'linear-gradient(135deg, #FF6B35 0%, #F7C948 40%, #FFD93D 60%, #FF6B35 100%)',
+            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            marginBottom: '1.25rem',
+          }}>
+            SHINE
+          </div>
+          <div style={{
+            fontSize: '12px', letterSpacing: '0.25em', textTransform: 'uppercase',
+            color: '#999', marginBottom: '1.5rem', fontWeight: '500',
           }}>
             PR & Artist Agency
           </div>
           <h1 style={{
-            fontSize: '38px', fontWeight: '600', lineHeight: 1.25,
+            fontSize: 'clamp(24px, 4vw, 36px)', fontWeight: '600', lineHeight: 1.3,
             marginBottom: '1.25rem', letterSpacing: '-0.02em', color: '#1a1a1a',
           }}>
-            Connecting electronic music with the people who move it forward
+            Connecting electronic music with<br />the people who move it forward
           </h1>
           <p style={{
-            fontSize: '15px', color: '#777', lineHeight: 1.7,
+            fontSize: '15px', color: '#888', lineHeight: 1.7,
             marginBottom: '2rem', maxWidth: '520px', margin: '0 auto 2rem',
           }}>
             Press and promotional campaigns for Underground House, Techno, Balearic and Disco. A very personal approach — working with friends and contacts, simply sharing great music over a chat.
@@ -450,8 +459,9 @@ export default function HomePage() {
         <div style={{ maxWidth: '900px', margin: '0 auto' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '2rem', marginBottom: '2rem' }}>
             <div>
-              <div style={{ background: '#1D9E75', color: '#fff', fontWeight: '800', fontSize: '14px', letterSpacing: '0.12em', padding: '5px 10px', borderRadius: '3px', display: 'inline-block', marginBottom: '8px' }}>SHINE</div>
-              <div style={{ fontSize: '11px', color: '#777', marginTop: '2px' }}>London, UK</div>
+              <img src="/logo.png" alt="Shine" style={{ width: '48px', height: '48px', borderRadius: '50%', marginBottom: '8px' }} />
+              <div style={{ fontWeight: '900', fontSize: '16px', letterSpacing: '0.1em', background: 'linear-gradient(135deg, #FF6B35, #F7C948, #FF6B35)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>SHINE</div>
+              <div style={{ fontSize: '11px', color: '#999', marginTop: '2px' }}>London, UK</div>
             </div>
             <div>
               <div style={{ fontSize: '10px', color: '#777', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '10px', fontWeight: '600' }}>Artists</div>
@@ -476,6 +486,16 @@ export default function HomePage() {
           </div>
         </div>
       </footer>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .shine-nav-links { display: none !important; }
+          .shine-grid-2 { grid-template-columns: 1fr !important; }
+          .shine-grid-3 { grid-template-columns: 1fr !important; }
+          .shine-grid-4 { grid-template-columns: 1fr 1fr !important; }
+          .shine-two-col { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
     </div>
   )
 }

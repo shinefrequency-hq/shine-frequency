@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { exchangeCodeForToken } from '@/lib/dropbox'
 import { createClient } from '@/lib/supabase-server'
+import { createClient as createServiceClient } from '@supabase/supabase-js'
 
 export async function GET(req: NextRequest) {
   const code = req.nextUrl.searchParams.get('code')
-  const state = req.nextUrl.searchParams.get('state') // contains user context if needed
 
   if (!code) {
     return NextResponse.redirect(new URL('/dashboard/settings?error=no_code', req.url))
@@ -19,12 +19,17 @@ export async function GET(req: NextRequest) {
     return NextResponse.redirect(new URL(`/dashboard/settings?error=${tokenData.error}`, req.url))
   }
 
-  // Store tokens in staff record
+  // Get current user
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
   if (user) {
-    await (supabase as any).from('staff').update({
+    // Use service role to bypass RLS for token storage
+    const serviceClient = createServiceClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    )
+    await serviceClient.from('staff').update({
       dropbox_access_token: tokenData.access_token,
       dropbox_refresh_token: tokenData.refresh_token,
     }).eq('auth_user_id', user.id)

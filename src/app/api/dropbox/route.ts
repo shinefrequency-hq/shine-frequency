@@ -1,9 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase-server'
+import { createClient as createServiceClient } from '@supabase/supabase-js'
 import { createFolder, createSharedLink, listFolder, refreshAccessToken } from '@/lib/dropbox'
 
+function getServiceClient() {
+  return createServiceClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!)
+}
+
 async function getAccessToken(supabase: any, userId: string) {
-  const { data: staff } = await supabase
+  // Use service role to bypass RLS for reading tokens
+  const service = getServiceClient()
+  const { data: staff } = await service
     .from('staff')
     .select('id, dropbox_access_token, dropbox_refresh_token')
     .eq('auth_user_id', userId)
@@ -34,7 +41,7 @@ async function ensureValidToken(supabase: any, staff: any) {
   if (staff.refreshToken) {
     const refreshed = await refreshAccessToken(staff.refreshToken)
     if (refreshed.access_token) {
-      await supabase
+      await getServiceClient()
         .from('staff')
         .update({ dropbox_access_token: refreshed.access_token })
         .eq('id', staff.staffId)

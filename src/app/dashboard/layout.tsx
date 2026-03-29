@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase-server'
 import { redirect } from 'next/navigation'
 import { ThemeToggle } from '@/lib/theme'
+import { NotificationBell } from '@/lib/notifications'
 import { NavLink } from '@/lib/nav-link'
 import { MobileMenuButton } from '@/lib/mobile-menu'
 import type { Staff } from '@/types/database'
@@ -30,6 +31,7 @@ const NAV = [
     section: 'People',
     items: [
       { label: 'Contacts', href: '/dashboard/contacts' },
+      { label: 'Audiences', href: '/dashboard/audiences' },
       { label: 'Messages', href: '/dashboard/messages' },
     ]
   },
@@ -164,8 +166,9 @@ export default async function DashboardLayout({
           ))}
         </nav>
 
-        {/* Theme + Sign out */}
+        {/* Notifications + Theme + Sign out */}
         <div style={{ padding: '8px', borderTop: '0.5px solid var(--border)', flexShrink: 0, display: 'flex', flexDirection: 'column', gap: '4px' }}>
+          <NotificationBell />
           <ThemeToggle />
           <form action="/auth/signout" method="post" style={{ width: '100%' }}>
             <button style={{

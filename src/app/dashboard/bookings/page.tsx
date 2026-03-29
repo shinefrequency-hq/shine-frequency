@@ -55,6 +55,7 @@ export default function BookingsPage() {
   const [editId, setEditId] = useState<string | null>(null)
   const [search, setSearch] = useState('')
   const [filterStatus, setFilterStatus] = useState<string>('all')
+  const [filterArtist, setFilterArtist] = useState<string>('all')
   const [sortKey, setSortKey] = useState<string>('event_date')
   const [sortAsc, setSortAsc] = useState(true)
 
@@ -141,7 +142,8 @@ export default function BookingsPage() {
       b.venue_city.toLowerCase().includes(search.toLowerCase()) ||
       (b.contact_name ?? '').toLowerCase().includes(search.toLowerCase())
     const matchStatus = filterStatus === 'all' || b.status === filterStatus
-    return matchSearch && matchStatus
+    const matchArtist = filterArtist === 'all' || b.artist_name === filterArtist
+    return matchSearch && matchStatus && matchArtist
   }).sort((a, b) => {
     const av = (a as any)[sortKey] ?? ''
     const bv = (b as any)[sortKey] ?? ''
@@ -178,6 +180,12 @@ export default function BookingsPage() {
             <option value="confirmed">Confirmed</option>
             <option value="cancelled">Cancelled</option>
             <option value="completed">Completed</option>
+          </select>
+          <select value={filterArtist} onChange={e => setFilterArtist(e.target.value)} style={{ ...inp({ width: '140px' }) }}>
+            <option value="all">All artists</option>
+            {[...new Set(bookings.map(b => b.artist_name).filter(Boolean))].sort().map(name => (
+              <option key={name} value={name}>{name}</option>
+            ))}
           </select>
           <button onClick={() => { setForm(EMPTY); setEditId(null); setShowForm(!showForm) }} style={{
             padding: '8px 16px', background: showForm ? 'var(--border-3)' : '#1D9E75',

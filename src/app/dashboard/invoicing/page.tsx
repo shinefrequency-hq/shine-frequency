@@ -159,6 +159,40 @@ export default function InvoicingPage() {
     toast('Invoice emailed to ' + inv.recipient_email)
   }
 
+  async function markAsPaid(inv: Invoice) {
+    const ref = prompt('Payment reference (optional):')
+    await (supabase as any).from('invoices').update({
+      status: 'paid',
+      paid_at: new Date().toISOString(),
+      payment_reference: ref || null,
+    }).eq('id', inv.id)
+    load()
+    toast(`${inv.invoice_number} marked as paid`)
+  }
+
+  async function sendReminder(inv: Invoice) {
+    if (!inv.recipient_email) { toast('No email on this invoice', 'error'); return }
+    const daysOver = inv.due_at ? Math.floor((Date.now() - new Date(inv.due_at).getTime()) / 86400000) : 0
+    toast('Sending reminder...', 'info')
+    await fetch('/api/email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'send_custom',
+        to: inv.recipient_email,
+        subject: `Overdue: Invoice ${inv.invoice_number} — ${currSymbol(inv.currency)}${inv.total}`,
+        html: `<div style="font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 24px;">
+          <img src="https://shine-frequency.vercel.app/logo.png" style="width: 48px; height: 48px; border-radius: 50%; margin-bottom: 16px;" />
+          <p>Hi ${inv.recipient_name.split(' ')[0]},</p>
+          <p>This is a reminder that invoice <strong>${inv.invoice_number}</strong> for <strong>${currSymbol(inv.currency)}${inv.total.toFixed(2)}</strong> is now <strong>${daysOver} days overdue</strong>.</p>
+          <p>Please arrange payment at your earliest convenience. Reply to this email if you have any questions.</p>
+          <p style="color: #888; font-size: 13px; margin-top: 24px;">Shine Frequency — London, UK</p>
+        </div>`,
+      }),
+    })
+    toast('Reminder sent to ' + inv.recipient_email)
+  }
+
   async function deleteInvoice(id: string) {
     if (!confirm('Delete this invoice?')) return
     await (supabase as any).from('invoices').delete().eq('id', id)
@@ -414,6 +448,12 @@ export default function InvoicingPage() {
                       <div style={{ display: 'flex', gap: '5px' }}>
                         <button onClick={() => generateInvoicePDF(inv)} style={{ padding: '3px 8px', background: '#0a2a1e', border: '0.5px solid #1D9E75', borderRadius: '6px', color: '#4ecca3', fontSize: '11px', cursor: 'pointer' }}>PDF</button>
                         <button onClick={() => sendInvoiceEmail(inv)} style={{ padding: '3px 8px', background: '#0a1a2a', border: '0.5px solid #1a3a5a', borderRadius: '6px', color: '#7ab8f5', fontSize: '11px', cursor: 'pointer' }}>Email</button>
+                        {inv.status !== 'paid' && inv.status !== 'cancelled' && (
+                          <button onClick={() => markAsPaid(inv)} style={{ padding: '3px 8px', background: '#0a2a1e', border: '0.5px solid #1D9E75', borderRadius: '6px', color: '#4ecca3', fontSize: '11px', cursor: 'pointer' }}>Paid</button>
+                        )}
+                        {isOverdue && (
+                          <button onClick={() => sendReminder(inv)} style={{ padding: '3px 8px', background: '#2a0a0a', border: '0.5px solid #5a1a1a', borderRadius: '6px', color: '#f08080', fontSize: '11px', cursor: 'pointer' }}>Chase</button>
+                        )}
                         <button onClick={() => editInvoice(inv)} style={{ padding: '3px 8px', background: 'transparent', border: '0.5px solid var(--border-3)', borderRadius: '6px', color: 'var(--text-faint)', fontSize: '11px', cursor: 'pointer' }}>Edit</button>
                         <button onClick={() => deleteInvoice(inv.id)} style={{ padding: '3px 8px', background: 'transparent', border: '0.5px solid var(--red-muted-border)', borderRadius: '6px', color: 'var(--red-muted)', fontSize: '11px', cursor: 'pointer' }}>Delete</button>
                       </div>

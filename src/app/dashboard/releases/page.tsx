@@ -49,6 +49,9 @@ export default function ReleasesPage() {
   const [error, setError] = useState('')
   const [editId, setEditId] = useState<string | null>(null)
   const [search, setSearch] = useState('')
+  const [filterStatus, setFilterStatus] = useState<string>('all')
+  const [filterHeat, setFilterHeat] = useState<string>('all')
+  const [filterFormat, setFilterFormat] = useState<string>('all')
   const [sortKey, setSortKey] = useState<string>('created_at')
   const [sortAsc, setSortAsc] = useState(false)
 
@@ -142,11 +145,15 @@ export default function ReleasesPage() {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
-  const filtered = releases.filter(r =>
-    r.title.toLowerCase().includes(search.toLowerCase()) ||
-    r.artist_name.toLowerCase().includes(search.toLowerCase()) ||
-    r.catalogue_number.toLowerCase().includes(search.toLowerCase())
-  ).sort((a, b) => {
+  const filtered = releases.filter(r => {
+    const matchSearch = r.title.toLowerCase().includes(search.toLowerCase()) ||
+      r.artist_name.toLowerCase().includes(search.toLowerCase()) ||
+      r.catalogue_number.toLowerCase().includes(search.toLowerCase())
+    const matchStatus = filterStatus === 'all' || r.status === filterStatus
+    const matchHeat = filterHeat === 'all' || r.heat_status === filterHeat
+    const matchFormat = filterFormat === 'all' || r.format === filterFormat
+    return matchSearch && matchStatus && matchHeat && matchFormat
+  }).sort((a, b) => {
     const av = (a as any)[sortKey] ?? ''
     const bv = (b as any)[sortKey] ?? ''
     const cmp = typeof av === 'number' ? av - bv : String(av).localeCompare(String(bv))
@@ -166,18 +173,42 @@ export default function ReleasesPage() {
     <div style={{ padding: '1.5rem', maxWidth: '1100px' }}>
 
       {/* Header */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '10px' }}>
         <div>
           <div style={{ fontSize: '18px', fontWeight: '500' }}>Release manager</div>
           <div style={{ fontSize: '12px', color: 'var(--text-3)', marginTop: '2px' }}>{releases.length} releases · Add, edit and track all your catalogue releases</div>
         </div>
-        <div style={{ display: 'flex', gap: '8px' }}>
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
           <input
             placeholder="Search releases..."
             value={search}
             onChange={e => setSearch(e.target.value)}
             style={{ ...inp({ width: '200px' }) }}
           />
+          <select value={filterStatus} onChange={e => setFilterStatus(e.target.value)} style={{ ...inp({ width: '120px' }) }}>
+            <option value="all">All statuses</option>
+            <option value="draft">Draft</option>
+            <option value="in_review">In Review</option>
+            <option value="scheduled">Scheduled</option>
+            <option value="live">Live</option>
+            <option value="archived">Archived</option>
+          </select>
+          <select value={filterHeat} onChange={e => setFilterHeat(e.target.value)} style={{ ...inp({ width: '110px' }) }}>
+            <option value="all">All heat</option>
+            <option value="pending">Pending</option>
+            <option value="building">Building</option>
+            <option value="warm">Warm</option>
+            <option value="hot">Hot</option>
+            <option value="critical">Critical</option>
+            <option value="closed">Closed</option>
+          </select>
+          <select value={filterFormat} onChange={e => setFilterFormat(e.target.value)} style={{ ...inp({ width: '100px' }) }}>
+            <option value="all">All formats</option>
+            <option value="EP">EP</option>
+            <option value="LP">LP</option>
+            <option value="Single">Single</option>
+            <option value="Album">Album</option>
+          </select>
           <a href="/dashboard/releases/new" style={{
             padding: '8px 16px', background: '#0a1a2a',
             border: '0.5px solid #1a3a5a', borderRadius: '8px', color: '#7ab8f5',

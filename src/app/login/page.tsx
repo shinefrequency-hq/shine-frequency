@@ -44,7 +44,7 @@ export default function LoginPage() {
       }}>
         <div style={{ marginBottom: '2rem', textAlign: 'center' }}>
           <div style={{ marginBottom: '16px' }}>
-            <div style={{ background: '#1D9E75', color: '#fff', fontWeight: '800', fontSize: '32px', letterSpacing: '0.15em', padding: '12px 24px', borderRadius: '6px', display: 'inline-block' }}>SHINE</div>
+            <div style={{ fontWeight: '900', fontSize: '32px', letterSpacing: '0.12em', color: '#FF6B35', marginBottom: '12px' }}>SHINE</div>
           </div>
           <div style={{ fontSize: '11px', letterSpacing: '0.12em', color: '#999', textTransform: 'uppercase', marginBottom: '6px' }}>
             Management platform

@@ -125,7 +125,7 @@ export default function JoinPage() {
           textAlign: 'center',
         }}>
           <div style={{ marginBottom: '1.5rem' }}>
-            <div style={{ background: '#1D9E75', color: '#fff', fontWeight: '800', fontSize: '32px', letterSpacing: '0.15em', padding: '12px 24px', borderRadius: '6px', display: 'inline-block' }}>SHINE</div>
+            <div style={{ fontWeight: '900', fontSize: '32px', letterSpacing: '0.12em', color: '#FF6B35', marginBottom: '12px' }}>SHINE</div>
           </div>
           <div style={{ fontSize: '18px', fontWeight: '500', color: '#1a1a1a', marginBottom: '8px' }}>
             Thanks {form.full_name}!
@@ -153,7 +153,7 @@ export default function JoinPage() {
         position: 'sticky', top: 0, zIndex: 50,
       }}>
         <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', color: '#1a1a1a' }}>
-          <div style={{ background: '#1D9E75', color: '#fff', fontWeight: '800', fontSize: '12px', letterSpacing: '0.12em', padding: '4px 8px', borderRadius: '3px' }}>SHINE</div>
+          <div style={{ fontWeight: '900', fontSize: '16px', letterSpacing: '0.12em', color: '#FF6B35' }}>SHINE</div>
           <span style={{ fontSize: '13px', fontWeight: '500' }}>Shine Frequency</span>
         </a>
         <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
@@ -168,7 +168,7 @@ export default function JoinPage() {
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
           <div style={{ marginBottom: '12px' }}>
-            <div style={{ background: '#1D9E75', color: '#fff', fontWeight: '800', fontSize: '32px', letterSpacing: '0.15em', padding: '12px 24px', borderRadius: '6px', display: 'inline-block' }}>SHINE</div>
+            <div style={{ fontWeight: '900', fontSize: '32px', letterSpacing: '0.12em', color: '#FF6B35', marginBottom: '12px' }}>SHINE</div>
           </div>
           <div style={{ fontSize: '20px', fontWeight: '500', color: '#1a1a1a' }}>
             Join the Promo List

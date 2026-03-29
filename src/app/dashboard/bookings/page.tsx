@@ -126,6 +126,34 @@ export default function BookingsPage() {
     toast(editId ? 'Booking updated' : 'Booking created')
   }
 
+  async function sendBookingConfirmation(b: any) {
+    if (!b.contact_email) { toast('No contact email on this booking', 'error'); return }
+    toast('Sending confirmation...', 'info')
+    const res = await fetch('/api/email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'send_booking_confirm',
+        to: b.contact_email,
+        artistName: b.artists?.stage_name || b.artist_name || 'Artist',
+        venueName: b.venue_name,
+        venueCity: b.venue_city,
+        eventDate: new Date(b.event_date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }),
+        setTime: b.set_time || 'TBC',
+        fee: b.fee?.toFixed(2) || '0',
+        currency: b.currency || 'GBP',
+        contactName: b.contact_name || b.venue_name,
+      }),
+    })
+    if (!res.ok) { toast('Failed to send', 'error'); return }
+    // Update status to confirmed if pending/enquiry
+    if (b.status === 'enquiry' || b.status === 'pending') {
+      await (supabase as any).from('bookings').update({ status: 'confirmed' }).eq('id', b.id)
+      load()
+    }
+    toast('Booking confirmation sent to ' + b.contact_email)
+  }
+
   async function deleteBooking(id: string) {
     if (!confirm('Delete this booking?')) return
     await (supabase as any).from('bookings').delete().eq('id', id)
@@ -424,6 +452,9 @@ export default function BookingsPage() {
                       <td style={{ padding: '12px 14px' }}>
                         <div style={{ display: 'flex', gap: '5px' }} onClick={e => e.stopPropagation()}>
                           <button onClick={() => editBooking(b)} style={{ padding: '3px 8px', background: 'transparent', border: '0.5px solid var(--border-3)', borderRadius: '6px', color: 'var(--text-faint)', fontSize: '11px', cursor: 'pointer' }}>Edit</button>
+                          {b.status !== 'completed' && b.status !== 'cancelled' && (
+                            <button onClick={() => sendBookingConfirmation(b)} style={{ padding: '3px 8px', background: '#0a2a1e', border: '0.5px solid #1D9E75', borderRadius: '6px', color: '#4ecca3', fontSize: '11px', cursor: 'pointer' }}>Confirm</button>
+                          )}
                           <button onClick={() => deleteBooking(b.id)} style={{ padding: '3px 8px', background: 'transparent', border: '0.5px solid var(--red-muted-border)', borderRadius: '6px', color: 'var(--red-muted)', fontSize: '11px', cursor: 'pointer' }}>Delete</button>
                         </div>
                       </td>

@@ -51,10 +51,11 @@ export function generateInvoicePDF(invoice: Invoice) {
     align-items: center;
     gap: 14px;
   }
-  .logo-area img {
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
+  .logo-text {
+    font-weight: 900;
+    font-size: 24px;
+    letter-spacing: 0.12em;
+    color: #FF6B35;
   }
   .company-name {
     font-size: 22px;
@@ -245,7 +246,7 @@ export function generateInvoicePDF(invoice: Invoice) {
 <div class="page">
   <div class="header">
     <div class="logo-area">
-      <img src="/logo.png" alt="Shine Music" />
+      <div class="logo-text">SHINE</div>
       <div>
         <div class="company-name">Shine Frequency</div>
         <div class="company-sub">Music Distribution & Agency</div>

@@ -332,7 +332,7 @@ Results are grouped by type. Click a result to jump to that section.`
 
   return (
     <div style={{
-      minHeight: '100vh', background: '#fff', fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
+      minHeight: '100vh', background: '#E6E6E6', fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
       color: '#1a1a1a', lineHeight: 1.7,
     }}>
       {/* Nav */}
@@ -342,7 +342,7 @@ Results are grouped by type. Click a result to jump to that section.`
         position: 'sticky', top: 0, zIndex: 50,
       }}>
         <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', color: '#1a1a1a' }}>
-          <div style={{ background: '#1D9E75', color: '#fff', fontWeight: '800', fontSize: '12px', letterSpacing: '0.12em', padding: '4px 8px', borderRadius: '3px' }}>SHINE</div>
+          <div style={{ fontWeight: '900', fontSize: '16px', letterSpacing: '0.12em', color: '#FF6B35' }}>SHINE</div>
           <span style={{ fontSize: '13px', fontWeight: '500' }}>Shine Frequency</span>
         </a>
         <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
@@ -357,7 +357,7 @@ Results are grouped by type. Click a result to jump to that section.`
         borderBottom: '4px solid #1D9E75',
       }}>
         <div style={{ marginBottom: '1rem' }}>
-          <div style={{ background: '#1D9E75', color: '#fff', fontWeight: '800', fontSize: '32px', letterSpacing: '0.15em', padding: '12px 24px', borderRadius: '6px', display: 'inline-block' }}>SHINE</div>
+          <div style={{ fontWeight: '900', fontSize: '32px', letterSpacing: '0.12em', color: '#FF6B35', marginBottom: '12px' }}>SHINE</div>
         </div>
         <div style={{ fontSize: '32px', fontWeight: '700', color: '#1a1a1a', marginBottom: '4px' }}>
           Shine Frequency

@@ -182,7 +182,7 @@ export default function InvoicingPage() {
         to: inv.recipient_email,
         subject: `Overdue: Invoice ${inv.invoice_number} — ${currSymbol(inv.currency)}${inv.total}`,
         html: `<div style="font-family: sans-serif; max-width: 500px; margin: 0 auto; padding: 24px;">
-          <img src="https://shine-frequency.vercel.app/logo.png" style="width: 48px; height: 48px; border-radius: 50%; margin-bottom: 16px;" />
+          <div style="font-weight: 900; font-size: 20px; letter-spacing: 0.12em; color: #FF6B35; margin-bottom: 16px;">SHINE</div>
           <p>Hi ${inv.recipient_name.split(' ')[0]},</p>
           <p>This is a reminder that invoice <strong>${inv.invoice_number}</strong> for <strong>${currSymbol(inv.currency)}${inv.total.toFixed(2)}</strong> is now <strong>${daysOver} days overdue</strong>.</p>
           <p>Please arrange payment at your earliest convenience. Reply to this email if you have any questions.</p>

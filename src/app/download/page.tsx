@@ -164,7 +164,7 @@ function DownloadPage() {
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#E6E6E6', fontFamily: 'system-ui, sans-serif' }}>
         <div style={{ width: '100%', maxWidth: '480px', padding: '2.5rem', background: '#fff', border: '1px solid #ddd', borderRadius: '16px', textAlign: 'center' }}>
           <div style={{ marginBottom: '1.25rem' }}>
-            <div style={{ background: '#1D9E75', color: '#fff', fontWeight: '800', fontSize: '32px', letterSpacing: '0.15em', padding: '12px 24px', borderRadius: '6px', display: 'inline-block' }}>SHINE</div>
+            <div style={{ fontWeight: '900', fontSize: '32px', letterSpacing: '0.12em', color: '#FF6B35', marginBottom: '12px' }}>SHINE</div>
           </div>
           <div style={{ fontSize: '18px', fontWeight: '500', color: '#1a1a1a', marginBottom: '8px' }}>Link not valid</div>
           <div style={{ fontSize: '13px', color: '#666', lineHeight: 1.6 }}>{error}</div>
@@ -185,7 +185,7 @@ function DownloadPage() {
         position: 'sticky', top: 0, zIndex: 50,
       }}>
         <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', color: '#1a1a1a' }}>
-          <div style={{ background: '#1D9E75', color: '#fff', fontWeight: '800', fontSize: '12px', letterSpacing: '0.12em', padding: '4px 8px', borderRadius: '3px' }}>SHINE</div>
+          <div style={{ fontWeight: '900', fontSize: '16px', letterSpacing: '0.12em', color: '#FF6B35' }}>SHINE</div>
           <span style={{ fontSize: '13px', fontWeight: '500' }}>Shine Frequency</span>
         </a>
         <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
@@ -199,7 +199,7 @@ function DownloadPage() {
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
           <div style={{ marginBottom: '12px' }}>
-            <div style={{ background: '#1D9E75', color: '#fff', fontWeight: '800', fontSize: '32px', letterSpacing: '0.15em', padding: '12px 24px', borderRadius: '6px', display: 'inline-block' }}>SHINE</div>
+            <div style={{ fontWeight: '900', fontSize: '32px', letterSpacing: '0.12em', color: '#FF6B35', marginBottom: '12px' }}>SHINE</div>
           </div>
           <div style={{ fontSize: '20px', fontWeight: '500', color: '#1a1a1a' }}>Your promo copy is ready</div>
           <div style={{ fontSize: '12px', color: '#999', marginTop: '4px' }}>Shine Frequency promo distribution</div>

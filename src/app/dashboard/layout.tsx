@@ -1,6 +1,5 @@
 import { createClient } from '@/lib/supabase-server'
 import { redirect } from 'next/navigation'
-import { ThemeToggle } from '@/lib/theme'
 import { GlobalSearch } from '@/lib/search'
 import { NotificationBell } from '@/lib/notifications'
 import { NavLink } from '@/lib/nav-link'
@@ -179,7 +178,6 @@ export default async function DashboardLayout({
         {/* Notifications + Theme + Sign out */}
         <div style={{ padding: '8px', borderTop: '0.5px solid var(--border)', flexShrink: 0, display: 'flex', flexDirection: 'column', gap: '4px' }}>
           <NotificationBell />
-          <ThemeToggle />
           <form action="/api/signout" method="post" style={{ width: '100%' }}>
             <button style={{
               width: '100%', padding: '7px', background: 'transparent',

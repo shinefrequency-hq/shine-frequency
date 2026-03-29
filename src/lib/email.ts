@@ -49,7 +49,7 @@ export function promoInviteEmail(opts: {
     html: `
 <div style="font-family: -apple-system, sans-serif; max-width: 560px; margin: 0 auto; padding: 32px 24px; background: #ffffff;">
   <div style="text-align: center; margin-bottom: 28px;">
-    <img src="https://shine-frequency.vercel.app/logo.png" alt="Shine" style="width: 56px; height: 56px; border-radius: 50%;" />
+    <div style="font-weight: 900; font-size: 20px; letter-spacing: 0.12em; color: #FF6B35;">SHINE</div>
   </div>
   <div style="font-size: 20px; font-weight: 600; color: #1D9E75; text-align: center; margin-bottom: 4px;">
     ${catalogueNumber}
@@ -95,7 +95,7 @@ export function invoiceEmail(opts: {
     html: `
 <div style="font-family: -apple-system, sans-serif; max-width: 560px; margin: 0 auto; padding: 32px 24px; background: #ffffff;">
   <div style="text-align: center; margin-bottom: 28px;">
-    <img src="https://shine-frequency.vercel.app/logo.png" alt="Shine" style="width: 56px; height: 56px; border-radius: 50%;" />
+    <div style="font-weight: 900; font-size: 20px; letter-spacing: 0.12em; color: #FF6B35;">SHINE</div>
   </div>
   <div style="font-size: 20px; font-weight: 600; color: #1D9E75; text-align: center; margin-bottom: 20px;">
     Invoice ${invoiceNumber}
@@ -143,7 +143,7 @@ export function bookingConfirmEmail(opts: {
     html: `
 <div style="font-family: -apple-system, sans-serif; max-width: 560px; margin: 0 auto; padding: 32px 24px; background: #ffffff;">
   <div style="text-align: center; margin-bottom: 28px;">
-    <img src="https://shine-frequency.vercel.app/logo.png" alt="Shine" style="width: 56px; height: 56px; border-radius: 50%;" />
+    <div style="font-weight: 900; font-size: 20px; letter-spacing: 0.12em; color: #FF6B35;">SHINE</div>
   </div>
   <div style="font-size: 20px; font-weight: 600; color: #1D9E75; text-align: center; margin-bottom: 20px;">
     Booking Confirmed

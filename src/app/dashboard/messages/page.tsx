@@ -96,7 +96,7 @@ export default function MessagesPage() {
             to: contact.email,
             subject: `Message from Shine Frequency`,
             html: `<div style="font-family: -apple-system, sans-serif; max-width: 500px; margin: 0 auto; padding: 24px;">
-          <img src="https://shine-frequency.vercel.app/logo.png" style="width: 48px; height: 48px; border-radius: 50%; margin-bottom: 16px;" />
+          <div style="font-weight: 900; font-size: 20px; letter-spacing: 0.12em; color: #FF6B35; margin-bottom: 16px;">SHINE</div>
           <p style="color: #333; font-size: 14px; line-height: 1.6;">${messageText.replace(/\n/g, '<br>')}</p>
           <p style="color: #888; font-size: 12px; margin-top: 24px; border-top: 1px solid #eee; padding-top: 12px;">Shine Frequency — London, UK</p>
         </div>`,

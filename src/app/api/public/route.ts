@@ -48,6 +48,28 @@ export async function POST(req: NextRequest) {
         auto_generated: true,
       }])
 
+      // Send welcome email
+      try {
+        const { sendEmail } = await import('@/lib/email')
+        await sendEmail({
+          to: contact.email,
+          subject: 'Welcome to Shine — Your submission has been received',
+          html: `<div style="font-family: -apple-system, sans-serif; max-width: 520px; margin: 0 auto; padding: 32px 24px; background: #fff;">
+  <div style="font-weight: 900; font-size: 24px; letter-spacing: 0.12em; color: #FF6B35; margin-bottom: 20px;">SHINE</div>
+  <div style="font-size: 20px; font-weight: 600; color: #1a1a1a; margin-bottom: 12px;">Welcome, ${artist.stage_name}</div>
+  <p style="font-size: 14px; color: #555; line-height: 1.7; margin-bottom: 16px;">Thanks for submitting your details to Shine. We've received everything and Sharon will review your submission shortly.</p>
+  <p style="font-size: 14px; color: #555; line-height: 1.7; margin-bottom: 16px;">Once approved, you'll get access to <strong>Shine Frequency</strong> — your dedicated portal where you can track your releases, see who's playing your music, view DJ feedback, and much more.</p>
+  <div style="background: #f8f8f8; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+    <div style="font-size: 13px; color: #888; margin-bottom: 8px;">Your portal login will be:</div>
+    <div style="font-size: 14px; color: #1a1a1a;"><strong>${contact.email}</strong></div>
+    <div style="font-size: 12px; color: #999; margin-top: 4px;">We'll let you know when your account is active.</div>
+  </div>
+  <a href="https://shine-frequency.vercel.app/portal" style="display: inline-block; padding: 12px 24px; background: #1D9E75; color: #fff; text-decoration: none; border-radius: 8px; font-size: 14px; font-weight: 600;">Visit Shine Frequency</a>
+  <div style="border-top: 1px solid #eee; padding-top: 16px; margin-top: 24px; font-size: 12px; color: #bbb;">Shine Music — London, UK</div>
+</div>`,
+        })
+      } catch {}
+
       return NextResponse.json({ success: true, contact_id: contactData.id })
     }
 
@@ -85,6 +107,34 @@ export async function POST(req: NextRequest) {
           related_contact_id: contactData.id,
           auto_generated: true,
         }])
+      }
+
+      // Send welcome email
+      if (contactData && contact.email) {
+        try {
+          const { sendEmail } = await import('@/lib/email')
+          await sendEmail({
+            to: contact.email,
+            subject: 'Welcome to Shine — Promo access request received',
+            html: `<div style="font-family: -apple-system, sans-serif; max-width: 520px; margin: 0 auto; padding: 32px 24px; background: #fff;">
+  <div style="font-weight: 900; font-size: 24px; letter-spacing: 0.12em; color: #FF6B35; margin-bottom: 20px;">SHINE</div>
+  <div style="font-size: 20px; font-weight: 600; color: #1a1a1a; margin-bottom: 12px;">Welcome, ${contact.full_name}</div>
+  <p style="font-size: 14px; color: #555; line-height: 1.7; margin-bottom: 16px;">Thanks for signing up for promo access with Shine. Sharon will review your application and get you set up.</p>
+  <p style="font-size: 14px; color: #555; line-height: 1.7; margin-bottom: 16px;">Once approved, you'll receive promo copies of new releases before they drop — with private Dropbox download links, track previews, and the ability to leave structured feedback.</p>
+  <div style="background: #f8f8f8; border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+    <div style="font-size: 13px; color: #888; margin-bottom: 4px;">What happens next:</div>
+    <div style="font-size: 13px; color: #555; line-height: 1.8;">
+      1. Sharon reviews your application<br>
+      2. You get added to the promo list<br>
+      3. New releases land in your inbox with download links<br>
+      4. You download, listen, and leave feedback
+    </div>
+  </div>
+  <a href="https://shine-frequency.vercel.app/portal" style="display: inline-block; padding: 12px 24px; background: #1D9E75; color: #fff; text-decoration: none; border-radius: 8px; font-size: 14px; font-weight: 600;">Access your portal</a>
+  <div style="border-top: 1px solid #eee; padding-top: 16px; margin-top: 24px; font-size: 12px; color: #bbb;">Shine Music — London, UK</div>
+</div>`,
+          })
+        } catch {}
       }
 
       return NextResponse.json({ success: true, contact_id: contactData?.id })
@@ -199,7 +249,7 @@ export async function POST(req: NextRequest) {
           html: `
 <div style="font-family: -apple-system, sans-serif; max-width: 500px; margin: 0 auto; padding: 32px 24px; background: #fff;">
   <div style="text-align: center; margin-bottom: 24px;">
-    <img src="https://shine-frequency.vercel.app/logo.png" style="width: 56px; height: 56px; border-radius: 50%;" />
+    <div style="font-weight: 900; font-size: 20px; letter-spacing: 0.12em; color: #FF6B35;">SHINE</div>
   </div>
   <div style="font-size: 18px; font-weight: 600; color: #1D9E75; text-align: center; margin-bottom: 16px;">Password Reset</div>
   <p style="font-size: 14px; color: #333; line-height: 1.6;">Hi ${name},</p>

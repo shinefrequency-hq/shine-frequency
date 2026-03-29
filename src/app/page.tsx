@@ -78,6 +78,7 @@ const stats = [
 ]
 
 export default function HomePage() {
+  const [mobileMenu, setMobileMenu] = useState(false)
   const [formSent, setFormSent] = useState(false)
   const [sending, setSending] = useState(false)
   const [form, setForm] = useState({ name: '', email: '', message: '', type: 'General enquiry' })
@@ -125,6 +126,12 @@ export default function HomePage() {
           <a href="/" style={{ textDecoration: 'none', fontWeight: '900', fontSize: '20px', letterSpacing: '0.12em', color: '#fff', textShadow: '0 1px 8px rgba(0,0,0,0.3)' }}>
             SHINE
           </a>
+          <button className="shine-hamburger" onClick={() => setMobileMenu(!mobileMenu)} style={{
+            display: 'none', background: 'none', border: 'none', cursor: 'pointer',
+            color: '#fff', fontSize: '22px', padding: '4px',
+          }}>
+            {mobileMenu ? '\u2715' : '\u2630'}
+          </button>
           <div className="shine-nav-links" style={{ display: 'flex', gap: '20px', alignItems: 'center', flexWrap: 'wrap' }}>
             <a href="#how-it-works" style={{ fontSize: '12px', color: 'rgba(255,255,255,0.85)', textDecoration: 'none' }}>How It Works</a>
             <a href="#results" style={{ fontSize: '12px', color: 'rgba(255,255,255,0.85)', textDecoration: 'none' }}>Results</a>
@@ -136,6 +143,24 @@ export default function HomePage() {
             <a href="/join" style={{ fontSize: '12px', color: 'rgba(255,255,255,0.85)', textDecoration: 'none' }}>DJ / Press</a>
           </div>
         </nav>
+
+        {mobileMenu && (
+          <div style={{
+            position: 'fixed', top: '52px', left: 0, right: 0, bottom: 0,
+            background: 'rgba(0,0,0,0.95)', zIndex: 99, padding: '2rem',
+            display: 'flex', flexDirection: 'column', gap: '16px',
+          }}>
+            <a href="#how-it-works" onClick={() => setMobileMenu(false)} style={{ fontSize: '18px', color: '#fff', textDecoration: 'none' }}>How It Works</a>
+            <a href="#results" onClick={() => setMobileMenu(false)} style={{ fontSize: '18px', color: '#fff', textDecoration: 'none' }}>Results</a>
+            <a href="#artists" onClick={() => setMobileMenu(false)} style={{ fontSize: '18px', color: '#fff', textDecoration: 'none' }}>Artists</a>
+            <a href="#contact" onClick={() => setMobileMenu(false)} style={{ fontSize: '18px', color: '#fff', textDecoration: 'none' }}>Contact</a>
+            <div style={{ borderTop: '1px solid #333', paddingTop: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <a href="/onboard" style={{ fontSize: '16px', color: '#1D9E75', textDecoration: 'none' }}>Artist Sign Up</a>
+              <a href="/portal" style={{ fontSize: '16px', color: '#ccc', textDecoration: 'none' }}>Artist Login</a>
+              <a href="/join" style={{ fontSize: '16px', color: '#ccc', textDecoration: 'none' }}>DJ / Press Sign Up</a>
+            </div>
+          </div>
+        )}
 
         {/* Hero content */}
         <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', zIndex: 10, padding: '2rem', textAlign: 'center' }}>
@@ -490,7 +515,9 @@ export default function HomePage() {
       </footer>
 
       <style>{`
+        .shine-hamburger { display: none !important; }
         @media (max-width: 768px) {
+          .shine-hamburger { display: block !important; }
           .shine-nav-links { display: none !important; }
           .shine-stats-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 1rem !important; }
           .shine-services-grid { grid-template-columns: 1fr !important; }

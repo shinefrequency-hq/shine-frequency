@@ -116,8 +116,7 @@ export default function HomePage() {
         borderBottom: '1px solid #e0e0e0',
       }}>
         <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '10px', textDecoration: 'none', color: '#1a1a1a' }}>
-          <img src="/logo.png" alt="Shine" style={{ width: '28px', height: '28px', borderRadius: '50%' }} />
-          <span style={{ fontSize: '14px', fontWeight: '600' }}>Shine Frequency</span>
+          <div style={{ background: '#1D9E75', color: '#fff', fontWeight: '800', fontSize: '12px', letterSpacing: '0.12em', padding: '4px 8px', borderRadius: '3px' }}>SHINE</div>
         </a>
         <div style={{ display: 'flex', gap: '24px', alignItems: 'center' }}>
           <a href="#about" style={{ fontSize: '13px', color: '#555', textDecoration: 'none' }}>About</a>
@@ -138,7 +137,7 @@ export default function HomePage() {
         textAlign: 'center',
       }}>
         <div style={{ maxWidth: '640px', margin: '0 auto' }}>
-          <img src="/logo.png" alt="Shine Music" style={{ width: '80px', height: '80px', borderRadius: '50%', marginBottom: '1.5rem' }} />
+          <div style={{ background: '#1D9E75', color: '#fff', fontWeight: '800', fontSize: '36px', letterSpacing: '0.15em', padding: '14px 28px', borderRadius: '6px', display: 'inline-block', marginBottom: '1.5rem' }}>SHINE</div>
           <div style={{
             fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase',
             color: '#1D9E75', marginBottom: '1rem', fontWeight: '600',
@@ -284,7 +283,7 @@ export default function HomePage() {
       </section>
 
       {/* Frequency Platform Feature */}
-      <section style={{ padding: '5rem 2rem', background: '#1a1a1a', color: '#fff' }}>
+      <section style={{ padding: '5rem 2rem', background: '#fff' }}>
         <div style={{ maxWidth: '900px', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
             <div style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#1D9E75', marginBottom: '0.75rem', fontWeight: '600' }}>
@@ -293,7 +292,7 @@ export default function HomePage() {
             <h2 style={{ fontSize: '36px', fontWeight: '700', marginBottom: '1rem', letterSpacing: '-0.02em' }}>
               Shine Frequency
             </h2>
-            <p style={{ fontSize: '16px', color: '#999', maxWidth: '560px', margin: '0 auto', lineHeight: 1.7 }}>
+            <p style={{ fontSize: '16px', color: '#666', maxWidth: '560px', margin: '0 auto', lineHeight: 1.7 }}>
               Your dedicated artist and DJ portal. Once you're onboard with Shine, you get access to Frequency — our intelligence platform that tracks everything happening with your music.
             </p>
           </div>
@@ -308,18 +307,18 @@ export default function HomePage() {
               { title: 'Performance Reports', desc: 'Weekly stats emailed to you — downloads, reviews, charts, social reach. See how your release is doing.', icon: '📈' },
             ].map(f => (
               <div key={f.title} style={{
-                background: '#222', borderRadius: '10px', padding: '1.5rem',
-                border: '1px solid #333',
+                background: '#f7f7f7', borderRadius: '10px', padding: '1.5rem',
+                border: '1px solid #e0e0e0',
               }}>
                 <div style={{ fontSize: '24px', marginBottom: '10px' }}>{f.icon}</div>
-                <div style={{ fontSize: '14px', fontWeight: '600', color: '#fff', marginBottom: '6px' }}>{f.title}</div>
+                <div style={{ fontSize: '14px', fontWeight: '600', color: '#1a1a1a', marginBottom: '6px' }}>{f.title}</div>
                 <p style={{ fontSize: '12px', color: '#888', lineHeight: 1.6, margin: 0 }}>{f.desc}</p>
               </div>
             ))}
           </div>
 
           <div style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: '13px', color: '#666', marginBottom: '1.5rem' }}>
+            <div style={{ fontSize: '13px', color: '#999', marginBottom: '1.5rem' }}>
               Available to all Shine artists and approved DJs / press contacts
             </div>
             <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
@@ -328,8 +327,8 @@ export default function HomePage() {
                 color: '#fff', textDecoration: 'none', fontSize: '14px', fontWeight: '500',
               }}>Access Frequency</a>
               <a href="/onboard" style={{
-                padding: '12px 28px', background: 'transparent', border: '1px solid #444',
-                borderRadius: '8px', color: '#ccc', textDecoration: 'none', fontSize: '14px',
+                padding: '12px 28px', background: 'transparent', border: '1px solid #ddd',
+                borderRadius: '8px', color: '#555', textDecoration: 'none', fontSize: '14px',
               }}>Join as artist</a>
             </div>
           </div>
@@ -447,12 +446,11 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer style={{ padding: '3rem 2rem 2rem', background: '#1a1a1a' }}>
+      <footer style={{ padding: '3rem 2rem 2rem', background: '#fff', borderTop: '1px solid #ddd' }}>
         <div style={{ maxWidth: '900px', margin: '0 auto' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr 1fr', gap: '2rem', marginBottom: '2rem' }}>
             <div>
-              <img src="/logo.png" alt="Shine" style={{ width: '36px', height: '36px', borderRadius: '50%', marginBottom: '10px' }} />
-              <div style={{ fontSize: '13px', fontWeight: '600', color: '#1D9E75' }}>Shine Frequency</div>
+              <div style={{ background: '#1D9E75', color: '#fff', fontWeight: '800', fontSize: '14px', letterSpacing: '0.12em', padding: '5px 10px', borderRadius: '3px', display: 'inline-block', marginBottom: '8px' }}>SHINE</div>
               <div style={{ fontSize: '11px', color: '#777', marginTop: '2px' }}>London, UK</div>
             </div>
             <div>
@@ -473,7 +471,7 @@ export default function HomePage() {
               <a href="#contact" style={{ display: 'block', fontSize: '12px', color: '#999', textDecoration: 'none', padding: '3px 0' }}>Contact</a>
             </div>
           </div>
-          <div style={{ borderTop: '1px solid #333', paddingTop: '1.5rem', textAlign: 'center', fontSize: '11px', color: '#555' }}>
+          <div style={{ borderTop: '1px solid #ddd', paddingTop: '1.5rem', textAlign: 'center', fontSize: '11px', color: '#999' }}>
             Shine Frequency Ltd. All rights reserved.
           </div>
         </div>

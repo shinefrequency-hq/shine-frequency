@@ -35,7 +35,7 @@ type PromoData = {
 export default function DownloadPageWrapper() {
   return (
     <Suspense fallback={
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0a0a0a', color: '#555', fontFamily: 'system-ui' }}>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#E6E6E6', color: '#999', fontFamily: 'system-ui' }}>
         Loading...
       </div>
     }>
@@ -153,7 +153,7 @@ function DownloadPage() {
 
   if (loading) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0a0a0a', color: '#555', fontFamily: 'system-ui' }}>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#E6E6E6', color: '#999', fontFamily: 'system-ui' }}>
         Loading your promo...
       </div>
     )
@@ -161,12 +161,14 @@ function DownloadPage() {
 
   if (error) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0a0a0a', fontFamily: 'system-ui, sans-serif' }}>
-        <div style={{ width: '100%', maxWidth: '480px', padding: '2.5rem', background: '#111', border: '0.5px solid #222', borderRadius: '16px', textAlign: 'center' }}>
-          <img src="/logo.png" alt="Shine" style={{ width: '64px', height: '64px', borderRadius: '50%', marginBottom: '1.25rem' }} />
-          <div style={{ fontSize: '18px', fontWeight: '500', color: '#fff', marginBottom: '8px' }}>Link not valid</div>
-          <div style={{ fontSize: '13px', color: '#888', lineHeight: 1.6 }}>{error}</div>
-          <div style={{ marginTop: '1.5rem', fontSize: '11px', color: '#444' }}>
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#E6E6E6', fontFamily: 'system-ui, sans-serif' }}>
+        <div style={{ width: '100%', maxWidth: '480px', padding: '2.5rem', background: '#fff', border: '1px solid #ddd', borderRadius: '16px', textAlign: 'center' }}>
+          <div style={{ marginBottom: '1.25rem' }}>
+            <div style={{ background: '#1D9E75', color: '#fff', fontWeight: '800', fontSize: '32px', letterSpacing: '0.15em', padding: '12px 24px', borderRadius: '6px', display: 'inline-block' }}>SHINE</div>
+          </div>
+          <div style={{ fontSize: '18px', fontWeight: '500', color: '#1a1a1a', marginBottom: '8px' }}>Link not valid</div>
+          <div style={{ fontSize: '13px', color: '#666', lineHeight: 1.6 }}>{error}</div>
+          <div style={{ marginTop: '1.5rem', fontSize: '11px', color: '#999' }}>
             Shine Frequency — London, UK
           </div>
         </div>
@@ -175,19 +177,19 @@ function DownloadPage() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0a0a0a', fontFamily: 'system-ui, sans-serif', padding: '0' }}>
+    <div style={{ minHeight: '100vh', background: '#E6E6E6', fontFamily: 'system-ui, sans-serif', padding: '0' }}>
       {/* Nav */}
       <div style={{
         padding: '12px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        borderBottom: '0.5px solid #1a1a1a', background: 'rgba(10,10,10,0.95)',
+        borderBottom: '1px solid #ddd', background: 'rgba(255,255,255,0.95)',
         position: 'sticky', top: 0, zIndex: 50,
       }}>
-        <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', color: '#fff' }}>
-          <img src="/logo.png" alt="Shine" style={{ width: '24px', height: '24px', borderRadius: '50%' }} />
+        <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', color: '#1a1a1a' }}>
+          <div style={{ background: '#1D9E75', color: '#fff', fontWeight: '800', fontSize: '12px', letterSpacing: '0.12em', padding: '4px 8px', borderRadius: '3px' }}>SHINE</div>
           <span style={{ fontSize: '13px', fontWeight: '500' }}>Shine Frequency</span>
         </a>
         <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-          <a href="/" style={{ fontSize: '12px', color: '#888', textDecoration: 'none' }}>Home</a>
+          <a href="/" style={{ fontSize: '12px', color: '#666', textDecoration: 'none' }}>Home</a>
           <a href="/review" style={{ fontSize: '12px', color: '#1D9E75', textDecoration: 'none' }}>Leave Feedback</a>
         </div>
       </div>
@@ -196,23 +198,25 @@ function DownloadPage() {
 
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <img src="/logo.png" alt="Shine" style={{ width: '64px', height: '64px', borderRadius: '50%', marginBottom: '12px' }} />
-          <div style={{ fontSize: '20px', fontWeight: '500', color: '#fff' }}>Your promo copy is ready</div>
-          <div style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>Shine Frequency promo distribution</div>
+          <div style={{ marginBottom: '12px' }}>
+            <div style={{ background: '#1D9E75', color: '#fff', fontWeight: '800', fontSize: '32px', letterSpacing: '0.15em', padding: '12px 24px', borderRadius: '6px', display: 'inline-block' }}>SHINE</div>
+          </div>
+          <div style={{ fontSize: '20px', fontWeight: '500', color: '#1a1a1a' }}>Your promo copy is ready</div>
+          <div style={{ fontSize: '12px', color: '#999', marginTop: '4px' }}>Shine Frequency promo distribution</div>
         </div>
 
-        <div style={{ background: '#111', border: '0.5px solid #222', borderRadius: '16px', padding: '1.75rem' }}>
+        <div style={{ background: '#fff', border: '1px solid #ddd', borderRadius: '16px', padding: '1.75rem' }}>
 
           {/* Personalised greeting */}
           {firstName && (
-            <div style={{ fontSize: '15px', color: '#ccc', marginBottom: '1.5rem' }}>
-              Hey <span style={{ color: '#fff', fontWeight: '500' }}>{firstName}</span>,
+            <div style={{ fontSize: '15px', color: '#666', marginBottom: '1.5rem' }}>
+              Hey <span style={{ color: '#1a1a1a', fontWeight: '500' }}>{firstName}</span>,
             </div>
           )}
 
           {/* Release artwork + details */}
           {release && (
-            <div style={{ display: 'flex', gap: '16px', padding: '16px', background: '#0a0a0a', borderRadius: '12px', marginBottom: '1.5rem', alignItems: 'flex-start' }}>
+            <div style={{ display: 'flex', gap: '16px', padding: '16px', background: '#E6E6E6', borderRadius: '12px', marginBottom: '1.5rem', alignItems: 'flex-start' }}>
               {release.artwork_url ? (
                 <img
                   src={release.artwork_url}
@@ -221,9 +225,9 @@ function DownloadPage() {
                 />
               ) : (
                 <div style={{
-                  width: '120px', height: '120px', borderRadius: '10px', background: '#1a1a1a',
+                  width: '120px', height: '120px', borderRadius: '10px', background: '#fff',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontSize: '12px', color: '#555', flexShrink: 0, textAlign: 'center', padding: '8px',
+                  fontSize: '12px', color: '#999', flexShrink: 0, textAlign: 'center', padding: '8px',
                 }}>
                   {release.catalogue_number}
                 </div>
@@ -232,20 +236,20 @@ function DownloadPage() {
                 <div style={{ fontSize: '11px', color: '#1D9E75', fontWeight: '600', letterSpacing: '0.5px', textTransform: 'uppercase', marginBottom: '4px' }}>
                   {release.catalogue_number}
                 </div>
-                <div style={{ fontSize: '16px', fontWeight: '600', color: '#fff', marginBottom: '2px' }}>
+                <div style={{ fontSize: '16px', fontWeight: '600', color: '#1a1a1a', marginBottom: '2px' }}>
                   {release.artist_name}
                 </div>
-                <div style={{ fontSize: '14px', color: '#ccc', marginBottom: '8px' }}>
+                <div style={{ fontSize: '14px', color: '#666', marginBottom: '8px' }}>
                   {release.title}
                 </div>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                   {release.genre && (
-                    <span style={{ padding: '3px 10px', background: '#0a2a1e', border: '1px solid #1a3a2e', borderRadius: '12px', fontSize: '11px', color: '#4ecca3' }}>
+                    <span style={{ padding: '3px 10px', background: '#e6f7f0', border: '1px solid #1D9E75', borderRadius: '12px', fontSize: '11px', color: '#1D9E75' }}>
                       {release.genre}
                     </span>
                   )}
                   {release.bpm_range && (
-                    <span style={{ padding: '3px 10px', background: '#1a1a1a', border: '1px solid #333', borderRadius: '12px', fontSize: '11px', color: '#888' }}>
+                    <span style={{ padding: '3px 10px', background: '#fff', border: '1px solid #ccc', borderRadius: '12px', fontSize: '11px', color: '#666' }}>
                       {release.bpm_range} BPM
                     </span>
                   )}
@@ -257,24 +261,24 @@ function DownloadPage() {
           {/* Track listing */}
           {tracks.length > 0 && (
             <div style={{ marginBottom: '1.5rem' }}>
-              <div style={{ fontSize: '13px', fontWeight: '500', color: '#fff', marginBottom: '10px' }}>Track listing</div>
-              <div style={{ background: '#0a0a0a', borderRadius: '10px', overflow: 'hidden' }}>
+              <div style={{ fontSize: '13px', fontWeight: '500', color: '#1a1a1a', marginBottom: '10px' }}>Track listing</div>
+              <div style={{ background: '#E6E6E6', borderRadius: '10px', overflow: 'hidden' }}>
                 <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                   <thead>
-                    <tr style={{ borderBottom: '1px solid #1a1a1a' }}>
-                      <th style={{ padding: '8px 12px', fontSize: '10px', fontWeight: '500', color: '#555', textAlign: 'left', textTransform: 'uppercase', letterSpacing: '0.5px' }}>#</th>
-                      <th style={{ padding: '8px 12px', fontSize: '10px', fontWeight: '500', color: '#555', textAlign: 'left', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Title</th>
-                      <th style={{ padding: '8px 12px', fontSize: '10px', fontWeight: '500', color: '#555', textAlign: 'right', textTransform: 'uppercase', letterSpacing: '0.5px' }}>BPM</th>
-                      <th style={{ padding: '8px 12px', fontSize: '10px', fontWeight: '500', color: '#555', textAlign: 'right', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Key</th>
+                    <tr style={{ borderBottom: '1px solid #ddd' }}>
+                      <th style={{ padding: '8px 12px', fontSize: '10px', fontWeight: '500', color: '#999', textAlign: 'left', textTransform: 'uppercase', letterSpacing: '0.5px' }}>#</th>
+                      <th style={{ padding: '8px 12px', fontSize: '10px', fontWeight: '500', color: '#999', textAlign: 'left', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Title</th>
+                      <th style={{ padding: '8px 12px', fontSize: '10px', fontWeight: '500', color: '#999', textAlign: 'right', textTransform: 'uppercase', letterSpacing: '0.5px' }}>BPM</th>
+                      <th style={{ padding: '8px 12px', fontSize: '10px', fontWeight: '500', color: '#999', textAlign: 'right', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Key</th>
                     </tr>
                   </thead>
                   <tbody>
                     {tracks.map((track, i) => (
-                      <tr key={track.id} style={{ borderBottom: i < tracks.length - 1 ? '1px solid #141414' : 'none' }}>
-                        <td style={{ padding: '10px 12px', fontSize: '12px', color: '#555' }}>{track.position}</td>
-                        <td style={{ padding: '10px 12px', fontSize: '13px', color: '#fff', fontWeight: '400' }}>{track.title}</td>
-                        <td style={{ padding: '10px 12px', fontSize: '12px', color: '#888', textAlign: 'right' }}>{track.bpm ?? '—'}</td>
-                        <td style={{ padding: '10px 12px', fontSize: '12px', color: '#888', textAlign: 'right' }}>{track.key ?? '—'}</td>
+                      <tr key={track.id} style={{ borderBottom: i < tracks.length - 1 ? '1px solid #ddd' : 'none' }}>
+                        <td style={{ padding: '10px 12px', fontSize: '12px', color: '#999' }}>{track.position}</td>
+                        <td style={{ padding: '10px 12px', fontSize: '13px', color: '#1a1a1a', fontWeight: '400' }}>{track.title}</td>
+                        <td style={{ padding: '10px 12px', fontSize: '12px', color: '#666', textAlign: 'right' }}>{track.bpm ?? '—'}</td>
+                        <td style={{ padding: '10px 12px', fontSize: '12px', color: '#666', textAlign: 'right' }}>{track.key ?? '—'}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -313,17 +317,17 @@ function DownloadPage() {
           )}
 
           {/* Download counter */}
-          <div style={{ textAlign: 'center', fontSize: '12px', color: '#555', marginBottom: '1.25rem' }}>
+          <div style={{ textAlign: 'center', fontSize: '12px', color: '#999', marginBottom: '1.25rem' }}>
             Downloaded {downloadCount} {downloadCount === 1 ? 'time' : 'times'}
           </div>
 
           {/* Privacy notice */}
           <div style={{
             padding: '10px 16px',
-            background: '#0a0a0a',
+            background: '#E6E6E6',
             borderRadius: '8px',
             fontSize: '11px',
-            color: '#555',
+            color: '#999',
             textAlign: 'center',
             lineHeight: 1.5,
           }}>
@@ -332,7 +336,7 @@ function DownloadPage() {
         </div>
 
         {/* Footer */}
-        <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '11px', color: '#333' }}>
+        <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '11px', color: '#999' }}>
           Shine Frequency — London, UK
         </div>
       </div>

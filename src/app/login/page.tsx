@@ -31,33 +31,25 @@ export default function LoginPage() {
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      background: '#0a0a0a',
+      background: '#E6E6E6',
       fontFamily: 'system-ui, sans-serif'
     }}>
       <div style={{
         width: '100%',
         maxWidth: '380px',
         padding: '2.5rem',
-        background: '#111',
-        border: '0.5px solid #222',
+        background: '#fff',
+        border: '1px solid #ddd',
         borderRadius: '16px'
       }}>
         <div style={{ marginBottom: '2rem', textAlign: 'center' }}>
-          <img
-            src="/logo.png"
-            alt="Shine Music"
-            style={{
-              width: '120px',
-              height: '120px',
-              borderRadius: '50%',
-              objectFit: 'cover',
-              marginBottom: '16px'
-            }}
-          />
-          <div style={{ fontSize: '11px', letterSpacing: '0.12em', color: '#555', textTransform: 'uppercase', marginBottom: '6px' }}>
+          <div style={{ marginBottom: '16px' }}>
+            <div style={{ background: '#1D9E75', color: '#fff', fontWeight: '800', fontSize: '32px', letterSpacing: '0.15em', padding: '12px 24px', borderRadius: '6px', display: 'inline-block' }}>SHINE</div>
+          </div>
+          <div style={{ fontSize: '11px', letterSpacing: '0.12em', color: '#999', textTransform: 'uppercase', marginBottom: '6px' }}>
             Management platform
           </div>
-          <div style={{ fontSize: '22px', fontWeight: '500', color: '#fff' }}>
+          <div style={{ fontSize: '22px', fontWeight: '500', color: '#1a1a1a' }}>
             Shine Frequency
           </div>
         </div>
@@ -76,10 +68,10 @@ export default function LoginPage() {
               style={{
                 width: '100%',
                 padding: '10px 14px',
-                background: '#1a1a1a',
-                border: '0.5px solid #333',
+                background: '#fff',
+                border: '1px solid #ccc',
                 borderRadius: '8px',
-                color: '#fff',
+                color: '#1a1a1a',
                 fontSize: '13px',
                 outline: 'none'
               }}
@@ -99,10 +91,10 @@ export default function LoginPage() {
               style={{
                 width: '100%',
                 padding: '10px 14px',
-                background: '#1a1a1a',
-                border: '0.5px solid #333',
+                background: '#fff',
+                border: '1px solid #ccc',
                 borderRadius: '8px',
-                color: '#fff',
+                color: '#1a1a1a',
                 fontSize: '13px',
                 outline: 'none'
               }}
@@ -112,11 +104,11 @@ export default function LoginPage() {
           {error && (
             <div style={{
               padding: '10px 12px',
-              background: '#1a0a0a',
-              border: '0.5px solid #5a1a1a',
+              background: '#fff0f0',
+              border: '1px solid #e8a0a0',
               borderRadius: '8px',
               fontSize: '12px',
-              color: '#f08080'
+              color: '#c44'
             }}>
               {error}
             </div>
@@ -128,7 +120,7 @@ export default function LoginPage() {
             style={{
               width: '100%',
               padding: '11px',
-              background: loading ? '#0a4a30' : '#1D9E75',
+              background: loading ? '#a0d4c0' : '#1D9E75',
               border: 'none',
               borderRadius: '8px',
               color: '#fff',

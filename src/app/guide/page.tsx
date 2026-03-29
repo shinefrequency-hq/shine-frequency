@@ -342,7 +342,7 @@ Results are grouped by type. Click a result to jump to that section.`
         position: 'sticky', top: 0, zIndex: 50,
       }}>
         <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', color: '#1a1a1a' }}>
-          <img src="/logo.png" alt="Shine" style={{ width: '24px', height: '24px', borderRadius: '50%' }} />
+          <div style={{ background: '#1D9E75', color: '#fff', fontWeight: '800', fontSize: '12px', letterSpacing: '0.12em', padding: '4px 8px', borderRadius: '3px' }}>SHINE</div>
           <span style={{ fontSize: '13px', fontWeight: '500' }}>Shine Frequency</span>
         </a>
         <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
@@ -353,17 +353,19 @@ Results are grouped by type. Click a result to jump to that section.`
       </div>
       {/* Header */}
       <div style={{
-        background: '#0a0a0a', padding: '3rem 2rem', textAlign: 'center',
+        background: '#fff', padding: '3rem 2rem', textAlign: 'center',
         borderBottom: '4px solid #1D9E75',
       }}>
-        <img src="/logo.png" alt="Shine" style={{ width: '80px', height: '80px', borderRadius: '50%', marginBottom: '1rem' }} />
-        <div style={{ fontSize: '32px', fontWeight: '700', color: '#fff', marginBottom: '4px' }}>
+        <div style={{ marginBottom: '1rem' }}>
+          <div style={{ background: '#1D9E75', color: '#fff', fontWeight: '800', fontSize: '32px', letterSpacing: '0.15em', padding: '12px 24px', borderRadius: '6px', display: 'inline-block' }}>SHINE</div>
+        </div>
+        <div style={{ fontSize: '32px', fontWeight: '700', color: '#1a1a1a', marginBottom: '4px' }}>
           Shine Frequency
         </div>
         <div style={{ fontSize: '16px', color: '#1D9E75', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '1rem' }}>
           Platform Guide
         </div>
-        <div style={{ fontSize: '14px', color: '#888', maxWidth: '500px', margin: '0 auto' }}>
+        <div style={{ fontSize: '14px', color: '#666', maxWidth: '500px', margin: '0 auto' }}>
           Everything you need to know about managing releases, contacts, bookings, and distribution through the Shine Frequency platform.
         </div>
       </div>

@@ -96,10 +96,10 @@ export default function JoinPage() {
   const inp = (style: any = {}) => ({
     width: '100%',
     padding: '10px 14px',
-    background: '#1a1a1a',
-    border: '1px solid #333',
+    background: '#fff',
+    border: '1px solid #ccc',
     borderRadius: '8px',
-    color: '#fff',
+    color: '#1a1a1a',
     fontSize: '13px',
     outline: 'none',
     ...style,
@@ -107,7 +107,7 @@ export default function JoinPage() {
 
   const lbl = {
     fontSize: '11px',
-    color: '#888',
+    color: '#666',
     display: 'block',
     marginBottom: '5px',
     letterSpacing: '0.02em',
@@ -117,21 +117,23 @@ export default function JoinPage() {
     return (
       <div style={{
         minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center',
-        background: '#0a0a0a', fontFamily: 'system-ui, sans-serif',
+        background: '#E6E6E6', fontFamily: 'system-ui, sans-serif',
       }}>
         <div style={{
           width: '100%', maxWidth: '480px', padding: '2.5rem',
-          background: '#111', border: '0.5px solid #222', borderRadius: '16px',
+          background: '#fff', border: '1px solid #ddd', borderRadius: '16px',
           textAlign: 'center',
         }}>
-          <img src="/logo.png" alt="Shine Frequency" style={{ width: '80px', height: '80px', borderRadius: '50%', marginBottom: '1.5rem' }} />
-          <div style={{ fontSize: '18px', fontWeight: '500', color: '#fff', marginBottom: '8px' }}>
+          <div style={{ marginBottom: '1.5rem' }}>
+            <div style={{ background: '#1D9E75', color: '#fff', fontWeight: '800', fontSize: '32px', letterSpacing: '0.15em', padding: '12px 24px', borderRadius: '6px', display: 'inline-block' }}>SHINE</div>
+          </div>
+          <div style={{ fontSize: '18px', fontWeight: '500', color: '#1a1a1a', marginBottom: '8px' }}>
             Thanks {form.full_name}!
           </div>
-          <div style={{ fontSize: '13px', color: '#888', lineHeight: 1.6, marginBottom: '1.25rem' }}>
+          <div style={{ fontSize: '13px', color: '#666', lineHeight: 1.6, marginBottom: '1.25rem' }}>
             Your application has been received. Sharon will review and approve your access.
           </div>
-          <div style={{ padding: '12px', background: '#0a2a1e', border: '0.5px solid #1D9E75', borderRadius: '8px', fontSize: '12px', color: '#4ecca3' }}>
+          <div style={{ padding: '12px', background: '#e6f7f0', border: '1px solid #1D9E75', borderRadius: '8px', fontSize: '12px', color: '#1D9E75' }}>
             We&apos;ll be in touch at {form.email}
           </div>
         </div>
@@ -141,22 +143,22 @@ export default function JoinPage() {
 
   return (
     <div style={{
-      minHeight: '100vh', background: '#0a0a0a', fontFamily: 'system-ui, sans-serif',
+      minHeight: '100vh', background: '#E6E6E6', fontFamily: 'system-ui, sans-serif',
       padding: '0',
     }}>
       {/* Nav */}
       <div style={{
         padding: '12px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        borderBottom: '0.5px solid #1a1a1a', background: 'rgba(10,10,10,0.95)',
+        borderBottom: '1px solid #ddd', background: 'rgba(255,255,255,0.95)',
         position: 'sticky', top: 0, zIndex: 50,
       }}>
-        <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', color: '#fff' }}>
-          <img src="/logo.png" alt="Shine" style={{ width: '24px', height: '24px', borderRadius: '50%' }} />
+        <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', color: '#1a1a1a' }}>
+          <div style={{ background: '#1D9E75', color: '#fff', fontWeight: '800', fontSize: '12px', letterSpacing: '0.12em', padding: '4px 8px', borderRadius: '3px' }}>SHINE</div>
           <span style={{ fontSize: '13px', fontWeight: '500' }}>Shine Frequency</span>
         </a>
         <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-          <a href="/" style={{ fontSize: '12px', color: '#888', textDecoration: 'none' }}>Home</a>
-          <a href="/onboard" style={{ fontSize: '12px', color: '#888', textDecoration: 'none' }}>Artist Sign Up</a>
+          <a href="/" style={{ fontSize: '12px', color: '#666', textDecoration: 'none' }}>Home</a>
+          <a href="/onboard" style={{ fontSize: '12px', color: '#666', textDecoration: 'none' }}>Artist Sign Up</a>
           <a href="/portal" style={{ fontSize: '12px', color: '#1D9E75', textDecoration: 'none' }}>Login</a>
         </div>
       </div>
@@ -165,16 +167,18 @@ export default function JoinPage() {
 
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <img src="/logo.png" alt="Shine Frequency" style={{ width: '72px', height: '72px', borderRadius: '50%', marginBottom: '12px' }} />
-          <div style={{ fontSize: '20px', fontWeight: '500', color: '#fff' }}>
+          <div style={{ marginBottom: '12px' }}>
+            <div style={{ background: '#1D9E75', color: '#fff', fontWeight: '800', fontSize: '32px', letterSpacing: '0.15em', padding: '12px 24px', borderRadius: '6px', display: 'inline-block' }}>SHINE</div>
+          </div>
+          <div style={{ fontSize: '20px', fontWeight: '500', color: '#1a1a1a' }}>
             Join the Promo List
           </div>
-          <div style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
+          <div style={{ fontSize: '12px', color: '#999', marginTop: '4px' }}>
             Sign up to receive promo releases from Shine Frequency
           </div>
         </div>
 
-        <div style={{ background: '#111', border: '0.5px solid #222', borderRadius: '16px', padding: '1.75rem' }}>
+        <div style={{ background: '#fff', border: '1px solid #ddd', borderRadius: '16px', padding: '1.75rem' }}>
 
           {/* Name & Email */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '1.5rem' }}>
@@ -211,8 +215,8 @@ export default function JoinPage() {
 
           {/* Genre preferences */}
           <div style={{ marginBottom: '1.5rem' }}>
-            <div style={{ fontSize: '13px', fontWeight: '500', color: '#fff', marginBottom: '4px' }}>Genre preferences</div>
-            <div style={{ fontSize: '11px', color: '#555', marginBottom: '10px' }}>Select all genres you play or cover</div>
+            <div style={{ fontSize: '13px', fontWeight: '500', color: '#1a1a1a', marginBottom: '4px' }}>Genre preferences</div>
+            <div style={{ fontSize: '11px', color: '#999', marginBottom: '10px' }}>Select all genres you play or cover</div>
             <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
               {GENRES.map(g => (
                 <button
@@ -220,9 +224,9 @@ export default function JoinPage() {
                   onClick={() => toggleGenre(g)}
                   style={{
                     padding: '7px 14px', borderRadius: '20px',
-                    background: form.genres.includes(g) ? '#0a2a1e' : '#1a1a1a',
-                    border: `1px solid ${form.genres.includes(g) ? '#1D9E75' : '#333'}`,
-                    color: form.genres.includes(g) ? '#4ecca3' : '#888',
+                    background: form.genres.includes(g) ? '#e6f7f0' : '#fff',
+                    border: `1px solid ${form.genres.includes(g) ? '#1D9E75' : '#ccc'}`,
+                    color: form.genres.includes(g) ? '#1D9E75' : '#666',
                     fontSize: '12px', cursor: 'pointer', transition: 'all 0.15s',
                     whiteSpace: 'nowrap',
                   }}
@@ -263,7 +267,7 @@ export default function JoinPage() {
           {/* Agreement checkbox */}
           <label style={{
             display: 'flex', alignItems: 'flex-start', gap: '10px', cursor: 'pointer',
-            fontSize: '12px', color: form.agreed ? '#4ecca3' : '#888', lineHeight: 1.5,
+            fontSize: '12px', color: form.agreed ? '#1D9E75' : '#666', lineHeight: 1.5,
             marginBottom: '1.5rem',
           }}>
             <input
@@ -277,7 +281,7 @@ export default function JoinPage() {
 
           {/* Error */}
           {error && (
-            <div style={{ padding: '10px 14px', background: '#1a0a0a', border: '1px solid #5a1a1a', borderRadius: '8px', fontSize: '12px', color: '#f08080', marginBottom: '1rem' }}>
+            <div style={{ padding: '10px 14px', background: '#fff0f0', border: '1px solid #e8a0a0', borderRadius: '8px', fontSize: '12px', color: '#c44', marginBottom: '1rem' }}>
               {error}
             </div>
           )}
@@ -288,7 +292,7 @@ export default function JoinPage() {
             disabled={!canSubmit()}
             style={{
               width: '100%', padding: '12px',
-              background: !canSubmit() ? '#0a4a30' : '#1D9E75',
+              background: !canSubmit() ? '#a0d4c0' : '#1D9E75',
               border: 'none', borderRadius: '8px',
               color: '#fff', fontSize: '14px', fontWeight: '500',
               cursor: !canSubmit() ? 'not-allowed' : 'pointer',
@@ -298,12 +302,12 @@ export default function JoinPage() {
             {submitting ? 'Submitting...' : 'Apply to join'}
           </button>
 
-          <div style={{ marginTop: '1rem', textAlign: 'center', fontSize: '11px', color: '#444' }}>
+          <div style={{ marginTop: '1rem', textAlign: 'center', fontSize: '11px', color: '#999' }}>
             Applications are reviewed manually. You&apos;ll hear back once approved.
           </div>
         </div>
 
-        <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '11px', color: '#333' }}>
+        <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '11px', color: '#999' }}>
           Shine Frequency — London, UK
         </div>
       </div>

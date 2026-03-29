@@ -62,7 +62,7 @@ export default function PortalPage() {
         borderBottom: '1px solid #ddd', background: 'rgba(255,255,255,0.95)',
       }}>
         <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', color: '#1a1a1a' }}>
-          <img src="/logo.png" alt="Shine" style={{ width: '24px', height: '24px', borderRadius: '50%' }} />
+          <div style={{ background: '#1D9E75', color: '#fff', fontWeight: '800', fontSize: '12px', letterSpacing: '0.12em', padding: '4px 8px', borderRadius: '3px' }}>SHINE</div>
           <span style={{ fontSize: '13px', fontWeight: '500' }}>Shine Frequency</span>
         </a>
         <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
@@ -78,7 +78,9 @@ export default function PortalPage() {
           background: '#fff', border: '1px solid #ddd', borderRadius: '16px',
         }}>
           <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-            <img src="/logo.png" alt="Shine Music" style={{ width: '80px', height: '80px', borderRadius: '50%', marginBottom: '12px' }} />
+            <div style={{ marginBottom: '12px' }}>
+              <div style={{ background: '#1D9E75', color: '#fff', fontWeight: '800', fontSize: '32px', letterSpacing: '0.15em', padding: '12px 24px', borderRadius: '6px', display: 'inline-block' }}>SHINE</div>
+            </div>
             <div style={{ fontSize: '18px', fontWeight: '500', color: '#1a1a1a' }}>
               {resetMode ? 'Reset Password' : 'Client Portal'}
             </div>

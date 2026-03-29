@@ -96,10 +96,10 @@ export default function OnboardPage() {
   const inp = (style: any = {}) => ({
     width: '100%',
     padding: '10px 14px',
-    background: '#1a1a1a',
-    border: '0.5px solid #333',
+    background: '#fff',
+    border: '1px solid #ccc',
     borderRadius: '8px',
-    color: '#fff',
+    color: '#1a1a1a',
     fontSize: '13px',
     outline: 'none',
     ...style,
@@ -107,7 +107,7 @@ export default function OnboardPage() {
 
   const lbl = {
     fontSize: '11px',
-    color: '#888',
+    color: '#666',
     display: 'block',
     marginBottom: '5px',
     letterSpacing: '0.02em',
@@ -117,21 +117,23 @@ export default function OnboardPage() {
     return (
       <div style={{
         minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center',
-        background: '#0a0a0a', fontFamily: 'system-ui, sans-serif',
+        background: '#E6E6E6', fontFamily: 'system-ui, sans-serif',
       }}>
         <div style={{
           width: '100%', maxWidth: '440px', padding: '2.5rem',
-          background: '#111', border: '0.5px solid #222', borderRadius: '16px',
+          background: '#fff', border: '1px solid #ddd', borderRadius: '16px',
           textAlign: 'center',
         }}>
-          <img src="/logo.png" alt="Shine Music" style={{ width: '80px', height: '80px', borderRadius: '50%', marginBottom: '1.5rem' }} />
-          <div style={{ fontSize: '18px', fontWeight: '500', color: '#fff', marginBottom: '8px' }}>
+          <div style={{ marginBottom: '1.5rem' }}>
+            <div style={{ background: '#1D9E75', color: '#fff', fontWeight: '800', fontSize: '32px', letterSpacing: '0.15em', padding: '12px 24px', borderRadius: '6px', display: 'inline-block' }}>SHINE</div>
+          </div>
+          <div style={{ fontSize: '18px', fontWeight: '500', color: '#1a1a1a', marginBottom: '8px' }}>
             Thanks, {form.stage_name}
           </div>
-          <div style={{ fontSize: '13px', color: '#888', lineHeight: 1.6 }}>
+          <div style={{ fontSize: '13px', color: '#666', lineHeight: 1.6 }}>
             Your submission has been received. Sharon will review your details and get back to you shortly.
           </div>
-          <div style={{ marginTop: '1.5rem', padding: '12px', background: '#0a2a1e', border: '0.5px solid #1D9E75', borderRadius: '8px', fontSize: '12px', color: '#4ecca3' }}>
+          <div style={{ marginTop: '1.5rem', padding: '12px', background: '#e6f7f0', border: '1px solid #1D9E75', borderRadius: '8px', fontSize: '12px', color: '#1D9E75' }}>
             Keep an eye on your inbox at {form.email}
           </div>
         </div>
@@ -142,36 +144,38 @@ export default function OnboardPage() {
   return (
     <div style={{
       minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-      background: '#0a0a0a', fontFamily: 'system-ui, sans-serif', padding: '0',
+      background: '#E6E6E6', fontFamily: 'system-ui, sans-serif', padding: '0',
     }}>
       {/* Nav */}
       <div style={{
         padding: '12px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        borderBottom: '0.5px solid #1a1a1a', background: 'rgba(10,10,10,0.95)',
+        borderBottom: '1px solid #ddd', background: 'rgba(255,255,255,0.95)',
         position: 'sticky', top: 0, zIndex: 50, width: '100%',
       }}>
-        <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', color: '#fff' }}>
-          <img src="/logo.png" alt="Shine" style={{ width: '24px', height: '24px', borderRadius: '50%' }} />
+        <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', color: '#1a1a1a' }}>
+          <div style={{ background: '#1D9E75', color: '#fff', fontWeight: '800', fontSize: '12px', letterSpacing: '0.12em', padding: '4px 8px', borderRadius: '3px' }}>SHINE</div>
           <span style={{ fontSize: '13px', fontWeight: '500' }}>Shine Frequency</span>
         </a>
         <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-          <a href="/" style={{ fontSize: '12px', color: '#888', textDecoration: 'none' }}>Home</a>
-          <a href="/portal" style={{ fontSize: '12px', color: '#888', textDecoration: 'none' }}>Artist Login</a>
+          <a href="/" style={{ fontSize: '12px', color: '#666', textDecoration: 'none' }}>Home</a>
+          <a href="/portal" style={{ fontSize: '12px', color: '#666', textDecoration: 'none' }}>Artist Login</a>
           <a href="/join" style={{ fontSize: '12px', color: '#1D9E75', textDecoration: 'none' }}>DJ Sign Up</a>
         </div>
       </div>
       <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem 1rem', width: '100%' }}>
       <div style={{
         width: '100%', maxWidth: '480px', padding: '2.5rem',
-        background: '#111', border: '0.5px solid #222', borderRadius: '16px',
+        background: '#fff', border: '1px solid #ddd', borderRadius: '16px',
       }}>
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <img src="/logo.png" alt="Shine Music" style={{ width: '72px', height: '72px', borderRadius: '50%', marginBottom: '12px' }} />
-          <div style={{ fontSize: '18px', fontWeight: '500', color: '#fff' }}>
+          <div style={{ marginBottom: '12px' }}>
+            <div style={{ background: '#1D9E75', color: '#fff', fontWeight: '800', fontSize: '32px', letterSpacing: '0.15em', padding: '12px 24px', borderRadius: '6px', display: 'inline-block' }}>SHINE</div>
+          </div>
+          <div style={{ fontSize: '18px', fontWeight: '500', color: '#1a1a1a' }}>
             Join Shine Frequency
           </div>
-          <div style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
+          <div style={{ fontSize: '12px', color: '#999', marginTop: '4px' }}>
             Artist onboarding — step {step} of 3
           </div>
         </div>
@@ -181,7 +185,7 @@ export default function OnboardPage() {
           {[1, 2, 3].map(s => (
             <div key={s} style={{
               flex: 1, height: '3px', borderRadius: '2px',
-              background: s <= step ? '#1D9E75' : '#222',
+              background: s <= step ? '#1D9E75' : '#ddd',
               transition: 'background 0.3s',
             }} />
           ))}
@@ -235,7 +239,7 @@ export default function OnboardPage() {
             </div>
             <div>
               <label style={lbl}>BPM range</label>
-              <input style={inp()} value={form.bpm_range} onChange={e => set('bpm_range', e.target.value)} placeholder="130–145" />
+              <input style={inp()} value={form.bpm_range} onChange={e => set('bpm_range', e.target.value)} placeholder="130-145" />
             </div>
             <div>
               <label style={lbl}>Demo link</label>
@@ -259,11 +263,11 @@ export default function OnboardPage() {
         {/* Step 3: Confirm */}
         {step === 3 && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            <div style={{ fontSize: '13px', fontWeight: '500', color: '#fff', marginBottom: '4px' }}>
+            <div style={{ fontSize: '13px', fontWeight: '500', color: '#1a1a1a', marginBottom: '4px' }}>
               Review your submission
             </div>
 
-            <div style={{ background: '#0a0a0a', border: '0.5px solid #222', borderRadius: '10px', padding: '1rem' }}>
+            <div style={{ background: '#E6E6E6', border: '1px solid #ddd', borderRadius: '10px', padding: '1rem' }}>
               {[
                 { label: 'Stage name', value: form.stage_name },
                 { label: 'Real name', value: form.real_name || '—' },
@@ -276,14 +280,14 @@ export default function OnboardPage() {
                 { label: 'SoundCloud', value: form.soundcloud_url || '—' },
                 { label: 'Instagram', value: form.instagram_handle || '—' },
               ].map(row => (
-                <div key={row.label} style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 0', borderBottom: '0.5px solid #1a1a1a', fontSize: '12px' }}>
+                <div key={row.label} style={{ display: 'flex', justifyContent: 'space-between', padding: '5px 0', borderBottom: '1px solid #ddd', fontSize: '12px' }}>
                   <span style={{ color: '#666' }}>{row.label}</span>
-                  <span style={{ color: '#ccc', maxWidth: '240px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textAlign: 'right' }}>{row.value}</span>
+                  <span style={{ color: '#1a1a1a', maxWidth: '240px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', textAlign: 'right' }}>{row.value}</span>
                 </div>
               ))}
             </div>
 
-            <label style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', cursor: 'pointer', fontSize: '12px', color: form.agreed_terms ? '#4ecca3' : '#888', lineHeight: 1.5 }}>
+            <label style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', cursor: 'pointer', fontSize: '12px', color: form.agreed_terms ? '#1D9E75' : '#666', lineHeight: 1.5 }}>
               <input
                 type="checkbox"
                 checked={form.agreed_terms}
@@ -297,7 +301,7 @@ export default function OnboardPage() {
 
         {/* Error */}
         {error && (
-          <div style={{ marginTop: '12px', padding: '10px 12px', background: '#1a0a0a', border: '0.5px solid #5a1a1a', borderRadius: '8px', fontSize: '12px', color: '#f08080' }}>
+          <div style={{ marginTop: '12px', padding: '10px 12px', background: '#fff0f0', border: '1px solid #e8a0a0', borderRadius: '8px', fontSize: '12px', color: '#c44' }}>
             {error}
           </div>
         )}
@@ -307,8 +311,8 @@ export default function OnboardPage() {
           {step > 1 && (
             <button onClick={() => setStep(step - 1)} style={{
               padding: '10px 20px', background: 'transparent',
-              border: '0.5px solid #333', borderRadius: '8px',
-              color: '#888', fontSize: '13px', cursor: 'pointer',
+              border: '1px solid #ccc', borderRadius: '8px',
+              color: '#666', fontSize: '13px', cursor: 'pointer',
             }}>
               Back
             </button>
@@ -318,7 +322,7 @@ export default function OnboardPage() {
             disabled={!canNext() || submitting}
             style={{
               flex: 1, padding: '10px 20px',
-              background: !canNext() || submitting ? '#0a4a30' : '#1D9E75',
+              background: !canNext() || submitting ? '#a0d4c0' : '#1D9E75',
               border: 'none', borderRadius: '8px',
               color: '#fff', fontSize: '13px', fontWeight: '500',
               cursor: !canNext() || submitting ? 'not-allowed' : 'pointer',
@@ -329,7 +333,7 @@ export default function OnboardPage() {
           </button>
         </div>
 
-        <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '11px', color: '#444' }}>
+        <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '11px', color: '#999' }}>
           Shine Frequency — London, UK
         </div>
       </div>

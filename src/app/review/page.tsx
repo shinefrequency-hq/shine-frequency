@@ -22,7 +22,7 @@ type Release = {
 
 export default function ReviewPageWrapper() {
   return (
-    <Suspense fallback={<div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0a0a0a', color: '#555', fontFamily: 'system-ui' }}>Loading...</div>}>
+    <Suspense fallback={<div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#E6E6E6', color: '#999', fontFamily: 'system-ui' }}>Loading...</div>}>
       <ReviewPage />
     </Suspense>
   )
@@ -156,9 +156,9 @@ function ReviewPage() {
       onClick={() => set('overall_rating', n)}
       style={{
         width: '44px', height: '44px', borderRadius: '10px',
-        background: form.overall_rating >= n ? '#1D9E75' : '#1a1a1a',
-        border: `1px solid ${form.overall_rating >= n ? '#1D9E75' : '#333'}`,
-        color: form.overall_rating >= n ? '#fff' : '#555',
+        background: form.overall_rating >= n ? '#1D9E75' : '#fff',
+        border: `1px solid ${form.overall_rating >= n ? '#1D9E75' : '#ccc'}`,
+        color: form.overall_rating >= n ? '#fff' : '#999',
         fontSize: '18px', cursor: 'pointer', transition: 'all 0.15s',
       }}
     >
@@ -172,9 +172,9 @@ function ReviewPage() {
       onClick={onClick}
       style={{
         padding: '7px 14px', borderRadius: '20px',
-        background: selected ? '#0a2a1e' : '#1a1a1a',
-        border: `1px solid ${selected ? '#1D9E75' : '#333'}`,
-        color: selected ? '#4ecca3' : '#888',
+        background: selected ? '#e6f7f0' : '#fff',
+        border: `1px solid ${selected ? '#1D9E75' : '#ccc'}`,
+        color: selected ? '#1D9E75' : '#666',
         fontSize: '12px', cursor: 'pointer', transition: 'all 0.15s',
         whiteSpace: 'nowrap',
       }}
@@ -192,23 +192,25 @@ function ReviewPage() {
 
   const sectionLabel = (text: string, hint?: string) => (
     <div style={{ marginBottom: '8px' }}>
-      <div style={{ fontSize: '13px', fontWeight: '500', color: '#fff' }}>{text}</div>
-      {hint && <div style={{ fontSize: '11px', color: '#555', marginTop: '2px' }}>{hint}</div>}
+      <div style={{ fontSize: '13px', fontWeight: '500', color: '#1a1a1a' }}>{text}</div>
+      {hint && <div style={{ fontSize: '11px', color: '#999', marginTop: '2px' }}>{hint}</div>}
     </div>
   )
 
   if (submitted) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0a0a0a', fontFamily: 'system-ui, sans-serif' }}>
-        <div style={{ width: '100%', maxWidth: '480px', padding: '2.5rem', background: '#111', border: '0.5px solid #222', borderRadius: '16px', textAlign: 'center' }}>
-          <img src="/logo.png" alt="Shine" style={{ width: '64px', height: '64px', borderRadius: '50%', marginBottom: '1.25rem' }} />
-          <div style={{ fontSize: '18px', fontWeight: '500', color: '#fff', marginBottom: '8px' }}>Thanks, {form.name}</div>
-          <div style={{ fontSize: '13px', color: '#888', lineHeight: 1.6, marginBottom: '1.25rem' }}>
-            Your feedback on <strong style={{ color: '#fff' }}>{release?.artist_name} — {release?.title}</strong> has been submitted.
+      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#E6E6E6', fontFamily: 'system-ui, sans-serif' }}>
+        <div style={{ width: '100%', maxWidth: '480px', padding: '2.5rem', background: '#fff', border: '1px solid #ddd', borderRadius: '16px', textAlign: 'center' }}>
+          <div style={{ marginBottom: '1.25rem' }}>
+            <div style={{ background: '#1D9E75', color: '#fff', fontWeight: '800', fontSize: '32px', letterSpacing: '0.15em', padding: '12px 24px', borderRadius: '6px', display: 'inline-block' }}>SHINE</div>
+          </div>
+          <div style={{ fontSize: '18px', fontWeight: '500', color: '#1a1a1a', marginBottom: '8px' }}>Thanks, {form.name}</div>
+          <div style={{ fontSize: '13px', color: '#666', lineHeight: 1.6, marginBottom: '1.25rem' }}>
+            Your feedback on <strong style={{ color: '#1a1a1a' }}>{release?.artist_name} — {release?.title}</strong> has been submitted.
             Sharon will review it shortly.
           </div>
           {form.would_chart && (
-            <div style={{ padding: '10px 16px', background: '#0a2a1e', border: '0.5px solid #1D9E75', borderRadius: '8px', fontSize: '12px', color: '#4ecca3' }}>
+            <div style={{ padding: '10px 16px', background: '#e6f7f0', border: '1px solid #1D9E75', borderRadius: '8px', fontSize: '12px', color: '#1D9E75' }}>
               Chart support noted — thank you!
             </div>
           )}
@@ -218,20 +220,20 @@ function ReviewPage() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0a0a0a', fontFamily: 'system-ui, sans-serif', padding: '0' }}>
+    <div style={{ minHeight: '100vh', background: '#E6E6E6', fontFamily: 'system-ui, sans-serif', padding: '0' }}>
       {/* Nav */}
       <div style={{
         padding: '12px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        borderBottom: '0.5px solid #1a1a1a', background: 'rgba(10,10,10,0.95)',
+        borderBottom: '1px solid #ddd', background: 'rgba(255,255,255,0.95)',
         position: 'sticky', top: 0, zIndex: 50,
       }}>
-        <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', color: '#fff' }}>
-          <img src="/logo.png" alt="Shine" style={{ width: '24px', height: '24px', borderRadius: '50%' }} />
+        <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', color: '#1a1a1a' }}>
+          <div style={{ background: '#1D9E75', color: '#fff', fontWeight: '800', fontSize: '12px', letterSpacing: '0.12em', padding: '4px 8px', borderRadius: '3px' }}>SHINE</div>
           <span style={{ fontSize: '13px', fontWeight: '500' }}>Shine Frequency</span>
         </a>
         <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-          <a href="/" style={{ fontSize: '12px', color: '#888', textDecoration: 'none' }}>Home</a>
-          <a href="/portal" style={{ fontSize: '12px', color: '#888', textDecoration: 'none' }}>Login</a>
+          <a href="/" style={{ fontSize: '12px', color: '#666', textDecoration: 'none' }}>Home</a>
+          <a href="/portal" style={{ fontSize: '12px', color: '#666', textDecoration: 'none' }}>Login</a>
         </div>
       </div>
       <div style={{ padding: '2rem 1rem' }}>
@@ -239,23 +241,25 @@ function ReviewPage() {
 
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <img src="/logo.png" alt="Shine" style={{ width: '64px', height: '64px', borderRadius: '50%', marginBottom: '12px' }} />
-          <div style={{ fontSize: '20px', fontWeight: '500', color: '#fff' }}>DJ Feedback</div>
-          <div style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>Help us understand how this release works on the floor</div>
+          <div style={{ marginBottom: '12px' }}>
+            <div style={{ background: '#1D9E75', color: '#fff', fontWeight: '800', fontSize: '32px', letterSpacing: '0.15em', padding: '12px 24px', borderRadius: '6px', display: 'inline-block' }}>SHINE</div>
+          </div>
+          <div style={{ fontSize: '20px', fontWeight: '500', color: '#1a1a1a' }}>DJ Feedback</div>
+          <div style={{ fontSize: '12px', color: '#999', marginTop: '4px' }}>Help us understand how this release works on the floor</div>
         </div>
 
-        <div style={{ background: '#111', border: '0.5px solid #222', borderRadius: '16px', padding: '1.75rem' }}>
+        <div style={{ background: '#fff', border: '1px solid #ddd', borderRadius: '16px', padding: '1.75rem' }}>
 
           {/* Release selector */}
           <div style={{ marginBottom: '1.5rem' }}>
             {sectionLabel('Which release?', 'Select the release you\'re reviewing')}
             {loading ? (
-              <div style={{ color: '#555', fontSize: '12px' }}>Loading releases...</div>
+              <div style={{ color: '#999', fontSize: '12px' }}>Loading releases...</div>
             ) : (
               <select
                 value={selectedRelease}
                 onChange={e => setSelectedRelease(e.target.value)}
-                style={{ width: '100%', padding: '10px 14px', background: '#1a1a1a', border: '1px solid #333', borderRadius: '8px', color: '#fff', fontSize: '13px', outline: 'none' }}
+                style={{ width: '100%', padding: '10px 14px', background: '#fff', border: '1px solid #ccc', borderRadius: '8px', color: '#1a1a1a', fontSize: '13px', outline: 'none' }}
               >
                 <option value="">Select a release...</option>
                 {releases.map(r => (
@@ -267,16 +271,16 @@ function ReviewPage() {
 
           {/* Release preview */}
           {release && (
-            <div style={{ display: 'flex', gap: '12px', padding: '12px', background: '#0a0a0a', borderRadius: '10px', marginBottom: '1.5rem', alignItems: 'center' }}>
+            <div style={{ display: 'flex', gap: '12px', padding: '12px', background: '#E6E6E6', borderRadius: '10px', marginBottom: '1.5rem', alignItems: 'center' }}>
               {release.artwork_url ? (
                 <img src={release.artwork_url} alt="" style={{ width: '56px', height: '56px', borderRadius: '8px' }} />
               ) : (
-                <div style={{ width: '56px', height: '56px', borderRadius: '8px', background: '#1a1a1a', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', color: '#555' }}>{release.catalogue_number}</div>
+                <div style={{ width: '56px', height: '56px', borderRadius: '8px', background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', color: '#999' }}>{release.catalogue_number}</div>
               )}
               <div>
-                <div style={{ fontWeight: '500', color: '#fff', fontSize: '14px' }}>{release.artist_name}</div>
-                <div style={{ fontSize: '12px', color: '#888', marginTop: '2px' }}>{release.title}</div>
-                <div style={{ fontSize: '11px', color: '#555', marginTop: '2px' }}>{[release.genre, release.bpm_range].filter(Boolean).join(' · ')}</div>
+                <div style={{ fontWeight: '500', color: '#1a1a1a', fontSize: '14px' }}>{release.artist_name}</div>
+                <div style={{ fontSize: '12px', color: '#666', marginTop: '2px' }}>{release.title}</div>
+                <div style={{ fontSize: '11px', color: '#999', marginTop: '2px' }}>{[release.genre, release.bpm_range].filter(Boolean).join(' · ')}</div>
               </div>
             </div>
           )}
@@ -285,8 +289,8 @@ function ReviewPage() {
           <div style={{ marginBottom: '1.5rem' }}>
             {sectionLabel('Your details')}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-              <input value={form.name} onChange={e => set('name', e.target.value)} placeholder="Your name / DJ name" style={{ padding: '10px 14px', background: '#1a1a1a', border: '1px solid #333', borderRadius: '8px', color: '#fff', fontSize: '13px', outline: 'none' }} />
-              <input value={form.email} onChange={e => set('email', e.target.value)} placeholder="Email" type="email" style={{ padding: '10px 14px', background: '#1a1a1a', border: '1px solid #333', borderRadius: '8px', color: '#fff', fontSize: '13px', outline: 'none' }} />
+              <input value={form.name} onChange={e => set('name', e.target.value)} placeholder="Your name / DJ name" style={{ padding: '10px 14px', background: '#fff', border: '1px solid #ccc', borderRadius: '8px', color: '#1a1a1a', fontSize: '13px', outline: 'none' }} />
+              <input value={form.email} onChange={e => set('email', e.target.value)} placeholder="Email" type="email" style={{ padding: '10px 14px', background: '#fff', border: '1px solid #ccc', borderRadius: '8px', color: '#1a1a1a', fontSize: '13px', outline: 'none' }} />
             </div>
           </div>
 
@@ -362,14 +366,14 @@ function ReviewPage() {
           {form.would_chart && (
             <div style={{ marginBottom: '1.5rem' }}>
               {sectionLabel('Chart name', 'Which chart or playlist will you include it in?')}
-              <input value={form.chart_name} onChange={e => set('chart_name', e.target.value)} placeholder="e.g. March Top 10, Berghain Chart" style={{ width: '100%', padding: '10px 14px', background: '#1a1a1a', border: '1px solid #333', borderRadius: '8px', color: '#fff', fontSize: '13px', outline: 'none' }} />
+              <input value={form.chart_name} onChange={e => set('chart_name', e.target.value)} placeholder="e.g. March Top 10, Berghain Chart" style={{ width: '100%', padding: '10px 14px', background: '#fff', border: '1px solid #ccc', borderRadius: '8px', color: '#1a1a1a', fontSize: '13px', outline: 'none' }} />
             </div>
           )}
 
           {/* Favourite track */}
           <div style={{ marginBottom: '1.5rem' }}>
             {sectionLabel('Favourite track', 'Which track stands out most?')}
-            <input value={form.favourite_track} onChange={e => set('favourite_track', e.target.value)} placeholder="e.g. A1, B2, or track name" style={{ width: '100%', padding: '10px 14px', background: '#1a1a1a', border: '1px solid #333', borderRadius: '8px', color: '#fff', fontSize: '13px', outline: 'none' }} />
+            <input value={form.favourite_track} onChange={e => set('favourite_track', e.target.value)} placeholder="e.g. A1, B2, or track name" style={{ width: '100%', padding: '10px 14px', background: '#fff', border: '1px solid #ccc', borderRadius: '8px', color: '#1a1a1a', fontSize: '13px', outline: 'none' }} />
           </div>
 
           {/* Written feedback */}
@@ -379,13 +383,13 @@ function ReviewPage() {
               value={form.body}
               onChange={e => set('body', e.target.value)}
               placeholder="Tell us what you think..."
-              style={{ width: '100%', height: '100px', padding: '10px 14px', background: '#1a1a1a', border: '1px solid #333', borderRadius: '8px', color: '#fff', fontSize: '13px', outline: 'none', resize: 'none' }}
+              style={{ width: '100%', height: '100px', padding: '10px 14px', background: '#fff', border: '1px solid #ccc', borderRadius: '8px', color: '#1a1a1a', fontSize: '13px', outline: 'none', resize: 'none' }}
             />
           </div>
 
           {/* Error */}
           {error && (
-            <div style={{ padding: '10px 14px', background: '#1a0a0a', border: '1px solid #5a1a1a', borderRadius: '8px', fontSize: '12px', color: '#f08080', marginBottom: '1rem' }}>
+            <div style={{ padding: '10px 14px', background: '#fff0f0', border: '1px solid #e8a0a0', borderRadius: '8px', fontSize: '12px', color: '#c44', marginBottom: '1rem' }}>
               {error}
             </div>
           )}
@@ -396,7 +400,7 @@ function ReviewPage() {
             disabled={submitting}
             style={{
               width: '100%', padding: '12px',
-              background: submitting ? '#0a4a30' : '#1D9E75',
+              background: submitting ? '#a0d4c0' : '#1D9E75',
               border: 'none', borderRadius: '8px',
               color: '#fff', fontSize: '14px', fontWeight: '500',
               cursor: submitting ? 'not-allowed' : 'pointer',
@@ -406,12 +410,12 @@ function ReviewPage() {
             {submitting ? 'Submitting...' : 'Submit feedback'}
           </button>
 
-          <div style={{ marginTop: '1rem', textAlign: 'center', fontSize: '11px', color: '#444' }}>
+          <div style={{ marginTop: '1rem', textAlign: 'center', fontSize: '11px', color: '#999' }}>
             Your feedback helps us improve releases and is shared with the artist. Thank you.
           </div>
         </div>
 
-        <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '11px', color: '#333' }}>
+        <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '11px', color: '#999' }}>
           Shine Frequency — London, UK
         </div>
       </div>

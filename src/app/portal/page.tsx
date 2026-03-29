@@ -4,22 +4,26 @@ import { useState } from 'react'
 
 export default function PortalPage() {
   const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [checking, setChecking] = useState(false)
+  const [resetMode, setResetMode] = useState(false)
+  const [resetSent, setResetSent] = useState(false)
+  const [resetSending, setResetSending] = useState(false)
 
   async function handleLogin() {
-    if (!email) return
+    if (!email || !password) return
     setChecking(true)
     setError('')
 
     const res = await fetch('/api/public', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'portal_lookup', email }),
+      body: JSON.stringify({ action: 'portal_lookup', email, password }),
     })
     const data = await res.json()
     if (!res.ok) {
-      setError('No account found with this email.')
+      setError(data.error || 'Invalid email or password.')
       setChecking(false)
       return
     }
@@ -29,62 +33,146 @@ export default function PortalPage() {
     window.location.href = '/portal/dashboard'
   }
 
+  async function handleReset() {
+    if (!email) return
+    setResetSending(true)
+    await fetch('/api/public', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'password_reset', email }),
+    })
+    setResetSending(false)
+    setResetSent(true)
+  }
+
+  const inp = {
+    width: '100%', padding: '10px 14px', background: '#1a1a1a',
+    border: '0.5px solid #333', borderRadius: '8px', color: '#fff',
+    fontSize: '13px', outline: 'none',
+  } as React.CSSProperties
+
   return (
     <div style={{
-      minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center',
-      background: '#0a0a0a', fontFamily: 'system-ui, sans-serif', padding: '2rem 1rem',
+      minHeight: '100vh', display: 'flex', flexDirection: 'column',
+      background: '#0a0a0a', fontFamily: 'system-ui, sans-serif',
     }}>
+      {/* Nav */}
       <div style={{
-        width: '100%', maxWidth: '420px', padding: '2.5rem',
-        background: '#111', border: '0.5px solid #222', borderRadius: '16px',
+        padding: '12px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        borderBottom: '0.5px solid #1a1a1a', background: 'rgba(10,10,10,0.95)',
       }}>
-        <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <img src="/logo.png" alt="Shine Music" style={{ width: '80px', height: '80px', borderRadius: '50%', marginBottom: '12px' }} />
-          <div style={{ fontSize: '18px', fontWeight: '500', color: '#fff' }}>Client Portal</div>
-          <div style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>View your releases, bookings and stats</div>
+        <a href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', color: '#fff' }}>
+          <img src="/logo.png" alt="Shine" style={{ width: '24px', height: '24px', borderRadius: '50%' }} />
+          <span style={{ fontSize: '13px', fontWeight: '500' }}>Shine Frequency</span>
+        </a>
+        <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+          <a href="/" style={{ fontSize: '12px', color: '#888', textDecoration: 'none' }}>Home</a>
+          <a href="/onboard" style={{ fontSize: '12px', color: '#888', textDecoration: 'none' }}>Artist Sign Up</a>
+          <a href="/join" style={{ fontSize: '12px', color: '#1D9E75', textDecoration: 'none' }}>DJ Sign Up</a>
         </div>
+      </div>
 
-        <div style={{ marginBottom: '1rem' }}>
-          <label style={{ fontSize: '12px', color: '#666', display: 'block', marginBottom: '6px' }}>Email address</label>
-          <input
-            type="email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-            onKeyDown={e => e.key === 'Enter' && handleLogin()}
-            placeholder="your@email.com"
-            style={{
-              width: '100%', padding: '10px 14px', background: '#1a1a1a',
-              border: '0.5px solid #333', borderRadius: '8px', color: '#fff',
-              fontSize: '13px', outline: 'none',
-            }}
-          />
-        </div>
-
-        {error && (
-          <div style={{ padding: '10px 12px', background: '#1a0a0a', border: '0.5px solid #5a1a1a', borderRadius: '8px', fontSize: '12px', color: '#f08080', marginBottom: '1rem' }}>
-            {error}
-            <div style={{ marginTop: '8px', display: 'flex', gap: '8px' }}>
-              <a href="/onboard" style={{ color: '#1D9E75', fontSize: '11px' }}>Apply as artist</a>
-              <a href="/join" style={{ color: '#1D9E75', fontSize: '11px' }}>Sign up for promos</a>
+      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem 1rem' }}>
+        <div style={{
+          width: '100%', maxWidth: '420px', padding: '2.5rem',
+          background: '#111', border: '0.5px solid #222', borderRadius: '16px',
+        }}>
+          <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+            <img src="/logo.png" alt="Shine Music" style={{ width: '80px', height: '80px', borderRadius: '50%', marginBottom: '12px' }} />
+            <div style={{ fontSize: '18px', fontWeight: '500', color: '#fff' }}>
+              {resetMode ? 'Reset Password' : 'Client Portal'}
+            </div>
+            <div style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
+              {resetMode ? 'Enter your email to receive a reset link' : 'View your releases, bookings and stats'}
             </div>
           </div>
-        )}
 
-        <button
-          onClick={handleLogin}
-          disabled={!email || checking}
-          style={{
-            width: '100%', padding: '11px', background: !email || checking ? '#0a4a30' : '#1D9E75',
-            border: 'none', borderRadius: '8px', color: '#fff', fontSize: '13px',
-            fontWeight: '500', cursor: !email || checking ? 'not-allowed' : 'pointer',
-            transition: 'background 0.15s',
-          }}
-        >
-          {checking ? 'Checking...' : 'Access portal'}
-        </button>
+          {resetMode ? (
+            // Password reset form
+            resetSent ? (
+              <div style={{ textAlign: 'center' }}>
+                <div style={{ padding: '16px', background: '#0a2a1e', border: '0.5px solid #1D9E75', borderRadius: '10px', marginBottom: '1rem' }}>
+                  <div style={{ fontSize: '14px', fontWeight: '500', color: '#4ecca3', marginBottom: '6px' }}>Reset link sent</div>
+                  <div style={{ fontSize: '13px', color: '#888', lineHeight: 1.6 }}>
+                    If <strong style={{ color: '#fff' }}>{email}</strong> is registered, you'll receive a password reset email shortly.
+                  </div>
+                </div>
+                <button onClick={() => { setResetMode(false); setResetSent(false) }} style={{
+                  padding: '8px 20px', background: 'transparent', border: '0.5px solid #333',
+                  borderRadius: '8px', color: '#888', fontSize: '12px', cursor: 'pointer',
+                }}>Back to login</button>
+              </div>
+            ) : (
+              <>
+                <div style={{ marginBottom: '1rem' }}>
+                  <label style={{ fontSize: '12px', color: '#666', display: 'block', marginBottom: '6px' }}>Email address</label>
+                  <input type="email" value={email} onChange={e => setEmail(e.target.value)}
+                    onKeyDown={e => e.key === 'Enter' && handleReset()}
+                    placeholder="your@email.com" style={inp} />
+                </div>
+                <button onClick={handleReset} disabled={!email || resetSending} style={{
+                  width: '100%', padding: '11px', background: !email || resetSending ? '#0a4a30' : '#1D9E75',
+                  border: 'none', borderRadius: '8px', color: '#fff', fontSize: '13px', fontWeight: '500',
+                  cursor: !email || resetSending ? 'not-allowed' : 'pointer', marginBottom: '1rem',
+                }}>
+                  {resetSending ? 'Sending...' : 'Send reset link'}
+                </button>
+                <div style={{ textAlign: 'center' }}>
+                  <button onClick={() => setResetMode(false)} style={{
+                    background: 'none', border: 'none', color: '#1D9E75', fontSize: '12px', cursor: 'pointer',
+                  }}>Back to login</button>
+                </div>
+              </>
+            )
+          ) : (
+            // Login form
+            <>
+              <div style={{ marginBottom: '12px' }}>
+                <label style={{ fontSize: '12px', color: '#666', display: 'block', marginBottom: '6px' }}>Email address</label>
+                <input type="email" value={email} onChange={e => setEmail(e.target.value)}
+                  placeholder="your@email.com" style={inp} />
+              </div>
 
-        <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '11px', color: '#444' }}>
-          <a href="/" style={{ color: '#555', textDecoration: 'none' }}>Back to Shine Frequency</a>
+              <div style={{ marginBottom: '4px' }}>
+                <label style={{ fontSize: '12px', color: '#666', display: 'block', marginBottom: '6px' }}>Password</label>
+                <input type="password" value={password} onChange={e => setPassword(e.target.value)}
+                  onKeyDown={e => e.key === 'Enter' && handleLogin()}
+                  placeholder="Enter your password" style={inp} />
+              </div>
+
+              <div style={{ textAlign: 'right', marginBottom: '1rem' }}>
+                <button onClick={() => setResetMode(true)} style={{
+                  background: 'none', border: 'none', color: '#1D9E75', fontSize: '11px', cursor: 'pointer',
+                }}>Forgot password?</button>
+              </div>
+
+              {error && (
+                <div style={{ padding: '10px 12px', background: '#1a0a0a', border: '0.5px solid #5a1a1a', borderRadius: '8px', fontSize: '12px', color: '#f08080', marginBottom: '1rem' }}>
+                  {error}
+                  <div style={{ marginTop: '8px', display: 'flex', gap: '8px' }}>
+                    <a href="/onboard" style={{ color: '#1D9E75', fontSize: '11px' }}>Apply as artist</a>
+                    <a href="/join" style={{ color: '#1D9E75', fontSize: '11px' }}>Sign up for promos</a>
+                  </div>
+                </div>
+              )}
+
+              <button onClick={handleLogin} disabled={!email || !password || checking} style={{
+                width: '100%', padding: '11px',
+                background: !email || !password || checking ? '#0a4a30' : '#1D9E75',
+                border: 'none', borderRadius: '8px', color: '#fff', fontSize: '13px',
+                fontWeight: '500', cursor: !email || !password || checking ? 'not-allowed' : 'pointer',
+              }}>
+                {checking ? 'Signing in...' : 'Sign in'}
+              </button>
+
+              <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '12px', color: '#555', lineHeight: 1.6 }}>
+                Don't have an account?<br />
+                <a href="/onboard" style={{ color: '#1D9E75', textDecoration: 'none' }}>Apply as artist</a>
+                {' · '}
+                <a href="/join" style={{ color: '#1D9E75', textDecoration: 'none' }}>DJ / Press sign up</a>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>

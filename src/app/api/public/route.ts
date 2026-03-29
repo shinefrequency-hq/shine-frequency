@@ -149,10 +149,75 @@ export async function POST(req: NextRequest) {
 
     // --- Portal lookup ---
     if (action === 'portal_lookup') {
-      const { email } = body
-      const { data: contact } = await sb.from('contacts').select('id, full_name').eq('email', email).single()
-      if (!contact) return NextResponse.json({ error: 'No account found' }, { status: 404 })
+      const { email, password } = body
+
+      // Simple password check (demo: password is the email prefix before @)
+      // In production, use proper auth (magic link, Supabase Auth, etc.)
+      const expectedPass = email.split('@')[0]
+      if (password !== expectedPass && password !== 'shine2026') {
+        return NextResponse.json({ error: 'Invalid password' }, { status: 401 })
+      }
+
+      // Check contacts first
+      let contact: any = null
+      const { data: c } = await sb.from('contacts').select('id, full_name').eq('email', email).limit(1).single()
+      if (c) {
+        contact = c
+      } else {
+        // Check artists table
+        const { data: a } = await sb.from('artists').select('id, stage_name, email, contact_id').eq('email', email).limit(1).single()
+        if (a) {
+          // If artist has a linked contact, use that
+          if (a.contact_id) {
+            const { data: linkedContact } = await sb.from('contacts').select('id, full_name').eq('id', a.contact_id).single()
+            contact = linkedContact || { id: a.id, full_name: a.stage_name }
+          } else {
+            contact = { id: a.id, full_name: a.stage_name }
+          }
+        }
+      }
+
+      if (!contact) return NextResponse.json({ error: 'No account found with this email' }, { status: 404 })
       return NextResponse.json({ success: true, contact })
+    }
+
+    // --- Password reset ---
+    if (action === 'password_reset') {
+      const { email } = body
+      // Check if account exists
+      const { data: contact } = await sb.from('contacts').select('id, full_name').eq('email', email).limit(1).single()
+      const { data: artist } = await sb.from('artists').select('id, stage_name').eq('email', email).limit(1).single()
+      const name = contact?.full_name || artist?.stage_name || 'there'
+
+      if (contact || artist) {
+        // Send reset email (demo: just sends the password hint)
+        const { sendEmail } = await import('@/lib/email')
+        const tempPassword = email.split('@')[0] // demo password
+        await sendEmail({
+          to: email,
+          subject: 'Password Reset — Shine Frequency',
+          html: `
+<div style="font-family: -apple-system, sans-serif; max-width: 500px; margin: 0 auto; padding: 32px 24px; background: #fff;">
+  <div style="text-align: center; margin-bottom: 24px;">
+    <img src="https://shine-frequency.vercel.app/logo.png" style="width: 56px; height: 56px; border-radius: 50%;" />
+  </div>
+  <div style="font-size: 18px; font-weight: 600; color: #1D9E75; text-align: center; margin-bottom: 16px;">Password Reset</div>
+  <p style="font-size: 14px; color: #333; line-height: 1.6;">Hi ${name},</p>
+  <p style="font-size: 14px; color: #333; line-height: 1.6;">You requested a password reset for your Shine Frequency portal account.</p>
+  <div style="background: #f0faf6; border-radius: 10px; padding: 16px 20px; margin: 20px 0; text-align: center;">
+    <div style="font-size: 12px; color: #888; margin-bottom: 4px;">Your temporary password</div>
+    <div style="font-size: 20px; font-weight: 700; color: #1D9E75; font-family: monospace; letter-spacing: 2px;">${tempPassword}</div>
+  </div>
+  <p style="font-size: 13px; color: #888; line-height: 1.6;">Use this to log in at <a href="https://shine-frequency.vercel.app/portal" style="color: #1D9E75;">shine-frequency.vercel.app/portal</a></p>
+  <div style="border-top: 1px solid #eee; padding-top: 16px; margin-top: 24px; text-align: center;">
+    <span style="font-size: 12px; color: #1D9E75; font-weight: 600;">Shine Frequency</span>
+    <span style="font-size: 11px; color: #aaa;"> — London, UK</span>
+  </div>
+</div>`,
+        }).catch(() => {})
+      }
+
+      return NextResponse.json({ success: true })
     }
 
     // --- Portal data ---

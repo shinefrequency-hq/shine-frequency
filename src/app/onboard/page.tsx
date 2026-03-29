@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { createClient } from '@/lib/supabase'
 
 const GENRES = [
   'Techno', 'Industrial Techno', 'Hard Techno', 'Minimal Techno',
@@ -10,7 +9,6 @@ const GENRES = [
 ]
 
 export default function OnboardPage() {
-  const supabase = createClient()
   const [step, setStep] = useState(1)
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
@@ -49,70 +47,48 @@ export default function OnboardPage() {
     setSubmitting(true)
     setError('')
 
-    // Create contact first
-    const { data: contact, error: contactErr } = await (supabase as any)
-      .from('contacts')
-      .insert([{
-        full_name: form.stage_name,
-        email: form.email,
-        phone: form.phone || null,
-        type: 'artist',
-        city: form.city || null,
-        country_code: form.country_code || null,
-        bio: form.bio || null,
-        soundcloud_url: form.soundcloud_url || null,
-        instagram_handle: form.instagram_handle || null,
-        website: form.website || null,
-        is_sf_artist: true,
-        notes: `Submitted via onboarding form. Demo: ${form.demo_link || 'none'}`,
-      }])
-      .select()
-      .single()
-
-    if (contactErr) {
-      if (contactErr.message?.includes('duplicate')) {
-        setError('An artist with this email already exists. Please contact us directly.')
-      } else {
-        setError(contactErr.message)
-      }
+    const res = await fetch('/api/public', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'onboard_artist',
+        contact: {
+          full_name: form.stage_name,
+          email: form.email,
+          phone: form.phone || null,
+          type: 'artist',
+          city: form.city || null,
+          country_code: form.country_code || null,
+          bio: form.bio || null,
+          soundcloud_url: form.soundcloud_url || null,
+          instagram_handle: form.instagram_handle || null,
+          website: form.website || null,
+          is_sf_artist: true,
+          is_on_promo_list: false,
+          is_trusted: false,
+          is_high_value: false,
+          notes: `Submitted via onboarding form. Demo: ${form.demo_link || 'none'}`,
+        },
+        artist: {
+          stage_name: form.stage_name,
+          real_name: form.real_name || null,
+          email: form.email,
+          phone: form.phone || null,
+          agent_notes: [
+            form.genre ? `Genre: ${form.genre}` : '',
+            form.bpm_range ? `BPM: ${form.bpm_range}` : '',
+            form.demo_link ? `Demo: ${form.demo_link}` : '',
+          ].filter(Boolean).join('\n'),
+          is_active: false,
+        },
+      }),
+    })
+    const data = await res.json()
+    if (!res.ok) {
+      setError(data.error)
       setSubmitting(false)
       return
     }
-
-    // Create artist record
-    const { error: artistErr } = await (supabase as any)
-      .from('artists')
-      .insert([{
-        contact_id: contact.id,
-        stage_name: form.stage_name,
-        real_name: form.real_name || null,
-        email: form.email,
-        phone: form.phone || null,
-        agent_notes: [
-          form.genre ? `Genre: ${form.genre}` : '',
-          form.bpm_range ? `BPM: ${form.bpm_range}` : '',
-          form.demo_link ? `Demo: ${form.demo_link}` : '',
-        ].filter(Boolean).join('\n'),
-        is_active: false, // not active until Sharon approves
-      }])
-
-    if (artistErr) {
-      setError(artistErr.message)
-      setSubmitting(false)
-      return
-    }
-
-    // Create task for Sharon
-    await (supabase as any)
-      .from('tasks')
-      .insert([{
-        title: `New artist submission: ${form.stage_name}`,
-        description: `${form.stage_name} (${form.email}) submitted via onboarding form. Genre: ${form.genre || '—'}. Demo: ${form.demo_link || 'none'}. Review and approve.`,
-        urgency: 'today',
-        related_contact_id: contact.id,
-        auto_generated: true,
-      }])
-
     setSubmitting(false)
     setSubmitted(true)
   }

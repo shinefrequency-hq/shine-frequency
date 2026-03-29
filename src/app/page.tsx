@@ -1,10 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { createClient } from '@/lib/supabase'
 
 export default function HomePage() {
-  const supabase = createClient()
   const [formSent, setFormSent] = useState(false)
   const [sending, setSending] = useState(false)
   const [form, setForm] = useState({ name: '', email: '', message: '', type: 'General enquiry' })
@@ -12,12 +10,17 @@ export default function HomePage() {
   async function handleSubmit() {
     if (!form.name || !form.email || !form.message) return
     setSending(true)
-    await (supabase as any).from('tasks').insert([{
-      title: `Website enquiry: ${form.name} — ${form.type}`,
-      description: `From: ${form.name} (${form.email})\nType: ${form.type}\n\n${form.message}`,
-      urgency: 'today',
-      auto_generated: true,
-    }])
+    await fetch('/api/public', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'contact_form',
+        name: form.name,
+        email: form.email,
+        type: form.type,
+        message: form.message,
+      }),
+    })
     setSending(false)
     setFormSent(true)
   }

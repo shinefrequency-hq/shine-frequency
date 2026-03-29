@@ -1,10 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { createClient } from '@/lib/supabase'
 
 export default function PortalPage() {
-  const supabase = createClient()
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
   const [checking, setChecking] = useState(false)
@@ -14,22 +12,19 @@ export default function PortalPage() {
     setChecking(true)
     setError('')
 
-    // Check if email exists as a contact or artist
-    const { data: contact } = await (supabase as any)
-      .from('contacts')
-      .select('id, full_name')
-      .eq('email', email)
-      .single()
-
-    if (!contact) {
-      setError('No account found with this email. Apply as an artist or sign up for promos.')
+    const res = await fetch('/api/public', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'portal_lookup', email }),
+    })
+    const data = await res.json()
+    if (!res.ok) {
+      setError('No account found with this email.')
       setChecking(false)
       return
     }
-
-    // Store in sessionStorage and redirect
-    sessionStorage.setItem('portal_contact_id', contact.id)
-    sessionStorage.setItem('portal_name', contact.full_name)
+    sessionStorage.setItem('portal_contact_id', data.contact.id)
+    sessionStorage.setItem('portal_name', data.contact.full_name)
     sessionStorage.setItem('portal_email', email)
     window.location.href = '/portal/dashboard'
   }

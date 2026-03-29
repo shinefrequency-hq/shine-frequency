@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { createClient } from '@/lib/supabase'
 
 const TYPES = ['DJ', 'Producer', 'Press', 'Label', 'Promoter', 'Venue', 'Other']
 
@@ -11,7 +10,6 @@ const GENRES = [
 ]
 
 export default function JoinPage() {
-  const supabase = createClient()
   const [submitting, setSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState('')
@@ -56,52 +54,43 @@ export default function JoinPage() {
     const genresStr = form.genres.length > 0 ? form.genres.join(', ') : 'None selected'
     const notesStr = `Signed up via /join. Genres: ${genresStr}. Bio: ${form.bio || 'N/A'}`
 
-    // Insert contact
-    const { data: contact, error: contactErr } = await (supabase as any)
-      .from('contacts')
-      .insert([{
-        full_name: form.full_name,
-        email: form.email,
-        type: form.type.toLowerCase(),
-        city: form.city || null,
-        country_code: form.country_code || null,
-        bio: form.bio || null,
-        soundcloud_url: form.soundcloud_url || null,
-        instagram_handle: form.instagram_handle || null,
-        website: form.website || null,
-        is_on_promo_list: false,
-        is_trusted: false,
-        is_high_value: false,
-        is_sf_artist: false,
-        promo_tier: 3,
-        notes: notesStr,
-      }])
-      .select()
-      .single()
-
-    if (contactErr) {
-      if (contactErr.message?.includes('duplicate') || contactErr.code === '23505') {
-        setError('This email is already registered. If you believe this is an error, please contact us directly.')
-      } else {
-        setError(contactErr.message)
+    try {
+      const res = await fetch('/api/public', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'join_promo',
+          contact: {
+            full_name: form.full_name,
+            email: form.email,
+            type: form.type.toLowerCase(),
+            city: form.city || null,
+            country_code: form.country_code || null,
+            bio: form.bio || null,
+            soundcloud_url: form.soundcloud_url || null,
+            instagram_handle: form.instagram_handle || null,
+            website: form.website || null,
+            is_on_promo_list: false,
+            is_trusted: false,
+            is_high_value: false,
+            is_sf_artist: false,
+            promo_tier: 3,
+            notes: notesStr,
+          },
+        }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        setError(data.error || 'Something went wrong.')
+        setSubmitting(false)
+        return
       }
       setSubmitting(false)
-      return
+      setSubmitted(true)
+    } catch {
+      setError('Something went wrong. Please try again.')
+      setSubmitting(false)
     }
-
-    // Create task for Sharon
-    await (supabase as any)
-      .from('tasks')
-      .insert([{
-        title: `New promo sign-up: ${form.full_name}`,
-        description: `${form.full_name} (${form.email}) — ${form.type}${form.organisation ? ` @ ${form.organisation}` : ''}. ${form.city ? `${form.city}${form.country_code ? `, ${form.country_code}` : ''}` : ''}. Genres: ${genresStr}. Review and approve for promo list.`,
-        urgency: 'today',
-        related_contact_id: contact.id,
-        auto_generated: true,
-      }])
-
-    setSubmitting(false)
-    setSubmitted(true)
   }
 
   const inp = (style: any = {}) => ({

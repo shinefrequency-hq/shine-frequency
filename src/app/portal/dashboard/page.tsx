@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { createClient } from '@/lib/supabase'
 
 interface PortalData {
   contact: any
@@ -14,7 +13,6 @@ interface PortalData {
 }
 
 export default function PortalDashboard() {
-  const supabase = createClient()
   const [loading, setLoading] = useState(true)
   const [data, setData] = useState<PortalData | null>(null)
   const [tab, setTab] = useState<'overview' | 'releases' | 'bookings' | 'invoices' | 'promos' | 'reviews'>('overview')
@@ -29,47 +27,18 @@ export default function PortalDashboard() {
   }, [])
 
   async function loadData(contactId: string) {
-    const [contact, artist, releases, bookings, invoices, promoAccess, reviews] = await Promise.all([
-      (supabase as any).from('contacts').select('*').eq('id', contactId).single(),
-      (supabase as any).from('artists').select('*').eq('contact_id', contactId).single(),
-      (supabase as any).from('releases').select('*').eq('artist_name', sessionStorage.getItem('portal_name')).order('created_at', { ascending: false }),
-      (supabase as any).from('bookings').select('*, artists(stage_name)').eq('contact_email', sessionStorage.getItem('portal_email')).order('event_date', { ascending: false }),
-      (supabase as any).from('invoices').select('*').eq('recipient_email', sessionStorage.getItem('portal_email')).order('created_at', { ascending: false }),
-      (supabase as any).from('promo_lists').select('*, releases(catalogue_number, title, artist_name, artwork_url, genre, dropbox_folder_url)').eq('contact_id', contactId).order('invited_at', { ascending: false }),
-      (supabase as any).from('reviews').select('*, releases(catalogue_number, title, artist_name)').eq('contact_id', contactId).order('created_at', { ascending: false }),
-    ])
-
-    // Also try to find bookings by artist
-    let allBookings = bookings.data ?? []
-    if (artist.data) {
-      const { data: artistBookings } = await (supabase as any)
-        .from('bookings')
-        .select('*, artists(stage_name)')
-        .eq('artist_id', artist.data.id)
-        .order('event_date', { ascending: false })
-      allBookings = [...allBookings, ...(artistBookings ?? [])].filter((b, i, arr) => arr.findIndex(x => x.id === b.id) === i)
-    }
-
-    // Also find invoices linked to their bookings
-    let allInvoices = invoices.data ?? []
-    if (allBookings.length > 0) {
-      const bookingIds = allBookings.map((b: any) => b.id)
-      const { data: bookingInvoices } = await (supabase as any)
-        .from('invoices')
-        .select('*')
-        .in('booking_id', bookingIds)
-      allInvoices = [...allInvoices, ...(bookingInvoices ?? [])].filter((inv, i, arr) => arr.findIndex(x => x.id === inv.id) === i)
-    }
-
-    setData({
-      contact: contact.data,
-      artist: artist.data,
-      releases: releases.data ?? [],
-      bookings: allBookings,
-      invoices: allInvoices,
-      promoAccess: promoAccess.data ?? [],
-      reviews: reviews.data ?? [],
+    const res = await fetch('/api/public', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'portal_data',
+        contact_id: contactId,
+        email: sessionStorage.getItem('portal_email'),
+        name: sessionStorage.getItem('portal_name'),
+      }),
     })
+    const result = await res.json()
+    setData(result.data)
     setLoading(false)
   }
 

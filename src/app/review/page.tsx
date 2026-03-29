@@ -2,7 +2,6 @@
 
 import { Suspense, useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { createClient } from '@/lib/supabase'
 
 const ENERGY_OPTIONS = ['Low & hypnotic', 'Slow build', 'Mid energy', 'High energy', 'Peak time destroyer']
 const MIXABILITY_OPTIONS = ['Very easy to mix', 'Easy', 'Moderate', 'Challenging', 'DJ tool — loop-friendly']
@@ -30,7 +29,6 @@ export default function ReviewPageWrapper() {
 }
 
 function ReviewPage() {
-  const supabase = createClient()
   const searchParams = useSearchParams()
   const releaseParam = searchParams.get('release') // catalogue number e.g. SF-042
   const contactParam = searchParams.get('contact') // contact email for pre-fill
@@ -74,12 +72,14 @@ function ReviewPage() {
 
   useEffect(() => {
     async function load() {
-      const { data } = await (supabase as any)
-        .from('releases')
-        .select('id, catalogue_number, title, artist_name, genre, artwork_url, bpm_range')
-        .in('status', ['live', 'scheduled'])
-        .order('created_at', { ascending: false })
-      setReleases(data ?? [])
+      const res = await fetch('/api/public', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'get_releases' }),
+      })
+      const result = await res.json()
+      const data = result.releases ?? []
+      setReleases(data)
       if (releaseParam && data) {
         const match = data.find((r: Release) => r.catalogue_number === releaseParam)
         if (match) setSelectedRelease(match.id)
@@ -99,39 +99,6 @@ function ReviewPage() {
     setSubmitting(true)
     setError('')
 
-    // Find or create contact
-    let contactId: string | null = null
-    const { data: existing } = await (supabase as any)
-      .from('contacts')
-      .select('id')
-      .eq('email', form.email)
-      .single()
-
-    if (existing) {
-      contactId = existing.id
-    } else {
-      const { data: newContact } = await (supabase as any)
-        .from('contacts')
-        .insert([{
-          full_name: form.name,
-          email: form.email,
-          type: 'dj',
-          is_on_promo_list: false,
-          is_trusted: false,
-          is_high_value: false,
-          is_sf_artist: false,
-        }])
-        .select()
-        .single()
-      contactId = newContact?.id
-    }
-
-    if (!contactId) {
-      setError('Could not create contact record.')
-      setSubmitting(false)
-      return
-    }
-
     // Build review body with structured data
     const structured = [
       `Overall: ${form.overall_rating}/5`,
@@ -149,37 +116,38 @@ function ReviewPage() {
       form.body || '',
     ].filter(Boolean).join('\n')
 
-    const { error: reviewErr } = await (supabase as any)
-      .from('reviews')
-      .insert([{
-        release_id: selectedRelease,
-        contact_id: contactId,
-        status: 'pending',
-        rating: form.overall_rating,
-        body: structured,
-        charted: form.would_chart ?? false,
-        chart_name: form.chart_name || null,
-        is_featured: false,
-      }])
-
-    if (reviewErr) {
-      setError(reviewErr.message)
+    try {
+      const res = await fetch('/api/public', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'submit_review',
+          email: form.email,
+          name: form.name,
+          review: {
+            release_id: selectedRelease,
+            status: 'pending',
+            rating: form.overall_rating,
+            body: structured,
+            charted: form.would_chart ?? false,
+            chart_name: form.chart_name || null,
+            is_featured: false,
+            catalogue_number: release?.catalogue_number,
+          },
+        }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        setError(data.error || 'Something went wrong.')
+        setSubmitting(false)
+        return
+      }
       setSubmitting(false)
-      return
+      setSubmitted(true)
+    } catch {
+      setError('Something went wrong. Please try again.')
+      setSubmitting(false)
     }
-
-    // Create task for Sharon
-    await (supabase as any).from('tasks').insert([{
-      title: `New DJ review: ${form.name} on ${release?.catalogue_number}`,
-      description: `${form.name} submitted a ${form.overall_rating}-star review for ${release?.artist_name} — ${release?.title}. ${form.would_chart ? 'Will chart.' : ''} Check and approve.`,
-      urgency: 'today',
-      related_release_id: selectedRelease,
-      related_contact_id: contactId,
-      auto_generated: true,
-    }])
-
-    setSubmitting(false)
-    setSubmitted(true)
   }
 
   const starButton = (n: number) => (

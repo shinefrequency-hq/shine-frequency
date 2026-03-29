@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase-server'
 import { redirect } from 'next/navigation'
-import Link from 'next/link'
 import { ThemeToggle } from '@/lib/theme'
+import { NavLink } from '@/lib/nav-link'
 import type { Staff } from '@/types/database'
 
 const NAV = [
@@ -18,6 +18,7 @@ const NAV = [
     section: 'Distribution',
     items: [
       { label: 'Releases', href: '/dashboard/releases' },
+      { label: 'Promo lists', href: '/dashboard/releases/promo' },
       { label: 'Heat tracker', href: '/dashboard/heat' },
       { label: 'Reviews', href: '/dashboard/reviews' },
       { label: 'Downloads', href: '/dashboard/downloads' },
@@ -139,21 +140,7 @@ export default async function DashboardLayout({
                 {group.section}
               </div>
               {group.items.map(item => (
-                <Link key={item.href} href={item.href} style={{
-                  display: 'flex', alignItems: 'center', gap: '7px',
-                  padding: '6px 1rem', color: 'var(--text-2)',
-                  fontSize: '12px', transition: 'all 0.1s',
-                  borderLeft: '2px solid transparent',
-                  whiteSpace: 'nowrap'
-                }}
-                  className="nav-item"
-                >
-                  <span style={{
-                    width: '5px', height: '5px', borderRadius: '50%',
-                    background: 'var(--border-2)', flexShrink: 0
-                  }}></span>
-                  {item.label}
-                </Link>
+                <NavLink key={item.href} href={item.href} label={item.label} />
               ))}
             </div>
           ))}

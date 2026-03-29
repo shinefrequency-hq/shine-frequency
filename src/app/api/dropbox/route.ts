@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase-server'
 import { createClient as createServiceClient } from '@supabase/supabase-js'
-import { createFolder, createSharedLink, listFolder, refreshAccessToken } from '@/lib/dropbox'
+import { createFolder, createSharedLink, listFolder, refreshAccessToken, getTemporaryLink } from '@/lib/dropbox'
 
 function getServiceClient() {
   return createServiceClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!)
@@ -131,6 +131,41 @@ export async function POST(req: NextRequest) {
       })
       const testData = await testRes.json()
       return NextResponse.json({ connected: testRes.ok, result: testData })
+    }
+
+    if (action === 'list_audio_files') {
+      const folderPath = path || ''
+      // List files in the Masters subfolder
+      const mastersPath = `${folderPath}/Masters`
+      let entries: any[] = []
+      try {
+        const result = await listFolder(token, mastersPath)
+        entries = (result.entries || []).filter((e: any) =>
+          e['.tag'] === 'file' && /\.(wav|mp3|aiff|aif|flac|m4a|ogg)$/i.test(e.name)
+        )
+      } catch {
+        // Try root folder if Masters doesn't exist
+        const result = await listFolder(token, folderPath)
+        entries = (result.entries || []).filter((e: any) =>
+          e['.tag'] === 'file' && /\.(wav|mp3|aiff|aif|flac|m4a|ogg)$/i.test(e.name)
+        )
+      }
+
+      // Get temporary playback links for each file
+      const tracks = []
+      for (const entry of entries.slice(0, 10)) {
+        try {
+          const linkData = await getTemporaryLink(token, entry.path_lower)
+          tracks.push({
+            name: entry.name,
+            path: entry.path_lower,
+            size: entry.size,
+            url: linkData.link,
+          })
+        } catch {}
+      }
+
+      return NextResponse.json({ success: true, tracks })
     }
 
     return NextResponse.json({ error: 'Unknown action' }, { status: 400 })

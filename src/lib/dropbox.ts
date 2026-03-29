@@ -94,7 +94,14 @@ export async function createSharedLink(accessToken: string, path: string) {
   return data
 }
 
-export async function getUploadSessionURL() {
-  // For client-side uploads, we use the content upload endpoint
-  return 'https://content.dropboxapi.com/2/files/upload'
+export async function getTemporaryLink(accessToken: string, path: string) {
+  const res = await fetch('https://api.dropboxapi.com/2/files/get_temporary_link', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ path }),
+  })
+  return res.json()
 }

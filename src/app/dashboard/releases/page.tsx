@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { createClient } from '@/lib/supabase'
 import { useToast } from '@/lib/toast'
+import { AudioPlayer } from '@/lib/audio-player'
 import type { Release, ReleaseStatus, HeatStatus } from '@/types/database'
 
 const STATUS_COLORS: Record<ReleaseStatus, { bg: string; color: string }> = {
@@ -528,6 +529,14 @@ export default function ReleasesPage() {
             <div style={{ fontSize: '11px', color: 'var(--text-3)', lineHeight: 1.6, marginBottom: '1rem', padding: '10px', background: 'var(--bg-4)', borderRadius: '8px', borderLeft: '2px solid #f5c842' }}>
               <div style={{ fontSize: '10px', color: '#f5c842', marginBottom: '4px', textTransform: 'uppercase' }}>Internal notes</div>
               {selected.internal_notes}
+            </div>
+          )}
+
+          {/* Audio preview */}
+          {selected.dropbox_folder_url && (
+            <div style={{ marginBottom: '1rem' }}>
+              <div style={{ fontSize: '10px', color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '6px' }}>Preview tracks</div>
+              <AudioPlayer releaseId={selected.id} dropboxFolderPath={`/Shine Frequency/${selected.catalogue_number} - ${selected.artist_name}`} />
             </div>
           )}
 

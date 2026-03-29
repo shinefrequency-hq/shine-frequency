@@ -87,16 +87,32 @@ export default async function DashboardLayout({
       }}>
         {/* Logo */}
         <div style={{
-          padding: '1rem',
+          padding: '12px 1rem',
           borderBottom: '0.5px solid var(--border)',
-          flexShrink: 0
+          flexShrink: 0,
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px'
         }}>
-          <div style={{ fontSize: '10px', letterSpacing: '0.1em', color: 'var(--text-3)', textTransform: 'uppercase', marginBottom: '3px', display: 'flex', alignItems: 'center', gap: '5px' }}>
-            <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: 'var(--green)', display: 'inline-block' }}></span>
-            Live
-          </div>
-          <div style={{ fontSize: '15px', fontWeight: '500', color: 'var(--text)' }}>
-            Shine Frequency
+          <img
+            src="/logo.png"
+            alt="Shine Music"
+            style={{
+              width: '36px',
+              height: '36px',
+              borderRadius: '50%',
+              objectFit: 'cover',
+              flexShrink: 0
+            }}
+          />
+          <div>
+            <div style={{ fontSize: '14px', fontWeight: '500', color: 'var(--text)', lineHeight: 1.2 }}>
+              Shine Frequency
+            </div>
+            <div style={{ fontSize: '9px', letterSpacing: '0.1em', color: 'var(--text-3)', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: 'var(--green)', display: 'inline-block' }}></span>
+              Live
+            </div>
           </div>
         </div>
 

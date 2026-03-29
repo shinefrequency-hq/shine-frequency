@@ -42,7 +42,18 @@ export default function LoginPage() {
         border: '0.5px solid #222',
         borderRadius: '16px'
       }}>
-        <div style={{ marginBottom: '2rem' }}>
+        <div style={{ marginBottom: '2rem', textAlign: 'center' }}>
+          <img
+            src="/logo.png"
+            alt="Shine Music"
+            style={{
+              width: '120px',
+              height: '120px',
+              borderRadius: '50%',
+              objectFit: 'cover',
+              marginBottom: '16px'
+            }}
+          />
           <div style={{ fontSize: '11px', letterSpacing: '0.12em', color: '#555', textTransform: 'uppercase', marginBottom: '6px' }}>
             Management platform
           </div>

@@ -21,9 +21,14 @@ export default function HomePage() {
 
   const services = [
     {
-      title: 'Music Distribution',
-      desc: 'Professional promo distribution to a curated network of DJs, press, and tastemakers worldwide. Targeted campaigns with tracked downloads and feedback.',
-      items: ['Curated promo lists by genre and tier', 'Tracked Dropbox delivery', 'DJ feedback and chart tracking', 'Press coverage coordination'],
+      title: 'Press & Promo Campaigns',
+      desc: "We get your release placed, mentioned and played in all the relevant places — and get the right people to endorse it. Quality feedback to help drive sales pre-launch, plus physical records into the hands of VIP players.",
+      items: ['Targeted DJ and press promo distribution', 'Quality feedback reports before release', 'Physical vinyl to key DJs and shops', 'Chart and review tracking across platforms'],
+    },
+    {
+      title: 'Release Management',
+      desc: "It takes a lot of love, time and hard work crafting your release. We push it into the spotlight, giving it the best possible chance to succeed. End-to-end support from mastering to market.",
+      items: ['Promo window planning and execution', 'Artwork and press asset coordination', 'Social media campaigns', 'Performance tracking and reporting'],
     },
     {
       title: 'DJ Booking Agency',
@@ -31,14 +36,9 @@ export default function HomePage() {
       items: ['Global venue relationships', 'Contract and fee negotiation', 'Travel and accommodation', 'Invoicing and payment tracking'],
     },
     {
-      title: 'Release Management',
-      desc: 'End-to-end release support from mastering to market. We manage the timeline, promo window, artwork, and social rollout.',
-      items: ['Catalogue management', 'Promo window planning', 'Review and chart tracking', 'Social media campaigns'],
-    },
-    {
-      title: 'Artist Development',
-      desc: 'Strategic support for emerging and established artists. We help build profiles, connect with the right people, and grow audiences.',
-      items: ['Podcast features and guest mixes', 'Press and media outreach', 'Network introductions', 'Career strategy'],
+      title: 'Discovery & Intelligence',
+      desc: "We scan YouTube, Mixcloud, Discogs, Bandcamp, SoundCloud, Resident Advisor and more to find every play, mention and chart entry your music gets — even the ones you didn't know about.",
+      items: ['8-platform web scanner', 'Chart and tracklist monitoring', 'Audience and location insights', 'Weekly artist performance reports'],
     },
   ]
 
@@ -90,13 +90,13 @@ export default function HomePage() {
         <div style={{ maxWidth: '640px' }}>
           <img src="/logo.png" alt="Shine Music" style={{ width: '100px', height: '100px', borderRadius: '50%', marginBottom: '2rem' }} />
           <div style={{ fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#1D9E75', marginBottom: '1rem' }}>
-            Music Distribution & Artist Agency
+            Press & Promotional Campaigns
           </div>
           <h1 style={{ fontSize: '42px', fontWeight: '600', lineHeight: 1.2, marginBottom: '1.5rem', letterSpacing: '-0.02em' }}>
-            Putting the right music<br />in the right hands
+            A hell of a lot of passion<br />and enthusiasm
           </h1>
-          <p style={{ fontSize: '16px', color: '#888', lineHeight: 1.7, marginBottom: '2rem', maxWidth: '480px', margin: '0 auto 2rem' }}>
-            Shine Frequency is a London-based music distribution label and DJ booking agency specialising in techno, industrial, and electronic music.
+          <p style={{ fontSize: '16px', color: '#888', lineHeight: 1.7, marginBottom: '2rem', maxWidth: '520px', margin: '0 auto 2rem' }}>
+            Press and promotional campaigns for Underground House, Techno, Balearic and Disco. A very personal approach — working with friends and contacts, simply sharing great music over a chat.
           </p>
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
             <a href="/onboard" style={{
@@ -123,25 +123,29 @@ export default function HomePage() {
         <div style={{ maxWidth: '800px', margin: '0 auto' }}>
           <div style={{ fontSize: '11px', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#1D9E75', marginBottom: '1rem' }}>About</div>
           <h2 style={{ fontSize: '28px', fontWeight: '600', marginBottom: '1.5rem', letterSpacing: '-0.01em' }}>
-            Built for the underground
+            Only music I adore
           </h2>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', fontSize: '14px', color: '#999', lineHeight: 1.8 }}>
             <div>
               <p style={{ marginBottom: '1rem' }}>
-                Shine Frequency was founded in London with a single mission: to connect exceptional electronic music with the people who need to hear it.
+                I choose only to work with music I adore, so you can be sure I'll be passionate when promoting your stuff. I strive to get your release placed, mentioned and played in all of the relevant places — as well as getting the right people to endorse it.
               </p>
               <p>
-                We work with a carefully curated roster of artists and maintain relationships with DJs, venues, press, and promoters across Europe and beyond. From Berlin to Bristol, Detroit to Amsterdam.
+                I'll provide you with good quality feedback to help drive sales pre-launch, as well as placing physical records into the hands of VIP players.
               </p>
             </div>
             <div>
               <p style={{ marginBottom: '1rem' }}>
-                Our approach is personal. Every release gets individual attention — targeted promo campaigns, direct relationships with key DJs, press outreach, and chart tracking.
+                In my opinion it takes a lot of love, time and hard work crafting your release. Investing in what I do pushes it into the spotlight, giving your release the best possible chance to succeed.
               </p>
               <p>
-                We also manage DJ bookings for our roster, handling everything from contracts and fees to travel logistics and invoicing. One point of contact, no hassle.
+                It's hard to predict exactly what we'll achieve — but what I can promise is a hell of a lot of passion and enthusiasm. And that, coupled with my track record so far, the result shouldn't be too shabby.
               </p>
             </div>
+          </div>
+          <div style={{ marginTop: '2rem', padding: '1.25rem', background: '#111', border: '0.5px solid #222', borderRadius: '10px', fontSize: '14px', color: '#888' }}>
+            Get in touch: <a href="mailto:shineprdev@gmail.com" style={{ color: '#1D9E75', textDecoration: 'none' }}>shineprdev@gmail.com</a>
+            <span style={{ color: '#444' }}> — Send the music, some info on you, and your desired release date for a fast response.</span>
           </div>
         </div>
       </section>
@@ -222,7 +226,7 @@ export default function HomePage() {
           <div style={{ fontSize: '11px', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#1D9E75', marginBottom: '1rem' }}>Roster</div>
           <h2 style={{ fontSize: '28px', fontWeight: '600', marginBottom: '1rem' }}>Artists we work with</h2>
           <p style={{ fontSize: '14px', color: '#666', marginBottom: '2rem' }}>
-            Established and emerging talent across techno, industrial, electro, and experimental electronic music.
+            Underground House, Techno, Balearic and Disco — established and emerging talent.
           </p>
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
             {['Surgeon', 'Paula Temple', 'Rebekah', 'Blawan', 'Ancient Methods', 'Helena Hauff', 'Perc'].map(name => (

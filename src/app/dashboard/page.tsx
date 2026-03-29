@@ -41,6 +41,14 @@ export default async function DashboardPage() {
   const currSymbol = (c: string) => c === 'GBP' ? '£' : c === 'EUR' ? '€' : '$'
   const daysUntil = (d: string) => Math.ceil((new Date(d).getTime() - now) / 86400000)
 
+  function taskLink(task: any) {
+    if (task.related_release_id) return '/dashboard/releases'
+    if (task.related_booking_id) return '/dashboard/bookings'
+    if (task.related_invoice_id) return '/dashboard/invoicing'
+    if (task.related_contact_id) return '/dashboard/contacts'
+    return '/dashboard'
+  }
+
   return (
     <div style={{ padding: '1.5rem' }}>
 
@@ -54,22 +62,23 @@ export default async function DashboardPage() {
         </div>
       </div>
 
-      {/* Stats */}
+      {/* Stats — clickable */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '8px', marginBottom: '1.25rem' }}>
         {[
-          { label: 'Active releases', value: activeReleases.length, color: '#4ecca3' },
-          { label: 'Pending reviews', value: pendingReviews.length, color: '#f5c842' },
-          { label: 'Urgent tasks', value: urgentTasks.length, color: '#f08080' },
-          { label: 'Upcoming gigs', value: next7days.length, color: '#7ab8f5' },
-          { label: 'Overdue invoices', value: overdueInvoices.length, color: overdueInvoices.length > 0 ? '#f08080' : 'var(--text-3)' },
+          { label: 'Active releases', value: activeReleases.length, color: '#4ecca3', href: '/dashboard/releases' },
+          { label: 'Pending reviews', value: pendingReviews.length, color: '#f5c842', href: '/dashboard/reviews' },
+          { label: 'Urgent tasks', value: urgentTasks.length, color: '#f08080', href: '#urgent' },
+          { label: 'Upcoming gigs', value: next7days.length, color: '#7ab8f5', href: '/dashboard/bookings' },
+          { label: 'Overdue invoices', value: overdueInvoices.length, color: overdueInvoices.length > 0 ? '#f08080' : 'var(--text-3)', href: '/dashboard/invoicing' },
         ].map(s => (
-          <div key={s.label} style={{
+          <Link key={s.label} href={s.href} style={{
             background: 'var(--bg-2)', border: '0.5px solid var(--border)',
-            borderRadius: 'var(--radius-lg)', padding: '0.75rem 1rem'
+            borderRadius: 'var(--radius-lg)', padding: '0.75rem 1rem',
+            textDecoration: 'none', transition: 'border-color 0.15s', cursor: 'pointer',
           }}>
             <div style={{ fontSize: '10px', color: 'var(--text-3)', marginBottom: '4px' }}>{s.label}</div>
             <div style={{ fontSize: '20px', fontWeight: '500', color: s.color }}>{s.value}</div>
-          </div>
+          </Link>
         ))}
       </div>
 
@@ -83,12 +92,12 @@ export default async function DashboardPage() {
             <div style={{ fontSize: '12px', fontWeight: '500', color: '#f08080' }}>
               Overdue invoices
             </div>
-            <Link href="/dashboard/invoicing" style={{ fontSize: '11px', color: 'var(--text-3)' }}>View all →</Link>
+            <Link href="/dashboard/invoicing" style={{ fontSize: '11px', color: 'var(--text-3)', textDecoration: 'none' }}>View all →</Link>
           </div>
           {overdueInvoices.map((inv: any) => {
             const daysOver = Math.floor((now - new Date(inv.due_at).getTime()) / 86400000)
             return (
-              <div key={inv.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '6px 0', borderBottom: '0.5px solid var(--border)' }}>
+              <Link key={inv.id} href="/dashboard/invoicing" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '6px 0', borderBottom: '0.5px solid var(--border)', textDecoration: 'none', color: 'inherit' }}>
                 <div>
                   <span style={{ fontWeight: '500', color: 'var(--text)', fontSize: '12px' }}>{inv.invoice_number}</span>
                   <span style={{ color: 'var(--text-3)', fontSize: '12px' }}> — {inv.recipient_name}</span>
@@ -97,7 +106,7 @@ export default async function DashboardPage() {
                   <span style={{ fontFamily: 'monospace', fontSize: '12px', color: 'var(--text)' }}>{currSymbol(inv.currency)}{inv.total}</span>
                   <span style={{ fontSize: '10px', fontWeight: '500', color: '#f08080' }}>{daysOver}d overdue</span>
                 </div>
-              </div>
+              </Link>
             )
           })}
         </div>
@@ -105,7 +114,7 @@ export default async function DashboardPage() {
 
       {/* Urgent tasks */}
       {urgentTasks.length > 0 && (
-        <div style={{
+        <div id="urgent" style={{
           background: 'var(--bg-2)', border: '0.5px solid var(--red-border)',
           borderRadius: 'var(--radius-lg)', padding: '1rem', marginBottom: '1rem'
         }}>
@@ -113,14 +122,15 @@ export default async function DashboardPage() {
             Critical — act now
           </div>
           {urgentTasks.map((task: any) => (
-            <div key={task.id} style={{
+            <Link key={task.id} href={taskLink(task)} style={{
               display: 'flex', alignItems: 'center', gap: '10px',
-              padding: '8px 0', borderBottom: '0.5px solid var(--border)'
+              padding: '8px 0', borderBottom: '0.5px solid var(--border)',
+              textDecoration: 'none', color: 'inherit',
             }}>
               <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#f08080', flexShrink: 0 }} />
               <div style={{ flex: 1, fontWeight: '500', color: 'var(--text)', fontSize: '12px' }}>{task.title}</div>
               <div style={{ fontSize: '10px', fontWeight: '500', color: '#f08080' }}>Now</div>
-            </div>
+            </Link>
           ))}
         </div>
       )}
@@ -138,10 +148,10 @@ export default async function DashboardPage() {
           {todayTasks.length === 0 ? (
             <div style={{ fontSize: '12px', color: 'var(--text-3)' }}>Nothing due today</div>
           ) : todayTasks.map((task: any) => (
-            <div key={task.id} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '6px 0', borderBottom: '0.5px solid var(--border)' }}>
+            <Link key={task.id} href={taskLink(task)} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '6px 0', borderBottom: '0.5px solid var(--border)', textDecoration: 'none', color: 'inherit' }}>
               <div style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#f5c842', flexShrink: 0 }} />
               <div style={{ fontSize: '12px', color: 'var(--text)' }}>{task.title}</div>
-            </div>
+            </Link>
           ))}
         </div>
 
@@ -156,10 +166,10 @@ export default async function DashboardPage() {
           {weekTasks.length === 0 ? (
             <div style={{ fontSize: '12px', color: 'var(--text-3)' }}>Nothing this week</div>
           ) : weekTasks.map((task: any) => (
-            <div key={task.id} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '6px 0', borderBottom: '0.5px solid var(--border)' }}>
+            <Link key={task.id} href={taskLink(task)} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '6px 0', borderBottom: '0.5px solid var(--border)', textDecoration: 'none', color: 'inherit' }}>
               <div style={{ width: '5px', height: '5px', borderRadius: '50%', background: 'var(--border-2)', flexShrink: 0 }} />
               <div style={{ fontSize: '12px', color: 'var(--text)' }}>{task.title}</div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
@@ -174,12 +184,12 @@ export default async function DashboardPage() {
             <div style={{ fontSize: '12px', fontWeight: '500', color: '#f5c842' }}>
               Pending reviews ({pendingReviews.length})
             </div>
-            <Link href="/dashboard/reviews" style={{ fontSize: '11px', color: 'var(--text-3)' }}>Review all →</Link>
+            <Link href="/dashboard/reviews" style={{ fontSize: '11px', color: 'var(--text-3)', textDecoration: 'none' }}>Review all →</Link>
           </div>
           {pendingReviews.map((r: any) => {
             const stars = r.rating ? '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating) : '—'
             return (
-              <div key={r.id} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '8px 0', borderBottom: '0.5px solid var(--border)' }}>
+              <Link key={r.id} href="/dashboard/reviews" style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '8px 0', borderBottom: '0.5px solid var(--border)', textDecoration: 'none', color: 'inherit' }}>
                 <div style={{ flex: 1 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <span style={{ fontWeight: '500', color: 'var(--text)', fontSize: '12px' }}>{r.contacts?.full_name ?? '—'}</span>
@@ -192,7 +202,7 @@ export default async function DashboardPage() {
                 <div style={{ fontSize: '11px', color: 'var(--text-3)' }}>
                   {new Date(r.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}
                 </div>
-              </div>
+              </Link>
             )
           })}
         </div>
@@ -208,12 +218,12 @@ export default async function DashboardPage() {
             <div style={{ fontSize: '12px', fontWeight: '500', color: '#7ab8f5' }}>
               Upcoming bookings
             </div>
-            <Link href="/dashboard/bookings" style={{ fontSize: '11px', color: 'var(--text-3)' }}>View all →</Link>
+            <Link href="/dashboard/bookings" style={{ fontSize: '11px', color: 'var(--text-3)', textDecoration: 'none' }}>View all →</Link>
           </div>
           {next7days.map((b: any) => {
             const days = daysUntil(b.event_date)
             return (
-              <div key={b.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0', borderBottom: '0.5px solid var(--border)' }}>
+              <Link key={b.id} href="/dashboard/bookings" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0', borderBottom: '0.5px solid var(--border)', textDecoration: 'none', color: 'inherit' }}>
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <span style={{ fontWeight: '500', color: 'var(--text)', fontSize: '12px' }}>{b.artists?.stage_name ?? '—'}</span>
@@ -237,7 +247,7 @@ export default async function DashboardPage() {
                     <div style={{ fontSize: '9px', color: '#f08080', marginTop: '1px' }}>Contract unsigned</div>
                   )}
                 </div>
-              </div>
+              </Link>
             )
           })}
         </div>
@@ -253,12 +263,12 @@ export default async function DashboardPage() {
             <div style={{ fontSize: '12px', fontWeight: '500', color: '#ff7043' }}>
               Promo windows closing soon
             </div>
-            <Link href="/dashboard/heat" style={{ fontSize: '11px', color: 'var(--text-3)' }}>Heat tracker →</Link>
+            <Link href="/dashboard/heat" style={{ fontSize: '11px', color: 'var(--text-3)', textDecoration: 'none' }}>Heat tracker →</Link>
           </div>
           {expiringReleases.map((r: any) => {
             const days = daysUntil(r.promo_window_end)
             return (
-              <div key={r.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0', borderBottom: '0.5px solid var(--border)' }}>
+              <Link key={r.id} href="/dashboard/releases" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '8px 0', borderBottom: '0.5px solid var(--border)', textDecoration: 'none', color: 'inherit' }}>
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <span style={{ fontFamily: 'monospace', fontSize: '11px', color: 'var(--text-3)' }}>{r.catalogue_number}</span>
@@ -268,7 +278,7 @@ export default async function DashboardPage() {
                 <span style={{ fontSize: '11px', fontWeight: '500', color: days <= 3 ? '#f08080' : '#ff7043' }}>
                   {days}d left
                 </span>
-              </div>
+              </Link>
             )
           })}
         </div>
@@ -281,7 +291,7 @@ export default async function DashboardPage() {
           borderRadius: 'var(--radius-lg)', padding: '2rem', textAlign: 'center'
         }}>
           <div style={{ fontSize: '13px', fontWeight: '500', color: '#1D9E75', marginBottom: '6px' }}>All clear</div>
-          <div style={{ fontSize: '12px', color: 'var(--text-3)' }}>No urgent items. Start by adding your first release.</div>
+          <div style={{ fontSize: '12px', color: 'var(--text-3)' }}>No urgent items. <Link href="/dashboard/releases/new" style={{ color: '#1D9E75', textDecoration: 'none' }}>Create a release</Link> to get started.</div>
         </div>
       )}
     </div>

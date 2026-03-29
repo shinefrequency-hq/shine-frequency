@@ -177,7 +177,7 @@ export default async function DashboardLayout({
         <div style={{ padding: '8px', borderTop: '0.5px solid var(--border)', flexShrink: 0, display: 'flex', flexDirection: 'column', gap: '4px' }}>
           <NotificationBell />
           <ThemeToggle />
-          <form action="/auth/signout" method="post" style={{ width: '100%' }}>
+          <form action="/api/signout" method="post" style={{ width: '100%' }}>
             <button style={{
               width: '100%', padding: '7px', background: 'transparent',
               border: '0.5px solid var(--border)', borderRadius: 'var(--radius)',

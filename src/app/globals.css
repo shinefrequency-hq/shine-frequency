@@ -188,3 +188,26 @@ button {
 .table-responsive table {
   min-width: 700px;
 }
+
+/* Mobile responsive tables */
+@media (max-width: 768px) {
+  .dashboard-sidebar {
+    position: fixed;
+    left: -200px;
+    top: 0;
+    height: 100vh;
+    z-index: 100;
+    transition: left 0.2s;
+  }
+  .dashboard-sidebar.open {
+    left: 0;
+  }
+  table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  thead, tbody {
+    min-width: 600px;
+  }
+}

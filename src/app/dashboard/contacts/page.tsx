@@ -54,6 +54,8 @@ export default function ContactsPage() {
   const [sortKey, setSortKey] = useState<string>('full_name')
   const [sortAsc, setSortAsc] = useState(true)
   const [allTags, setAllTags] = useState<Record<string, string[]>>({}) // contact_id -> tag[]
+  const [page, setPage] = useState(1)
+  const PAGE_SIZE = 25
 
   async function loadTags() {
     const { data } = await (supabase as any).from('contact_tags').select('contact_id, tag')
@@ -93,6 +95,8 @@ export default function ContactsPage() {
   }
 
   useEffect(() => { load(); loadTags() }, [])
+
+  useEffect(() => setPage(1), [search, filterType, filterPromo])
 
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
@@ -177,6 +181,22 @@ export default function ContactsPage() {
     setSelected(null)
   }
 
+  function exportCSV() {
+    const headers = ['Name', 'Email', 'Phone', 'Type', 'Organisation', 'City', 'Country', 'Promo Tier', 'On Promo', 'High Value', 'Trusted']
+    const rows = filtered.map(c => [
+      c.full_name, c.email ?? '', c.phone ?? '', c.type, c.organisation ?? '',
+      c.city ?? '', c.country_code ?? '', c.promo_tier ?? 1,
+      c.is_on_promo_list ? 'Yes' : 'No', c.is_high_value ? 'Yes' : 'No', c.is_trusted ? 'Yes' : 'No'
+    ])
+    const csv = [headers, ...rows].map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\n')
+    const blob = new Blob([csv], { type: 'text/csv' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url; a.download = `shine-contacts-${new Date().toISOString().slice(0,10)}.csv`
+    a.click(); URL.revokeObjectURL(url)
+    toast('Contacts exported')
+  }
+
   const filtered = contacts.filter(c => {
     const matchSearch = c.full_name.toLowerCase().includes(search.toLowerCase()) ||
       (c.email ?? '').toLowerCase().includes(search.toLowerCase()) ||
@@ -191,6 +211,9 @@ export default function ContactsPage() {
     const cmp = typeof av === 'number' ? av - bv : String(av).localeCompare(String(bv))
     return sortAsc ? cmp : -cmp
   })
+
+  const totalPages = Math.ceil(filtered.length / PAGE_SIZE)
+  const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 
   const inp = (style = {}) => ({
     width: '100%', padding: '8px 12px',
@@ -250,6 +273,11 @@ export default function ContactsPage() {
           }}>
             Import CSV
           </button>
+          <button onClick={exportCSV} style={{
+            padding: '8px 16px', background: 'transparent',
+            border: '0.5px solid var(--border-3)', borderRadius: '8px',
+            color: 'var(--text-muted)', fontSize: '12px', cursor: 'pointer'
+          }}>Export CSV</button>
           <button onClick={() => { setForm(EMPTY); setEditId(null); setSelected(null); setShowForm(!showForm) }} style={{
             padding: '8px 16px', background: showForm ? 'var(--border-3)' : '#1D9E75',
             border: 'none', borderRadius: '8px', color: 'var(--text)',
@@ -392,12 +420,12 @@ export default function ContactsPage() {
                 </tr>
               </thead>
               <tbody>
-                {filtered.map((c, i) => {
+                {paginated.map((c, i) => {
                   const tc = TYPE_COLORS[c.type]
                   const isSelected = selected?.id === c.id
                   return (
                     <tr key={c.id}
-                      style={{ borderBottom: i < filtered.length - 1 ? '0.5px solid var(--row-border)' : 'none', cursor: 'pointer', background: isSelected ? 'var(--row-selected)' : 'transparent', transition: 'background 0.1s' }}
+                      style={{ borderBottom: i < paginated.length - 1 ? '0.5px solid var(--row-border)' : 'none', cursor: 'pointer', background: isSelected ? 'var(--row-selected)' : 'transparent', transition: 'background 0.1s' }}
                       onClick={() => setSelected(isSelected ? null : c)}
                       onMouseEnter={e => { if (!isSelected) e.currentTarget.style.background = 'var(--row-hover)' }}
                       onMouseLeave={e => { if (!isSelected) e.currentTarget.style.background = 'transparent' }}
@@ -449,6 +477,14 @@ export default function ContactsPage() {
             </table>
           )}
         </div>
+
+        {totalPages > 1 && (
+          <div style={{ gridColumn: '1 / -1', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '12px', marginTop: '1rem' }}>
+            <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1} style={{ padding: '6px 14px', background: page === 1 ? 'var(--bg-3)' : 'var(--bg-2)', border: '0.5px solid var(--border)', borderRadius: '6px', color: page === 1 ? 'var(--text-5)' : 'var(--text-3)', fontSize: '12px', cursor: page === 1 ? 'default' : 'pointer' }}>Previous</button>
+            <span style={{ fontSize: '12px', color: 'var(--text-3)' }}>Page {page} of {totalPages} · {filtered.length} results</span>
+            <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages} style={{ padding: '6px 14px', background: page === totalPages ? 'var(--bg-3)' : 'var(--bg-2)', border: '0.5px solid var(--border)', borderRadius: '6px', color: page === totalPages ? 'var(--text-5)' : 'var(--text-3)', fontSize: '12px', cursor: page === totalPages ? 'default' : 'pointer' }}>Next</button>
+          </div>
+        )}
 
         {/* Profile panel */}
         {selected && (

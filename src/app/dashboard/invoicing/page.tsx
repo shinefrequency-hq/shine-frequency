@@ -207,6 +207,24 @@ export default function InvoicingPage() {
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
+  function exportCSV() {
+    const headers = ['Invoice #', 'Recipient', 'Email', 'Total', 'Currency', 'Status', 'Issued', 'Due', 'Paid']
+    const rows = filtered.map(inv => [
+      inv.invoice_number, inv.recipient_name, inv.recipient_email ?? '',
+      inv.total, inv.currency, inv.status,
+      inv.issued_at ? new Date(inv.issued_at).toLocaleDateString('en-GB') : '',
+      inv.due_at ? new Date(inv.due_at).toLocaleDateString('en-GB') : '',
+      inv.paid_at ? new Date(inv.paid_at).toLocaleDateString('en-GB') : ''
+    ])
+    const csv = [headers, ...rows].map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\n')
+    const blob = new Blob([csv], { type: 'text/csv' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url; a.download = `shine-invoices-${new Date().toISOString().slice(0,10)}.csv`
+    a.click(); URL.revokeObjectURL(url)
+    toast('Invoices exported')
+  }
+
   const filtered = invoices.filter(inv => {
     const matchSearch = inv.invoice_number.toLowerCase().includes(search.toLowerCase()) ||
       inv.recipient_name.toLowerCase().includes(search.toLowerCase()) ||
@@ -256,6 +274,11 @@ export default function InvoicingPage() {
             <option value="overdue">Overdue</option>
             <option value="cancelled">Cancelled</option>
           </select>
+          <button onClick={exportCSV} style={{
+            padding: '8px 16px', background: 'transparent',
+            border: '0.5px solid var(--border-3)', borderRadius: '8px',
+            color: 'var(--text-muted)', fontSize: '12px', cursor: 'pointer'
+          }}>Export</button>
           <button onClick={() => { setForm(EMPTY); setEditId(null); setShowForm(!showForm) }} style={{
             padding: '8px 16px', background: showForm ? 'var(--border-3)' : '#1D9E75',
             border: 'none', borderRadius: '8px', color: 'var(--text)',

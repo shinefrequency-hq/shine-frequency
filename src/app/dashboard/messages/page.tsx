@@ -70,17 +70,41 @@ export default function MessagesPage() {
 
   async function sendMessage() {
     if (!body.trim() || !selectedContactId) return
+    const messageText = body.trim()
+    const contactId = selectedContactId
     setSending(true)
     await (supabase as any).from('messages').insert([{
-      contact_id: selectedContactId,
+      contact_id: contactId,
       direction: 'outbound',
       channel: 'portal',
-      body: body.trim(),
+      body: messageText,
       is_read: true,
     }])
     setBody('')
     setSending(false)
     load()
+
+    // Send email to contact if outbound and contact has email
+    if (true) { // all messages from dashboard are outbound
+      const contact = contacts.find((c: any) => c.id === contactId)
+      if (contact?.email) {
+        fetch('/api/email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'send_custom',
+            to: contact.email,
+            subject: `Message from Shine Frequency`,
+            html: `<div style="font-family: -apple-system, sans-serif; max-width: 500px; margin: 0 auto; padding: 24px;">
+          <img src="https://shine-frequency.vercel.app/logo.png" style="width: 48px; height: 48px; border-radius: 50%; margin-bottom: 16px;" />
+          <p style="color: #333; font-size: 14px; line-height: 1.6;">${messageText.replace(/\n/g, '<br>')}</p>
+          <p style="color: #888; font-size: 12px; margin-top: 24px; border-top: 1px solid #eee; padding-top: 12px;">Shine Frequency — London, UK</p>
+        </div>`,
+          }),
+        }).catch(() => {}) // Don't block on email failure
+      }
+    }
+
     toast('Message sent')
   }
 

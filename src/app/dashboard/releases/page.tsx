@@ -55,6 +55,8 @@ export default function ReleasesPage() {
   const [sortKey, setSortKey] = useState<string>('created_at')
   const [sortAsc, setSortAsc] = useState(false)
   const [selected, setSelected] = useState<Release | null>(null)
+  const [page, setPage] = useState(1)
+  const PAGE_SIZE = 25
 
   function toggleSort(key: string) {
     if (sortKey === key) setSortAsc(!sortAsc)
@@ -72,6 +74,8 @@ export default function ReleasesPage() {
   }
 
   useEffect(() => { load() }, [])
+
+  useEffect(() => setPage(1), [search, filterStatus, filterHeat, filterFormat])
 
   useEffect(() => {
     function handleKey(e: KeyboardEvent) {
@@ -161,6 +165,9 @@ export default function ReleasesPage() {
     const cmp = typeof av === 'number' ? av - bv : String(av).localeCompare(String(bv))
     return sortAsc ? cmp : -cmp
   })
+
+  const totalPages = Math.ceil(filtered.length / PAGE_SIZE)
+  const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 
   const inp = (style = {}) => ({
     width: '100%', padding: '8px 12px',
@@ -390,13 +397,13 @@ export default function ReleasesPage() {
               </tr>
             </thead>
             <tbody>
-              {filtered.map((r, i) => {
+              {paginated.map((r, i) => {
                 const sc = STATUS_COLORS[r.status]
                 const hc = HEAT_COLORS[r.heat_status]
                 const windowEnd = r.promo_window_end ? new Date(r.promo_window_end) : null
                 const daysLeft = windowEnd ? Math.ceil((windowEnd.getTime() - Date.now()) / 86400000) : null
                 return (
-                  <tr key={r.id} onClick={() => setSelected(selected?.id === r.id ? null : r)} style={{ borderBottom: i < filtered.length - 1 ? '0.5px solid var(--row-border)' : 'none', transition: 'background 0.1s', cursor: 'pointer', background: selected?.id === r.id ? 'var(--row-selected)' : 'transparent' }}
+                  <tr key={r.id} onClick={() => setSelected(selected?.id === r.id ? null : r)} style={{ borderBottom: i < paginated.length - 1 ? '0.5px solid var(--row-border)' : 'none', transition: 'background 0.1s', cursor: 'pointer', background: selected?.id === r.id ? 'var(--row-selected)' : 'transparent' }}
                     onMouseEnter={e => { if (selected?.id !== r.id) e.currentTarget.style.background = 'var(--row-hover)' }}
                     onMouseLeave={e => { if (selected?.id !== r.id) e.currentTarget.style.background = 'transparent' }}
                   >
@@ -463,6 +470,14 @@ export default function ReleasesPage() {
           </table>
         )}
       </div>
+
+      {totalPages > 1 && (
+        <div style={{ gridColumn: '1 / -1', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '12px', marginTop: '1rem' }}>
+          <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1} style={{ padding: '6px 14px', background: page === 1 ? 'var(--bg-3)' : 'var(--bg-2)', border: '0.5px solid var(--border)', borderRadius: '6px', color: page === 1 ? 'var(--text-5)' : 'var(--text-3)', fontSize: '12px', cursor: page === 1 ? 'default' : 'pointer' }}>Previous</button>
+          <span style={{ fontSize: '12px', color: 'var(--text-3)' }}>Page {page} of {totalPages} · {filtered.length} results</span>
+          <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages} style={{ padding: '6px 14px', background: page === totalPages ? 'var(--bg-3)' : 'var(--bg-2)', border: '0.5px solid var(--border)', borderRadius: '6px', color: page === totalPages ? 'var(--text-5)' : 'var(--text-3)', fontSize: '12px', cursor: page === totalPages ? 'default' : 'pointer' }}>Next</button>
+        </div>
+      )}
 
       {/* Detail panel */}
       {selected && (

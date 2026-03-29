@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase-server'
 import { redirect } from 'next/navigation'
 import { ThemeToggle } from '@/lib/theme'
+import { GlobalSearch } from '@/lib/search'
 import { NotificationBell } from '@/lib/notifications'
 import { NavLink } from '@/lib/nav-link'
 import { MobileMenuButton } from '@/lib/mobile-menu'
@@ -46,6 +47,7 @@ const NAV = [
   {
     section: 'Admin',
     items: [
+      { label: 'Reporting', href: '/dashboard/reporting' },
       { label: 'Staff & roles', href: '/dashboard/staff' },
       { label: 'Audit log', href: '/dashboard/audit' },
       { label: 'ISO 27001', href: '/dashboard/iso' },
@@ -146,6 +148,11 @@ export default async function DashboardLayout({
               {staff?.role ?? 'owner'}
             </div>
           </div>
+        </div>
+
+        {/* Search */}
+        <div style={{ padding: '0 8px 4px' }}>
+          <GlobalSearch />
         </div>
 
         {/* Nav */}

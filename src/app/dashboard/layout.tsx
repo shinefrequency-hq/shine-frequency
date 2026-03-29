@@ -41,6 +41,7 @@ const NAV = [
     section: 'Agency',
     items: [
       { label: 'Bookings', href: '/dashboard/bookings' },
+      { label: 'Calendar', href: '/dashboard/calendar' },
       { label: 'Invoicing', href: '/dashboard/invoicing' },
       { label: 'Podcasts', href: '/dashboard/podcasts' },
     ]

@@ -56,6 +56,63 @@ export default function PortalDashboard() {
 
   const cs = (c: string) => c === 'GBP' ? '£' : c === 'EUR' ? '€' : '$'
 
+  function generateICS(booking: any) {
+    const date = booking.event_date.replace(/-/g, '')
+    const title = `${data?.artist?.stage_name || name} @ ${booking.venue_name}`
+    const location = `${booking.venue_name}, ${booking.venue_city}`
+    const ics = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Shine Frequency//EN',
+      'BEGIN:VEVENT',
+      `DTSTART;VALUE=DATE:${date}`,
+      `DTEND;VALUE=DATE:${date}`,
+      `SUMMARY:${title}`,
+      `LOCATION:${location}`,
+      `DESCRIPTION:${booking.set_time || ''} | Fee: ${booking.fee} ${booking.currency} | Status: ${booking.status}`,
+      'END:VEVENT',
+      'END:VCALENDAR',
+    ].join('\r\n')
+    const blob = new Blob([ics], { type: 'text/calendar' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `${title.replace(/[^a-zA-Z0-9]/g, '-')}.ics`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
+  function generateAllICS(bookings: any[]) {
+    const events = bookings.map(b => {
+      const date = b.event_date.replace(/-/g, '')
+      const title = `${data?.artist?.stage_name || name} @ ${b.venue_name}`
+      const location = `${b.venue_name}, ${b.venue_city}`
+      return [
+        'BEGIN:VEVENT',
+        `DTSTART;VALUE=DATE:${date}`,
+        `DTEND;VALUE=DATE:${date}`,
+        `SUMMARY:${title}`,
+        `LOCATION:${location}`,
+        `DESCRIPTION:${b.set_time || ''} | Fee: ${b.fee} ${b.currency} | Status: ${b.status}`,
+        'END:VEVENT',
+      ].join('\r\n')
+    })
+    const ics = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Shine Frequency//EN',
+      ...events,
+      'END:VCALENDAR',
+    ].join('\r\n')
+    const blob = new Blob([ics], { type: 'text/calendar' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'shine-frequency-bookings.ics'
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
   if (loading) {
     return (
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0a0a0a', color: '#555', fontFamily: 'system-ui' }}>
@@ -545,11 +602,19 @@ export default function PortalDashboard() {
             BOOKINGS TAB
         ═══════════════════════════════════════════ */}
         {tab === 'bookings' && (
+          <>
+          {data.bookings.length > 0 && (
+            <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '12px' }}>
+              <button onClick={() => generateAllICS(data.bookings)} style={{ padding: '8px 18px', background: '#1D9E75', border: 'none', borderRadius: '8px', color: '#fff', fontSize: '12px', fontWeight: '600', cursor: 'pointer' }}>
+                Export all to calendar
+              </button>
+            </div>
+          )}
           <div style={{ ...cardStyle, padding: 0, overflow: 'hidden' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
                 <tr style={{ borderBottom: '1px solid #222' }}>
-                  {['Venue', 'City', 'Date', 'Set time', 'Fee', 'Status', 'Contract'].map(h => (
+                  {['Venue', 'City', 'Date', 'Set time', 'Fee', 'Status', 'Contract', ''].map(h => (
                     <th key={h} style={{ textAlign: 'left', padding: '12px 16px', fontSize: '10px', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.08em', color: '#444' }}>{h}</th>
                   ))}
                 </tr>
@@ -568,6 +633,9 @@ export default function PortalDashboard() {
                     <td style={{ padding: '12px 16px' }}>
                       <span style={{ padding: '3px 10px', borderRadius: '20px', fontSize: '10px', fontWeight: '600', background: b.contract_status === 'signed' ? '#0a2a1e' : '#2a1e0a', color: b.contract_status === 'signed' ? '#4ecca3' : '#f5c842', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{b.contract_status}</span>
                     </td>
+                    <td style={{ padding: '12px 16px' }}>
+                      <button onClick={() => generateICS(b)} style={{ padding: '4px 10px', background: 'transparent', border: '1px solid #333', borderRadius: '6px', color: '#888', fontSize: '10px', cursor: 'pointer', fontWeight: '500', whiteSpace: 'nowrap' }}>Add to cal</button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -576,6 +644,7 @@ export default function PortalDashboard() {
               <div style={{ textAlign: 'center', padding: '3rem', color: '#444', fontSize: '13px' }}>No bookings yet</div>
             )}
           </div>
+          </>
         )}
 
         {/* ═══════════════════════════════════════════

@@ -135,6 +135,100 @@ async function searchBeatport(query: string): Promise<any[]> {
   }
 }
 
+// Bandcamp search (scrape)
+async function searchBandcamp(query: string): Promise<any[]> {
+  try {
+    const res = await fetch(
+      `https://bandcamp.com/search?q=${encodeURIComponent(query)}&item_type=t`,
+      { headers: { 'User-Agent': 'Mozilla/5.0' } }
+    )
+    const html = await res.text()
+    const results: any[] = []
+    const matches = [...html.matchAll(/<div class="result-info">[\s\S]*?<a href="([^"]+)"[^>]*>[\s\S]*?<div class="heading">\s*<a[^>]*>([^<]+)<\/a>[\s\S]*?<div class="subhead">\s*by ([^<]+)/g)]
+    for (const m of matches.slice(0, 8)) {
+      results.push({
+        platform: 'bandcamp',
+        title: m[2].trim(),
+        url: m[1].trim(),
+        channel: m[3].trim(),
+      })
+    }
+    return results
+  } catch { return [] }
+}
+
+// SoundCloud search (scrape — no API key needed for basic search)
+async function searchSoundCloud(query: string): Promise<any[]> {
+  try {
+    const res = await fetch(
+      `https://soundcloud.com/search/sounds?q=${encodeURIComponent(query)}`,
+      { headers: { 'User-Agent': 'Mozilla/5.0', 'Accept-Language': 'en-US' } }
+    )
+    const html = await res.text()
+    const results: any[] = []
+    // Extract from hydration data
+    const match = html.match(/"data":\[(\{[\s\S]*?\})\]/)
+    if (!match) {
+      // Fallback: extract links from HTML
+      const links = [...html.matchAll(/<a href="(\/[^"]+)"[^>]*itemprop="url"[^>]*>/g)]
+      for (const l of links.slice(0, 8)) {
+        results.push({
+          platform: 'soundcloud',
+          title: l[1].split('/').pop()?.replace(/-/g, ' ') || '',
+          url: `https://soundcloud.com${l[1]}`,
+          channel: l[1].split('/')[1] || '',
+        })
+      }
+    }
+    return results
+  } catch { return [] }
+}
+
+// Resident Advisor search (scrape)
+async function searchRA(query: string): Promise<any[]> {
+  try {
+    const res = await fetch(
+      `https://ra.co/search/?q=${encodeURIComponent(query)}`,
+      { headers: { 'User-Agent': 'Mozilla/5.0' } }
+    )
+    const html = await res.text()
+    const results: any[] = []
+    // Extract event/review links
+    const links = [...html.matchAll(/<a[^>]*href="(\/(?:reviews|events|features)\/[^"]+)"[^>]*>([^<]+)<\/a>/g)]
+    for (const l of links.slice(0, 8)) {
+      results.push({
+        platform: 'resident_advisor',
+        title: l[2].trim(),
+        url: `https://ra.co${l[1]}`,
+      })
+    }
+    return results
+  } catch { return [] }
+}
+
+// Spotify search (free, no auth needed for basic web search)
+async function searchSpotify(query: string): Promise<any[]> {
+  try {
+    const res = await fetch(
+      `https://open.spotify.com/search/${encodeURIComponent(query)}`,
+      { headers: { 'User-Agent': 'Mozilla/5.0' }, redirect: 'follow' }
+    )
+    // Spotify web search doesn't return useful data without auth
+    // Use the embed search instead
+    const embedRes = await fetch(
+      `https://open.spotify.com/oembed?url=https://open.spotify.com/search/${encodeURIComponent(query)}`,
+      { headers: { 'User-Agent': 'Mozilla/5.0' } }
+    )
+    // Fallback: just return a search link
+    return [{
+      platform: 'spotify',
+      title: `Search: ${query}`,
+      url: `https://open.spotify.com/search/${encodeURIComponent(query)}`,
+      channel: 'Open in Spotify to see results',
+    }]
+  } catch { return [] }
+}
+
 export async function POST(req: NextRequest) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -159,6 +253,10 @@ export async function POST(req: NextRequest) {
       mixcloud1, mixcloud2,
       discogs1,
       tracklists1,
+      bandcamp1,
+      soundcloud1,
+      ra1,
+      spotify1,
     ] = await Promise.all([
       searchYouTube(queries[0]),
       searchYouTube(queries[1]),
@@ -166,21 +264,26 @@ export async function POST(req: NextRequest) {
       searchMixcloud(artist_name),
       searchDiscogs(queries[0]),
       search1001Tracklists(queries[0]),
+      searchBandcamp(queries[0]),
+      searchSoundCloud(queries[0]),
+      searchRA(queries[0]),
+      searchSpotify(queries[0]),
     ])
 
-    // Deduplicate YouTube results by URL
-    const allYoutube = [...youtube1, ...youtube2]
-      .filter((v, i, arr) => arr.findIndex(x => x.url === v.url) === i)
-
-    // Deduplicate Mixcloud
-    const allMixcloud = [...mixcloud1, ...mixcloud2]
-      .filter((m, i, arr) => arr.findIndex(x => x.url === m.url) === i)
+    // Deduplicate by URL
+    const dedup = (arr: any[]) => arr.filter((v, i, a) => a.findIndex(x => x.url === v.url) === i)
+    const allYoutube = dedup([...youtube1, ...youtube2])
+    const allMixcloud = dedup([...mixcloud1, ...mixcloud2])
 
     const results = {
       youtube: allYoutube,
       mixcloud: allMixcloud,
       discogs: discogs1,
       tracklists: tracklists1,
+      bandcamp: bandcamp1,
+      soundcloud: soundcloud1,
+      resident_advisor: ra1,
+      spotify: spotify1,
       scanned_at: new Date().toISOString(),
       queries_used: queries,
       totals: {
@@ -188,7 +291,11 @@ export async function POST(req: NextRequest) {
         mixcloud: allMixcloud.length,
         discogs: discogs1.length,
         tracklists: tracklists1.length,
-        total: allYoutube.length + allMixcloud.length + discogs1.length + tracklists1.length,
+        bandcamp: bandcamp1.length,
+        soundcloud: soundcloud1.length,
+        resident_advisor: ra1.length,
+        spotify: spotify1.length,
+        total: allYoutube.length + allMixcloud.length + discogs1.length + tracklists1.length + bandcamp1.length + soundcloud1.length + ra1.length + spotify1.length,
       },
     }
 

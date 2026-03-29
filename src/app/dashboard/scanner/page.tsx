@@ -48,11 +48,23 @@ interface TracklistResult {
   url: string
 }
 
+interface SimpleResult {
+  title: string
+  artist?: string
+  channel?: string
+  description?: string
+  url: string
+}
+
 interface ScanResults {
   youtube: YouTubeResult[]
   mixcloud: MixcloudResult[]
   discogs: DiscogsResult[]
   tracklists: TracklistResult[]
+  bandcamp: SimpleResult[]
+  soundcloud: SimpleResult[]
+  resident_advisor: SimpleResult[]
+  spotify: SimpleResult[]
   scanned_at: string
 }
 
@@ -164,6 +176,9 @@ export default function ScannerPage() {
       ...(results.mixcloud || []).map((i: any) => ({ ...i, _platform: 'mixcloud' })),
       ...(results.discogs || []).map((i: any) => ({ ...i, _platform: 'discogs' })),
       ...(results.tracklists || []).map((i: any) => ({ ...i, _platform: '1001tracklists' })),
+      ...(results.bandcamp || []).map((i: any) => ({ ...i, _platform: 'bandcamp' })),
+      ...(results.soundcloud || []).map((i: any) => ({ ...i, _platform: 'soundcloud' })),
+      ...(results.resident_advisor || []).map((i: any) => ({ ...i, _platform: 'resident_advisor' })),
     ]
     for (const item of all) {
       await saveDiscovery(item, item._platform)
@@ -175,6 +190,10 @@ export default function ScannerPage() {
   const mcCount = results?.mixcloud?.length ?? 0
   const dcCount = results?.discogs?.length ?? 0
   const tlCount = results?.tracklists?.length ?? 0
+  const bcCount = results?.bandcamp?.length ?? 0
+  const scCount = results?.soundcloud?.length ?? 0
+  const raCount = results?.resident_advisor?.length ?? 0
+  const spCount = results?.spotify?.length ?? 0
 
   return (
     <div style={{ padding: '24px 32px', width: '100%' }}>
@@ -281,7 +300,7 @@ export default function ScannerPage() {
             marginBottom: '12px',
             animation: 'pulse 1.5s ease-in-out infinite',
           }}>
-            Scanning YouTube, Mixcloud, Discogs, 1001Tracklists...
+            Scanning YouTube, Mixcloud, Discogs, 1001Tracklists, Bandcamp, SoundCloud, Resident Advisor, Spotify...
           </div>
           <div style={{
             width: '200px',
@@ -334,6 +353,10 @@ export default function ScannerPage() {
               { label: 'Mixcloud appearances', count: mcCount, color: '#b8b4f0' },
               { label: 'Discogs listings', count: dcCount, color: '#4ecca3' },
               { label: '1001Tracklists sets', count: tlCount, color: '#ff7043' },
+              { label: 'Bandcamp results', count: bcCount, color: '#1DA0C3' },
+              { label: 'SoundCloud results', count: scCount, color: '#ff7043' },
+              { label: 'Resident Advisor', count: raCount, color: '#f48fb1' },
+              { label: 'Spotify results', count: spCount, color: '#1DB954' },
             ].map(s => (
               <div key={s.label} style={{
                 background: 'var(--bg-2)',
@@ -352,12 +375,12 @@ export default function ScannerPage() {
             ))}
           </div>
 
-          {results && (ytCount + mcCount + dcCount + tlCount) > 0 && (
+          {results && (ytCount + mcCount + dcCount + tlCount + bcCount + scCount + raCount) > 0 && (
             <button onClick={saveAll} style={{
               padding: '8px 20px', background: '#1D9E75', border: 'none', borderRadius: '8px',
               color: '#fff', fontSize: '12px', fontWeight: '500', cursor: 'pointer', marginBottom: '1rem',
             }}>
-              Save all to artist report ({ytCount + mcCount + dcCount + tlCount})
+              Save all to artist report ({ytCount + mcCount + dcCount + tlCount + bcCount + scCount + raCount})
             </button>
           )}
 
@@ -589,6 +612,204 @@ export default function ScannerPage() {
               ))}
             </div>
           </Section>
+
+          {/* Bandcamp section */}
+          <Section title="Found on Bandcamp" accent="#1DA0C3" empty={bcCount === 0} platform="Bandcamp">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {(results.bandcamp || []).map((bc, i) => (
+                <div key={i} style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  background: 'var(--bg-2)',
+                  border: '0.5px solid var(--border)',
+                  borderRadius: 'var(--radius)',
+                  padding: '12px 14px',
+                  gap: '12px',
+                }}>
+                  <div style={{ minWidth: 0, flex: 1 }}>
+                    <div style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text)' }}>
+                      {bc.title}
+                    </div>
+                    {bc.channel && (
+                      <div style={{ fontSize: '11px', color: '#1DA0C3', marginTop: '2px' }}>
+                        {bc.channel}
+                      </div>
+                    )}
+                  </div>
+                  <div style={{ display: 'flex', gap: '6px', alignItems: 'center', flexShrink: 0 }}>
+                    <a
+                      href={bc.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        padding: '5px 12px',
+                        fontSize: '11px',
+                        color: '#1DA0C3',
+                        border: '0.5px solid #1DA0C3',
+                        borderRadius: 'var(--radius)',
+                        textDecoration: 'none',
+                      }}
+                    >
+                      Open &rarr;
+                    </a>
+                    <button onClick={() => saveDiscovery(bc, 'bandcamp')} disabled={saved.has(`bandcamp-${bc.url}`)} style={{
+                      padding: '4px 10px', background: saved.has(`bandcamp-${bc.url}`) ? '#0a2a1e' : 'transparent',
+                      border: '0.5px solid', borderColor: saved.has(`bandcamp-${bc.url}`) ? '#1D9E75' : 'var(--border-3)',
+                      borderRadius: '6px', color: saved.has(`bandcamp-${bc.url}`) ? '#4ecca3' : 'var(--text-3)',
+                      fontSize: '11px', cursor: 'pointer',
+                    }}>
+                      {saving.has(`bandcamp-${bc.url}`) ? 'Saving...' : saved.has(`bandcamp-${bc.url}`) ? 'Saved' : 'Save'}
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Section>
+
+          {/* SoundCloud section */}
+          <Section title="Found on SoundCloud" accent="#ff7043" empty={scCount === 0} platform="SoundCloud">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {(results.soundcloud || []).map((sc, i) => (
+                <div key={i} style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  background: 'var(--bg-2)',
+                  border: '0.5px solid var(--border)',
+                  borderRadius: 'var(--radius)',
+                  padding: '12px 14px',
+                  gap: '12px',
+                }}>
+                  <div style={{ minWidth: 0, flex: 1 }}>
+                    <div style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      {sc.title}
+                    </div>
+                  </div>
+                  <div style={{ display: 'flex', gap: '6px', alignItems: 'center', flexShrink: 0 }}>
+                    <a
+                      href={sc.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        padding: '5px 12px',
+                        fontSize: '11px',
+                        color: '#ff7043',
+                        border: '0.5px solid #ff7043',
+                        borderRadius: 'var(--radius)',
+                        textDecoration: 'none',
+                      }}
+                    >
+                      Open &rarr;
+                    </a>
+                    <button onClick={() => saveDiscovery(sc, 'soundcloud')} disabled={saved.has(`soundcloud-${sc.url}`)} style={{
+                      padding: '4px 10px', background: saved.has(`soundcloud-${sc.url}`) ? '#0a2a1e' : 'transparent',
+                      border: '0.5px solid', borderColor: saved.has(`soundcloud-${sc.url}`) ? '#1D9E75' : 'var(--border-3)',
+                      borderRadius: '6px', color: saved.has(`soundcloud-${sc.url}`) ? '#4ecca3' : 'var(--text-3)',
+                      fontSize: '11px', cursor: 'pointer',
+                    }}>
+                      {saving.has(`soundcloud-${sc.url}`) ? 'Saving...' : saved.has(`soundcloud-${sc.url}`) ? 'Saved' : 'Save'}
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Section>
+
+          {/* Resident Advisor section */}
+          <Section title="Found on Resident Advisor" accent="#f48fb1" empty={raCount === 0} platform="Resident Advisor">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {(results.resident_advisor || []).map((ra, i) => (
+                <div key={i} style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  background: 'var(--bg-2)',
+                  border: '0.5px solid var(--border)',
+                  borderRadius: 'var(--radius)',
+                  padding: '12px 14px',
+                  gap: '12px',
+                }}>
+                  <div style={{ minWidth: 0, flex: 1 }}>
+                    <div style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      {ra.title}
+                    </div>
+                  </div>
+                  <div style={{ display: 'flex', gap: '6px', alignItems: 'center', flexShrink: 0 }}>
+                    <a
+                      href={ra.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        padding: '5px 12px',
+                        fontSize: '11px',
+                        color: '#f48fb1',
+                        border: '0.5px solid #f48fb1',
+                        borderRadius: 'var(--radius)',
+                        textDecoration: 'none',
+                      }}
+                    >
+                      Open &rarr;
+                    </a>
+                    <button onClick={() => saveDiscovery(ra, 'resident_advisor')} disabled={saved.has(`resident_advisor-${ra.url}`)} style={{
+                      padding: '4px 10px', background: saved.has(`resident_advisor-${ra.url}`) ? '#0a2a1e' : 'transparent',
+                      border: '0.5px solid', borderColor: saved.has(`resident_advisor-${ra.url}`) ? '#1D9E75' : 'var(--border-3)',
+                      borderRadius: '6px', color: saved.has(`resident_advisor-${ra.url}`) ? '#4ecca3' : 'var(--text-3)',
+                      fontSize: '11px', cursor: 'pointer',
+                    }}>
+                      {saving.has(`resident_advisor-${ra.url}`) ? 'Saving...' : saved.has(`resident_advisor-${ra.url}`) ? 'Saved' : 'Save'}
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Section>
+
+          {/* Spotify section */}
+          <Section title="Found on Spotify" accent="#1DB954" empty={spCount === 0} platform="Spotify">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {(results.spotify || []).map((sp, i) => (
+                <div key={i} style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  background: 'var(--bg-2)',
+                  border: '0.5px solid var(--border)',
+                  borderRadius: 'var(--radius)',
+                  padding: '12px 14px',
+                  gap: '12px',
+                }}>
+                  <div style={{ minWidth: 0, flex: 1 }}>
+                    <div style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      {sp.title}
+                    </div>
+                    {sp.description && (
+                      <div style={{ fontSize: '11px', color: 'var(--text-4)', marginTop: '2px' }}>
+                        {sp.description}
+                      </div>
+                    )}
+                  </div>
+                  <div style={{ display: 'flex', gap: '6px', alignItems: 'center', flexShrink: 0 }}>
+                    <a
+                      href={sp.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        padding: '5px 12px',
+                        fontSize: '11px',
+                        color: '#1DB954',
+                        border: '0.5px solid #1DB954',
+                        borderRadius: 'var(--radius)',
+                        textDecoration: 'none',
+                      }}
+                    >
+                      Open &rarr;
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Section>
         </>
       )}
 
@@ -605,7 +826,7 @@ export default function ScannerPage() {
             Select a release and hit Scan to discover where it appears online
           </div>
           <div style={{ fontSize: '12px', color: 'var(--text-4)' }}>
-            Searches YouTube, Mixcloud, Discogs, and 1001Tracklists
+            Searches YouTube, Mixcloud, Discogs, 1001Tracklists, Bandcamp, SoundCloud, Resident Advisor, and Spotify
           </div>
         </div>
       )}

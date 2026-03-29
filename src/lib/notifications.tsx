@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase'
 
 interface Notification {
   id: string
-  type: 'task' | 'review' | 'invoice'
+  type: 'task' | 'review' | 'invoice' | 'message'
   text: string
   time: string
   href: string
@@ -15,6 +15,7 @@ const ICONS: Record<Notification['type'], string> = {
   task: '\u26a0\ufe0f',
   review: '\ud83d\udcdd',
   invoice: '\ud83d\udcb0',
+  message: '\ud83d\udcac',
 }
 
 function timeAgo(dateStr: string): string {
@@ -107,6 +108,28 @@ export function NotificationBell() {
             text: `Overdue: ${inv.invoice_number}`,
             time: inv.due_at ?? inv.created_at,
             href: '/dashboard/invoicing',
+          })
+        }
+      }
+
+      // Unread portal messages
+      const { data: unreadMessages } = await (supabase as any)
+        .from('messages')
+        .select('id, body, created_at, contacts(full_name)')
+        .eq('direction', 'inbound')
+        .eq('is_read', false)
+        .eq('channel', 'portal')
+        .order('created_at', { ascending: false })
+        .limit(5)
+
+      if (unreadMessages) {
+        for (const m of unreadMessages) {
+          items.push({
+            id: `msg-${m.id}`,
+            type: 'message',
+            text: `Message from ${m.contacts?.full_name ?? 'Artist'}: ${m.body?.slice(0, 40)}...`,
+            time: m.created_at,
+            href: '/dashboard/messages',
           })
         }
       }

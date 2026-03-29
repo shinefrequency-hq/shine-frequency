@@ -13,13 +13,17 @@ interface PortalData {
   reviews: any[]
 }
 
-type TabKey = 'overview' | 'intelligence' | 'bookings' | 'invoices' | 'promos' | 'reviews'
+type TabKey = 'overview' | 'intelligence' | 'bookings' | 'invoices' | 'promos' | 'reviews' | 'messages'
 
 export default function PortalDashboard() {
   const [loading, setLoading] = useState(true)
   const [data, setData] = useState<PortalData | null>(null)
   const [tab, setTab] = useState<TabKey>('overview')
   const [selectedRelease, setSelectedRelease] = useState<string>('')
+  const [messages, setMessages] = useState<any[]>([])
+  const [newMessage, setNewMessage] = useState('')
+  const [sendingMsg, setSendingMsg] = useState(false)
+  const [unreadCount, setUnreadCount] = useState(0)
 
   useEffect(() => {
     const contactId = sessionStorage.getItem('portal_contact_id')
@@ -46,8 +50,61 @@ export default function PortalDashboard() {
     if (result.data?.releaseStats?.length > 0) {
       setSelectedRelease(result.data.releaseStats[0].catalogue_number)
     }
+
+    // Load messages
+    const msgRes = await fetch('/api/public', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'portal_messages', contact_id: contactId }),
+    })
+    const msgResult = await msgRes.json()
+    setMessages(msgResult.messages ?? [])
+    setUnreadCount((msgResult.messages ?? []).filter((m: any) => m.direction === 'outbound' && !m.is_read).length)
+
     setLoading(false)
   }
+
+  async function sendMessage() {
+    if (!newMessage.trim()) return
+    setSendingMsg(true)
+    await fetch('/api/public', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'portal_send_message',
+        contact_id: sessionStorage.getItem('portal_contact_id'),
+        body: newMessage.trim(),
+      }),
+    })
+    setNewMessage('')
+    setSendingMsg(false)
+    // Reload messages
+    const msgRes = await fetch('/api/public', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'portal_messages', contact_id: sessionStorage.getItem('portal_contact_id') }),
+    })
+    const msgResult = await msgRes.json()
+    setMessages(msgResult.messages ?? [])
+    setUnreadCount((msgResult.messages ?? []).filter((m: any) => m.direction === 'outbound' && !m.is_read).length)
+  }
+
+  // Auto-poll for new messages every 5 seconds
+  useEffect(() => {
+    const contactId = sessionStorage.getItem('portal_contact_id')
+    if (!contactId) return
+    const interval = setInterval(async () => {
+      const res = await fetch('/api/public', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'portal_messages', contact_id: contactId }),
+      })
+      const result = await res.json()
+      setMessages(result.messages ?? [])
+      setUnreadCount((result.messages ?? []).filter((m: any) => m.direction === 'outbound' && !m.is_read).length)
+    }, 5000)
+    return () => clearInterval(interval)
+  }, [])
 
   function logout() {
     sessionStorage.clear()
@@ -150,6 +207,7 @@ export default function PortalDashboard() {
     { key: 'invoices', label: 'Invoices', count: data.invoices.length },
     { key: 'promos', label: 'Promo Access', count: data.promoAccess.length },
     { key: 'reviews', label: 'My Reviews', count: data.reviews.length },
+    { key: 'messages', label: 'Messages' },
   ]
 
   const tabStyle = (t: TabKey) => ({
@@ -219,10 +277,17 @@ export default function PortalDashboard() {
         {/* ═══════════ TAB NAV ═══════════ */}
         <div style={{ display: 'flex', gap: '8px', marginBottom: '2rem', flexWrap: 'wrap', borderBottom: '1px solid #1a1a1a', paddingBottom: '1.5rem' }}>
           {tabs.map(t => (
-            <button key={t.key} onClick={() => setTab(t.key)} style={tabStyle(t.key)}>
+            <button key={t.key} onClick={() => setTab(t.key)} style={{ ...tabStyle(t.key), display: 'flex', alignItems: 'center', gap: '6px' }}>
               {t.label}{t.count !== undefined ? ` (${t.count})` : ''}
+              {t.key === 'messages' && unreadCount > 0 && (
+                <>
+                  <span style={{ background: '#1D9E75', color: '#fff', fontSize: '10px', fontWeight: '700', padding: '1px 6px', borderRadius: '10px', minWidth: '18px', textAlign: 'center' }}>{unreadCount}</span>
+                  <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#1D9E75', display: 'inline-block', animation: 'msgPulse 1.5s ease-in-out infinite' }} />
+                </>
+              )}
             </button>
           ))}
+          <style>{`@keyframes msgPulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(1.3); } }`}</style>
         </div>
 
         {/* ═══════════════════════════════════════════
@@ -750,6 +815,75 @@ export default function PortalDashboard() {
             {data.reviews.length === 0 && (
               <div style={{ ...cardStyle, textAlign: 'center', padding: '3rem', color: '#444', fontSize: '13px' }}>No reviews yet</div>
             )}
+          </div>
+        )}
+
+        {/* ═══════════════════════════════════════════
+            MESSAGES TAB
+        ═══════════════════════════════════════════ */}
+        {tab === 'messages' && (
+          <div style={{ background: '#111', border: '0.5px solid #222', borderRadius: '10px', overflow: 'hidden', display: 'flex', flexDirection: 'column', height: '500px' }}>
+            {/* Header */}
+            <div style={{ padding: '12px 16px', borderBottom: '0.5px solid #222', fontSize: '13px', fontWeight: '600', color: '#fff' }}>
+              Messages with Shine
+              {unreadCount > 0 && <span style={{ marginLeft: '8px', background: '#1D9E75', color: '#fff', fontSize: '10px', fontWeight: '700', padding: '2px 6px', borderRadius: '10px' }}>{unreadCount} new</span>}
+            </div>
+
+            {/* Message list */}
+            <div style={{ flex: 1, overflowY: 'auto', padding: '16px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {messages.length === 0 ? (
+                <div style={{ textAlign: 'center', color: '#555', fontSize: '13px', padding: '3rem 0' }}>
+                  No messages yet. Send a message to get started.
+                </div>
+              ) : messages.map((m: any, i: number) => {
+                const isFromArtist = m.direction === 'inbound'
+                return (
+                  <div key={m.id || i} style={{
+                    alignSelf: isFromArtist ? 'flex-end' : 'flex-start',
+                    maxWidth: '75%',
+                  }}>
+                    <div style={{
+                      padding: '10px 14px',
+                      borderRadius: isFromArtist ? '12px 12px 4px 12px' : '12px 12px 12px 4px',
+                      background: isFromArtist ? '#1D9E75' : '#222',
+                      color: '#fff',
+                      fontSize: '13px',
+                      lineHeight: 1.5,
+                    }}>
+                      {m.body}
+                    </div>
+                    <div style={{
+                      fontSize: '10px', color: '#555', marginTop: '4px',
+                      textAlign: isFromArtist ? 'right' : 'left',
+                    }}>
+                      {isFromArtist ? 'You' : 'Shine'} · {new Date(m.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+
+            {/* Input */}
+            <div style={{ padding: '12px 16px', borderTop: '0.5px solid #222', display: 'flex', gap: '8px' }}>
+              <input
+                value={newMessage}
+                onChange={e => setNewMessage(e.target.value)}
+                onKeyDown={e => e.key === 'Enter' && !e.shiftKey && sendMessage()}
+                placeholder="Type a message..."
+                style={{ flex: 1, padding: '10px 14px', background: '#1a1a1a', border: '0.5px solid #333', borderRadius: '8px', color: '#fff', fontSize: '13px', outline: 'none' }}
+              />
+              <button
+                onClick={sendMessage}
+                disabled={!newMessage.trim() || sendingMsg}
+                style={{
+                  padding: '10px 20px', background: !newMessage.trim() || sendingMsg ? '#0a4a30' : '#1D9E75',
+                  border: 'none', borderRadius: '8px', color: '#fff', fontSize: '13px',
+                  fontWeight: '600', cursor: !newMessage.trim() || sendingMsg ? 'not-allowed' : 'pointer',
+                }}
+              >
+                {sendingMsg ? '...' : 'Send'}
+              </button>
+            </div>
           </div>
         )}
 

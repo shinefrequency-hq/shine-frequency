@@ -411,6 +411,80 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: true, releases: data ?? [] })
     }
 
+    // --- Portal messages ---
+    if (action === 'portal_messages') {
+      const { contact_id } = body
+      const { data } = await sb.from('messages')
+        .select('*')
+        .eq('contact_id', contact_id)
+        .order('created_at', { ascending: true })
+      return NextResponse.json({ success: true, messages: data ?? [] })
+    }
+
+    if (action === 'portal_send_message') {
+      const { contact_id, body: msgBody } = body
+
+      // Save message (inbound = from artist to admin)
+      const { error } = await sb.from('messages').insert([{
+        contact_id,
+        direction: 'inbound',
+        channel: 'portal',
+        body: msgBody,
+        is_read: false,
+      }])
+
+      if (error) return NextResponse.json({ error: error.message }, { status: 400 })
+
+      // Get contact name for notification
+      const { data: contact } = await sb.from('contacts').select('full_name, email').eq('id', contact_id).single()
+      const name = contact?.full_name || 'Unknown'
+
+      // Create task for Sharon so she sees it
+      await sb.from('tasks').insert([{
+        title: `New message from ${name}`,
+        description: `${name} sent a message via portal: "${msgBody.slice(0, 100)}"`,
+        urgency: 'today',
+        related_contact_id: contact_id,
+        auto_generated: true,
+      }])
+
+      // Send email notification to Sharon
+      try {
+        const { sendEmail } = await import('@/lib/email')
+        await sendEmail({
+          to: process.env.SMTP_USER || 'shineprdev@gmail.com',
+          subject: `New portal message from ${name}`,
+          html: `
+<div style="font-family: -apple-system, sans-serif; max-width: 500px; margin: 0 auto; padding: 24px;">
+  <div style="background: #1D9E75; color: #fff; font-weight: 800; font-size: 14px; letter-spacing: 0.12em; padding: 5px 10px; border-radius: 3px; display: inline-block; margin-bottom: 16px;">SHINE</div>
+  <div style="font-size: 16px; font-weight: 600; color: #1a1a1a; margin-bottom: 12px;">New message from ${name}</div>
+  <div style="background: #f8f8f8; border-radius: 8px; padding: 16px; margin-bottom: 16px; font-size: 14px; color: #333; line-height: 1.6; border-left: 3px solid #1D9E75;">
+    ${msgBody}
+  </div>
+  <div style="font-size: 13px; color: #888;">
+    Reply from your <a href="https://shine-frequency.vercel.app/dashboard/messages" style="color: #1D9E75;">Frequency dashboard</a>
+  </div>
+  <div style="border-top: 1px solid #eee; padding-top: 12px; margin-top: 16px; font-size: 11px; color: #bbb;">
+    Shine Frequency — London, UK
+  </div>
+</div>`,
+        })
+      } catch {}
+
+      return NextResponse.json({ success: true })
+    }
+
+    // --- Mark portal messages as read ---
+    if (action === 'portal_mark_read') {
+      const { contact_id } = body
+      await sb.from('messages')
+        .update({ is_read: true, read_at: new Date().toISOString() })
+        .eq('contact_id', contact_id)
+        .eq('direction', 'outbound')
+        .eq('is_read', false)
+      return NextResponse.json({ success: true })
+    }
+
     return NextResponse.json({ error: 'Unknown action' }, { status: 400 })
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 })

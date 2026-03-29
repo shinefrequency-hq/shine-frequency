@@ -103,55 +103,72 @@ export default function HomePage() {
   return (
     <div style={{ minHeight: '100vh', background: '#E6E6E6', fontFamily: 'system-ui, sans-serif', color: '#1a1a1a' }}>
 
-      {/* Nav */}
-      <nav style={{
-        position: 'sticky', top: 0, zIndex: 100,
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '0 24px', height: '52px', background: '#fff',
-        borderBottom: '1px solid #e0e0e0',
+      {/* Hero with background image + transparent nav */}
+      <section style={{
+        position: 'relative',
+        minHeight: '100vh',
+        backgroundImage: 'url(/hero.jpg)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        display: 'flex',
+        flexDirection: 'column',
       }}>
-        <a href="/" style={{ textDecoration: 'none', fontWeight: '900', fontSize: '18px', letterSpacing: '0.12em', background: 'linear-gradient(135deg, #FF6B35, #F7C948, #FF6B35)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-          SHINE
-        </a>
-        <div className="shine-nav-links" style={{ display: 'flex', gap: '20px', alignItems: 'center', flexWrap: 'wrap' }}>
-          <a href="#how-it-works" style={{ fontSize: '12px', color: '#555', textDecoration: 'none' }}>How It Works</a>
-          <a href="#results" style={{ fontSize: '12px', color: '#555', textDecoration: 'none' }}>Results</a>
-          <a href="#artists" style={{ fontSize: '12px', color: '#555', textDecoration: 'none' }}>Artists</a>
-          <a href="#contact" style={{ fontSize: '12px', color: '#555', textDecoration: 'none' }}>Contact</a>
-          <span style={{ width: '1px', height: '16px', background: '#ddd' }} />
-          <a href="/onboard" style={{ fontSize: '12px', color: '#555', textDecoration: 'none' }}>Artist Sign Up</a>
-          <a href="/portal" style={{ fontSize: '12px', color: '#555', textDecoration: 'none' }}>Artist Login</a>
-          <a href="/join" style={{ fontSize: '12px', color: '#555', textDecoration: 'none' }}>DJ / Press</a>
-        </div>
-      </nav>
+        {/* Dark overlay for text readability */}
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,0.6) 100%)', zIndex: 1 }} />
 
-      {/* Hero */}
-      <section style={{ background: '#fff', padding: '5rem 2rem 4rem', textAlign: 'center' }}>
-        <div style={{ maxWidth: '720px', margin: '0 auto' }}>
-          <div style={{
-            fontWeight: '900', fontSize: 'clamp(56px, 12vw, 96px)',
-            letterSpacing: '0.08em', lineHeight: 1,
-            background: 'linear-gradient(135deg, #FF6B35 0%, #F7C948 40%, #FFD93D 60%, #FF6B35 100%)',
-            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-            marginBottom: '1.25rem',
-          }}>SHINE</div>
-          <div style={{ fontSize: '12px', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#999', marginBottom: '1.5rem', fontWeight: '500' }}>
-            PR & Artist Agency
+        {/* Nav — transparent over image */}
+        <nav style={{
+          position: 'relative', zIndex: 10,
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          padding: '16px 24px',
+        }}>
+          <a href="/" style={{ textDecoration: 'none', fontWeight: '900', fontSize: '20px', letterSpacing: '0.12em', color: '#fff', textShadow: '0 1px 8px rgba(0,0,0,0.3)' }}>
+            SHINE
+          </a>
+          <div className="shine-nav-links" style={{ display: 'flex', gap: '20px', alignItems: 'center', flexWrap: 'wrap' }}>
+            <a href="#how-it-works" style={{ fontSize: '12px', color: 'rgba(255,255,255,0.85)', textDecoration: 'none' }}>How It Works</a>
+            <a href="#results" style={{ fontSize: '12px', color: 'rgba(255,255,255,0.85)', textDecoration: 'none' }}>Results</a>
+            <a href="#artists" style={{ fontSize: '12px', color: 'rgba(255,255,255,0.85)', textDecoration: 'none' }}>Artists</a>
+            <a href="#contact" style={{ fontSize: '12px', color: 'rgba(255,255,255,0.85)', textDecoration: 'none' }}>Contact</a>
+            <span style={{ width: '1px', height: '16px', background: 'rgba(255,255,255,0.3)' }} />
+            <a href="/onboard" style={{ fontSize: '12px', color: 'rgba(255,255,255,0.85)', textDecoration: 'none' }}>Artist Sign Up</a>
+            <a href="/portal" style={{ fontSize: '12px', color: 'rgba(255,255,255,0.85)', textDecoration: 'none' }}>Artist Login</a>
+            <a href="/join" style={{ fontSize: '12px', color: 'rgba(255,255,255,0.85)', textDecoration: 'none' }}>DJ / Press</a>
           </div>
-          <h1 style={{ fontSize: 'clamp(24px, 4vw, 38px)', fontWeight: '600', lineHeight: 1.3, marginBottom: '1.25rem', letterSpacing: '-0.02em', color: '#1a1a1a' }}>
-            Your music deserves to be heard<br />by the people who matter
-          </h1>
-          <p style={{ fontSize: '16px', color: '#777', lineHeight: 1.7, marginBottom: '2.5rem', maxWidth: '540px', margin: '0 auto 2.5rem' }}>
-            We run press and promo campaigns that get your releases into the hands of the DJs, journalists, and tastemakers who will champion your music. Underground House, Techno, Balearic and Disco.
-          </p>
-          <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <a href="/onboard" style={{ padding: '14px 32px', background: '#1D9E75', borderRadius: '8px', color: '#fff', textDecoration: 'none', fontSize: '15px', fontWeight: '600', border: 'none' }}>
-              Start your campaign
-            </a>
-            <a href="#how-it-works" style={{ padding: '14px 32px', background: '#fff', border: '1px solid #ddd', borderRadius: '8px', color: '#555', textDecoration: 'none', fontSize: '15px' }}>
-              See how it works
-            </a>
+        </nav>
+
+        {/* Hero content */}
+        <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', zIndex: 10, padding: '2rem', textAlign: 'center' }}>
+          <div style={{ maxWidth: '720px' }}>
+            <div style={{
+              fontWeight: '900', fontSize: 'clamp(64px, 14vw, 120px)',
+              letterSpacing: '0.08em', lineHeight: 1, color: '#fff',
+              textShadow: '0 2px 40px rgba(255,107,53,0.4), 0 1px 12px rgba(0,0,0,0.3)',
+              marginBottom: '1rem',
+            }}>SHINE</div>
+            <div style={{ fontSize: '13px', letterSpacing: '0.3em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.7)', marginBottom: '1.5rem', fontWeight: '500' }}>
+              PR & Artist Agency
+            </div>
+            <h1 style={{ fontSize: 'clamp(22px, 4vw, 36px)', fontWeight: '600', lineHeight: 1.35, marginBottom: '1.25rem', letterSpacing: '-0.01em', color: '#fff', textShadow: '0 1px 8px rgba(0,0,0,0.3)' }}>
+              Your music deserves to be heard<br />by the people who matter
+            </h1>
+            <p style={{ fontSize: '15px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.7, marginBottom: '2.5rem', maxWidth: '520px', margin: '0 auto 2.5rem' }}>
+              Press and promotional campaigns for Underground House, Techno, Balearic and Disco. A very personal approach — working with friends and contacts, simply sharing great music over a chat.
+            </p>
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <a href="/onboard" style={{ padding: '14px 32px', background: '#1D9E75', borderRadius: '8px', color: '#fff', textDecoration: 'none', fontSize: '15px', fontWeight: '600', border: 'none', boxShadow: '0 4px 20px rgba(29,158,117,0.4)' }}>
+                Start your campaign
+              </a>
+              <a href="#how-it-works" style={{ padding: '14px 32px', background: 'rgba(255,255,255,0.15)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.3)', borderRadius: '8px', color: '#fff', textDecoration: 'none', fontSize: '15px' }}>
+                See how it works
+              </a>
+            </div>
           </div>
+        </div>
+
+        {/* Scroll indicator */}
+        <div style={{ position: 'relative', zIndex: 10, textAlign: 'center', paddingBottom: '2rem' }}>
+          <div style={{ fontSize: '20px', color: 'rgba(255,255,255,0.4)', animation: 'bounce 2s infinite' }}>v</div>
         </div>
       </section>
 

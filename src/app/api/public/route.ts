@@ -19,8 +19,9 @@ export async function POST(req: NextRequest) {
     if (action === 'onboard_artist') {
       const { contact, artist } = body
 
-      // Create contact
-      const { data: contactData, error: cErr } = await sb
+      // Try insert, if duplicate email then upsert
+      let contactData: any
+      const { data: inserted, error: cErr } = await sb
         .from('contacts')
         .insert([contact])
         .select()
@@ -28,15 +29,25 @@ export async function POST(req: NextRequest) {
 
       if (cErr) {
         if (cErr.message?.includes('duplicate') || cErr.code === '23505') {
-          return NextResponse.json({ error: 'An artist with this email already exists. Please contact us directly.' }, { status: 400 })
+          // Email exists — update the existing record
+          const { data: existing } = await sb.from('contacts').select('id').eq('email', contact.email).single()
+          if (existing) {
+            await sb.from('contacts').update(contact).eq('id', existing.id)
+            contactData = existing
+          } else {
+            return NextResponse.json({ error: cErr.message }, { status: 400 })
+          }
+        } else {
+          return NextResponse.json({ error: cErr.message }, { status: 400 })
         }
-        return NextResponse.json({ error: cErr.message }, { status: 400 })
+      } else {
+        contactData = inserted
       }
 
-      // Create artist
+      // Create or update artist
       const { error: aErr } = await sb
         .from('artists')
-        .insert([{ ...artist, contact_id: contactData.id }])
+        .upsert([{ ...artist, contact_id: contactData.id }], { onConflict: 'stage_name' })
 
       if (aErr) {
         return NextResponse.json({ error: aErr.message }, { status: 400 })
@@ -58,7 +69,8 @@ export async function POST(req: NextRequest) {
     if (action === 'join_promo') {
       const { contact } = body
 
-      const { data: contactData, error: cErr } = await sb
+      let contactData: any
+      const { data: inserted, error: cErr } = await sb
         .from('contacts')
         .insert([contact])
         .select()
@@ -66,20 +78,30 @@ export async function POST(req: NextRequest) {
 
       if (cErr) {
         if (cErr.message?.includes('duplicate') || cErr.code === '23505') {
-          return NextResponse.json({ error: 'This email is already registered.' }, { status: 400 })
+          // Already registered — update and notify
+          const { data: existing } = await sb.from('contacts').select('id').eq('email', contact.email).single()
+          if (existing) {
+            await sb.from('contacts').update(contact).eq('id', existing.id)
+            contactData = existing
+          }
+        } else {
+          return NextResponse.json({ error: cErr.message }, { status: 400 })
         }
-        return NextResponse.json({ error: cErr.message }, { status: 400 })
+      } else {
+        contactData = inserted
       }
 
-      await sb.from('tasks').insert([{
-        title: `New promo sign-up: ${contact.full_name}`,
-        description: `${contact.full_name} (${contact.email}) signed up for promos. ${contact.notes || ''}. Review and approve.`,
-        urgency: 'today',
-        related_contact_id: contactData.id,
-        auto_generated: true,
-      }])
+      if (contactData) {
+        await sb.from('tasks').insert([{
+          title: `New promo sign-up: ${contact.full_name}`,
+          description: `${contact.full_name} (${contact.email}) signed up for promos. ${contact.notes || ''}. Review and approve.`,
+          urgency: 'today',
+          related_contact_id: contactData.id,
+          auto_generated: true,
+        }])
+      }
 
-      return NextResponse.json({ success: true, contact_id: contactData.id })
+      return NextResponse.json({ success: true, contact_id: contactData?.id })
     }
 
     // --- DJ review submission ---

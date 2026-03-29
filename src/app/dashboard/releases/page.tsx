@@ -255,6 +255,11 @@ export default function ReleasesPage() {
             </div>
           </div>
 
+          <div style={{ marginBottom: '12px' }}>
+            <label style={lbl}>Artwork URL</label>
+            <input style={inp()} value={form.artwork_url ?? ''} onChange={e => setForm(f => ({ ...f, artwork_url: e.target.value }))} placeholder="/artwork/sf-041.svg or https://..." />
+          </div>
+
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
             <div>
               <label style={lbl}>Dropbox folder URL</label>
@@ -356,8 +361,19 @@ export default function ReleasesPage() {
                   >
                     <td style={{ padding: '12px 14px', fontFamily: 'monospace', fontSize: '11px', color: 'var(--text-3)' }}>{r.catalogue_number}</td>
                     <td style={{ padding: '12px 14px' }}>
-                      <div style={{ fontWeight: '500', color: 'var(--text)' }}>{r.artist_name}</div>
-                      <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '1px' }}>{r.title}</div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        {r.artwork_url ? (
+                          <img src={r.artwork_url} alt="" style={{ width: '40px', height: '40px', borderRadius: '6px', objectFit: 'cover', flexShrink: 0 }} />
+                        ) : (
+                          <div style={{ width: '40px', height: '40px', borderRadius: '6px', background: 'var(--bg-4)', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', color: 'var(--text-3)' }}>
+                            {r.catalogue_number.slice(-3)}
+                          </div>
+                        )}
+                        <div>
+                          <div style={{ fontWeight: '500', color: 'var(--text)' }}>{r.artist_name}</div>
+                          <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '1px' }}>{r.title}</div>
+                        </div>
+                      </div>
                     </td>
                     <td style={{ padding: '12px 14px', fontSize: '12px', color: 'var(--text-faint)' }}>{r.format}</td>
                     <td style={{ padding: '12px 14px', fontSize: '12px', color: 'var(--text-faint)' }}>{r.total_tracks}</td>

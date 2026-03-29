@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <defs>
+    <linearGradient id="g4" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0a0a0a"/>
+      <stop offset="100%" stop-color="#1a1a0a"/>
+    </linearGradient>
+  </defs>
+  <rect width="500" height="500" fill="url(#g4)"/>
+  <!-- Water/liquid drip patterns -->
+  <g opacity="0.5">
+    <!-- Drip streams -->
+    <path d="M120,0 Q120,100 115,200 Q110,300 120,400 Q125,450 120,500" fill="none" stroke="#f5c842" stroke-width="2"/>
+    <path d="M200,0 Q205,80 195,160 Q185,240 200,320 Q210,400 200,500" fill="none" stroke="#f5c842" stroke-width="1.5" opacity="0.7"/>
+    <path d="M300,0 Q295,120 305,240 Q310,360 300,500" fill="none" stroke="#f5c842" stroke-width="2"/>
+    <path d="M380,0 Q385,90 375,180 Q370,270 380,360 Q385,430 380,500" fill="none" stroke="#f5c842" stroke-width="1" opacity="0.6"/>
+    <!-- Droplets -->
+    <ellipse cx="120" cy="180" rx="4" ry="6" fill="#f5c842" opacity="0.6"/>
+    <ellipse cx="300" cy="140" rx="3" ry="5" fill="#f5c842" opacity="0.5"/>
+    <ellipse cx="200" cy="260" rx="5" ry="7" fill="#f5c842" opacity="0.4"/>
+    <ellipse cx="380" cy="220" rx="3" ry="5" fill="#f5c842" opacity="0.5"/>
+  </g>
+  <!-- Broken grid -->
+  <g stroke="#f5c842" stroke-width="0.5" opacity="0.15">
+    <line x1="0" y1="100" x2="200" y2="103"/>
+    <line x1="250" y1="98" x2="500" y2="100"/>
+    <line x1="0" y1="200" x2="150" y2="204"/>
+    <line x1="180" y1="197" x2="500" y2="200"/>
+    <line x1="0" y1="300" x2="300" y2="298"/>
+    <line x1="340" y1="303" x2="500" y2="300"/>
+  </g>
+  <!-- Abstract broken shapes -->
+  <g opacity="0.3">
+    <rect x="160" y="120" width="80" height="80" fill="none" stroke="#f5c842" stroke-width="1" transform="rotate(12 200 160)"/>
+    <rect x="260" y="200" width="60" height="60" fill="none" stroke="#f5c842" stroke-width="1" transform="rotate(-8 290 230)"/>
+    <rect x="100" y="280" width="70" height="70" fill="none" stroke="#f5c842" stroke-width="0.5" transform="rotate(5 135 315)"/>
+  </g>
+  <!-- Text -->
+  <text x="250" y="400" text-anchor="middle" fill="#ffffff" font-family="monospace" font-size="11" letter-spacing="4" opacity="0.5">SF-044</text>
+  <text x="250" y="425" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-size="22" font-weight="bold" letter-spacing="2">BLAWAN</text>
+  <text x="250" y="455" text-anchor="middle" fill="#f5c842" font-family="Arial, sans-serif" font-size="11" letter-spacing="3">WET WILL ALWAYS DRY</text>
+  <text x="250" y="485" text-anchor="middle" fill="#333" font-family="monospace" font-size="8" letter-spacing="2">SHINE FREQUENCY</text>
+</svg>

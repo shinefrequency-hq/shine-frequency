@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+  <defs>
+    <radialGradient id="g5" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#1a0a0a"/>
+      <stop offset="100%" stop-color="#0a0a0a"/>
+    </radialGradient>
+  </defs>
+  <rect width="500" height="500" fill="url(#g5)"/>
+  <!-- Ritual circle pattern -->
+  <g transform="translate(250,210)" opacity="0.6">
+    <!-- Outer ring -->
+    <circle r="130" fill="none" stroke="#b8b4f0" stroke-width="1.5"/>
+    <circle r="125" fill="none" stroke="#b8b4f0" stroke-width="0.5" stroke-dasharray="4 8"/>
+    <!-- Middle rings -->
+    <circle r="90" fill="none" stroke="#b8b4f0" stroke-width="1" opacity="0.7"/>
+    <circle r="55" fill="none" stroke="#b8b4f0" stroke-width="1" opacity="0.5"/>
+    <!-- Inner elements -->
+    <circle r="20" fill="none" stroke="#f08080" stroke-width="1.5"/>
+    <circle r="3" fill="#f08080" opacity="0.8"/>
+    <!-- Cross lines through circles -->
+    <line x1="-130" y1="0" x2="130" y2="0" stroke="#b8b4f0" stroke-width="0.5" opacity="0.3"/>
+    <line x1="0" y1="-130" x2="0" y2="130" stroke="#b8b4f0" stroke-width="0.5" opacity="0.3"/>
+    <!-- Diagonal lines -->
+    <line x1="-92" y1="-92" x2="92" y2="92" stroke="#b8b4f0" stroke-width="0.5" opacity="0.2"/>
+    <line x1="92" y1="-92" x2="-92" y2="92" stroke="#b8b4f0" stroke-width="0.5" opacity="0.2"/>
+    <!-- Ritual symbols at cardinal points -->
+    <g transform="translate(0,-130)">
+      <polygon points="0,-8 -5,4 5,4" fill="#f08080" opacity="0.6"/>
+    </g>
+    <g transform="translate(130,0)">
+      <rect x="-4" y="-4" width="8" height="8" fill="none" stroke="#f08080" stroke-width="1" opacity="0.6" transform="rotate(45)"/>
+    </g>
+    <g transform="translate(0,130)">
+      <polygon points="0,8 -5,-4 5,-4" fill="#f08080" opacity="0.6"/>
+    </g>
+    <g transform="translate(-130,0)">
+      <circle r="5" fill="none" stroke="#f08080" stroke-width="1" opacity="0.6"/>
+    </g>
+    <!-- Small dots on middle ring -->
+    <circle cx="0" cy="-90" r="2" fill="#b8b4f0" opacity="0.5"/>
+    <circle cx="90" cy="0" r="2" fill="#b8b4f0" opacity="0.5"/>
+    <circle cx="0" cy="90" r="2" fill="#b8b4f0" opacity="0.5"/>
+    <circle cx="-90" cy="0" r="2" fill="#b8b4f0" opacity="0.5"/>
+    <circle cx="64" cy="-64" r="1.5" fill="#b8b4f0" opacity="0.4"/>
+    <circle cx="64" cy="64" r="1.5" fill="#b8b4f0" opacity="0.4"/>
+    <circle cx="-64" cy="64" r="1.5" fill="#b8b4f0" opacity="0.4"/>
+    <circle cx="-64" cy="-64" r="1.5" fill="#b8b4f0" opacity="0.4"/>
+  </g>
+  <!-- Runes / marks in corners -->
+  <g stroke="#b8b4f0" stroke-width="0.5" opacity="0.2">
+    <line x1="20" y1="20" x2="20" y2="50"/><line x1="20" y1="20" x2="40" y2="20"/>
+    <line x1="480" y1="20" x2="480" y2="50"/><line x1="480" y1="20" x2="460" y2="20"/>
+    <line x1="20" y1="480" x2="20" y2="450"/><line x1="20" y1="480" x2="40" y2="480"/>
+    <line x1="480" y1="480" x2="480" y2="450"/><line x1="480" y1="480" x2="460" y2="480"/>
+  </g>
+  <!-- Text -->
+  <text x="250" y="395" text-anchor="middle" fill="#ffffff" font-family="monospace" font-size="11" letter-spacing="4" opacity="0.5">SF-045</text>
+  <text x="250" y="425" text-anchor="middle" fill="#ffffff" font-family="Arial, sans-serif" font-size="18" font-weight="bold" letter-spacing="3">ANCIENT METHODS</text>
+  <text x="250" y="455" text-anchor="middle" fill="#b8b4f0" font-family="Arial, sans-serif" font-size="13" letter-spacing="3">SECOND RITUAL</text>
+  <text x="250" y="485" text-anchor="middle" fill="#333" font-family="monospace" font-size="8" letter-spacing="2">SHINE FREQUENCY</text>
+</svg>

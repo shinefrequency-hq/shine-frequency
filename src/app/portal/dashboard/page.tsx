@@ -316,7 +316,7 @@ export default function PortalDashboard() {
             {stats.length > 0 && (
               <div style={{ ...cardStyle, marginBottom: '1rem' }}>
                 <div style={sectionTitle}>Your Releases</div>
-                <div style={sectionSubtitle}>All releases on Shine Frequency</div>
+                <div style={sectionSubtitle}>All releases on frequency</div>
                 {stats.map((r: any) => (
                   <div key={r.catalogue_number} style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '12px 0', borderBottom: '1px solid #1a1a1a', cursor: 'pointer' }}
                     onClick={() => { setSelectedRelease(r.catalogue_number); setTab('intelligence') }}>
@@ -889,7 +889,7 @@ export default function PortalDashboard() {
 
         {/* ═══════════ FOOTER ═══════════ */}
         <div style={{ marginTop: '3rem', textAlign: 'center', fontSize: '11px', color: '#333', padding: '1.5rem 0', borderTop: '1px solid #1a1a1a' }}>
-          Shine Frequency — London, UK · <a href="/" style={{ color: '#555', textDecoration: 'none' }}>Back to website</a>
+          Shine — London, UK · <a href="/" style={{ color: '#555', textDecoration: 'none' }}>Back to website</a>
         </div>
       </div>
     </div>

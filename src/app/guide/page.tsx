@@ -2,8 +2,8 @@ export default function GuidePage() {
   const sections = [
     {
       id: 'intro',
-      title: '1. What is Shine Frequency?',
-      content: `Shine Frequency is your all-in-one platform for managing the label. It replaces spreadsheets, email threads, and scattered files with a single dashboard where you can manage releases, contacts, promo distribution, bookings, invoicing, and more.
+      title: '1. What is frequency?',
+      content: `frequency is your all-in-one platform for managing the label. It replaces spreadsheets, email threads, and scattered files with a single dashboard where you can manage releases, contacts, promo distribution, bookings, invoicing, and more.
 
 Everything lives in one place — from the moment an artist submits a demo to the point where DJs are playing the record and leaving reviews. The platform tracks the entire lifecycle of a release.
 
@@ -363,7 +363,7 @@ Results are grouped by type. Click a result to jump to that section.`
           Platform Guide
         </div>
         <div style={{ fontSize: '14px', color: '#666', maxWidth: '500px', margin: '0 auto' }}>
-          Everything you need to know about managing releases, contacts, bookings, and distribution through the Shine Frequency platform.
+          Everything you need to know about managing releases, contacts, bookings, and distribution through the frequency platform.
         </div>
       </div>
 
@@ -438,7 +438,7 @@ Results are grouped by type. Click a result to jump to that section.`
           textAlign: 'center', padding: '2rem 0', borderTop: '1px solid #eee',
           marginTop: '2rem',
         }}>
-          <div style={{ fontSize: '14px', color: '#1D9E75', fontWeight: '600' }}>Shine Frequency</div>
+          <div style={{ fontSize: '14px', color: '#1D9E75', fontWeight: '600' }}>frequency</div>
           <div style={{ fontSize: '12px', color: '#888', marginTop: '4px' }}>London, UK</div>
           <div style={{ fontSize: '11px', color: '#bbb', marginTop: '8px' }}>
             To print this guide: File → Print → Save as PDF

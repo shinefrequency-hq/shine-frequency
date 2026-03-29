@@ -170,7 +170,7 @@ export default function OnboardPage() {
             <div style={{ fontWeight: '900', fontSize: '32px', letterSpacing: '0.12em', color: '#FF6B35', marginBottom: '12px' }}>SHINE</div>
           </div>
           <div style={{ fontSize: '18px', fontWeight: '500', color: '#1a1a1a' }}>
-            Join Shine Frequency
+            Join Shine
           </div>
           <div style={{ fontSize: '12px', color: '#999', marginTop: '4px' }}>
             Artist onboarding — step {step} of 3
@@ -291,7 +291,7 @@ export default function OnboardPage() {
                 onChange={e => set('agreed_terms', e.target.checked)}
                 style={{ accentColor: '#1D9E75', marginTop: '2px', flexShrink: 0 }}
               />
-              I confirm that the information provided is accurate and I agree to Shine Frequency's terms of use and acceptable use policy. I understand my submission will be reviewed before activation.
+              I confirm that the information provided is accurate and I agree to Shine's terms of use and acceptable use policy. I understand my submission will be reviewed before activation.
             </label>
           </div>
         )}
@@ -331,7 +331,7 @@ export default function OnboardPage() {
         </div>
 
         <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '11px', color: '#999' }}>
-          Shine Frequency — London, UK
+          Shine — London, UK
         </div>
       </div>
       </div>

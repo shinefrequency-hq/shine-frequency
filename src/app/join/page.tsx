@@ -171,7 +171,7 @@ export default function JoinPage() {
             Join the Promo List
           </div>
           <div style={{ fontSize: '12px', color: '#999', marginTop: '4px' }}>
-            Sign up to receive promo releases from Shine Frequency
+            Sign up to receive promo releases from Shine
           </div>
         </div>
 
@@ -273,7 +273,7 @@ export default function JoinPage() {
               onChange={e => set('agreed', e.target.checked)}
               style={{ accentColor: '#1D9E75', marginTop: '2px', flexShrink: 0 }}
             />
-            I agree to receive promo releases from Shine Frequency
+            I agree to receive promo releases from Shine
           </label>
 
           {/* Error */}
@@ -305,7 +305,7 @@ export default function JoinPage() {
         </div>
 
         <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '11px', color: '#999' }}>
-          Shine Frequency — London, UK
+          Shine — London, UK
         </div>
       </div>
       </div>

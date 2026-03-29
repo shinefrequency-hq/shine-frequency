@@ -413,7 +413,7 @@ function ReviewPage() {
         </div>
 
         <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '11px', color: '#999' }}>
-          Shine Frequency — London, UK
+          Shine — London, UK
         </div>
       </div>
       </div>

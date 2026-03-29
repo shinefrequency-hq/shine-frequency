@@ -81,7 +81,7 @@ function DownloadPage() {
 
       // Check expiry
       if (promoData.token_expires_at && new Date(promoData.token_expires_at) < new Date()) {
-        setError('This download link has expired. Please contact Shine Frequency for a new link.')
+        setError('This download link has expired. Please contact Shine for a new link.')
         setLoading(false)
         return
       }
@@ -169,7 +169,7 @@ function DownloadPage() {
           <div style={{ fontSize: '18px', fontWeight: '500', color: '#1a1a1a', marginBottom: '8px' }}>Link not valid</div>
           <div style={{ fontSize: '13px', color: '#666', lineHeight: 1.6 }}>{error}</div>
           <div style={{ marginTop: '1.5rem', fontSize: '11px', color: '#999' }}>
-            Shine Frequency — London, UK
+            Shine — London, UK
           </div>
         </div>
       </div>
@@ -199,7 +199,7 @@ function DownloadPage() {
             <div style={{ fontWeight: '900', fontSize: '32px', letterSpacing: '0.12em', color: '#FF6B35', marginBottom: '12px' }}>SHINE</div>
           </div>
           <div style={{ fontSize: '20px', fontWeight: '500', color: '#1a1a1a' }}>Your promo copy is ready</div>
-          <div style={{ fontSize: '12px', color: '#999', marginTop: '4px' }}>Shine Frequency promo distribution</div>
+          <div style={{ fontSize: '12px', color: '#999', marginTop: '4px' }}>Shine promo distribution</div>
         </div>
 
         <div style={{ background: '#fff', border: '1px solid #ddd', borderRadius: '16px', padding: '1.75rem' }}>
@@ -334,7 +334,7 @@ function DownloadPage() {
 
         {/* Footer */}
         <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '11px', color: '#999' }}>
-          Shine Frequency — London, UK
+          Shine — London, UK
         </div>
       </div>
       </div>

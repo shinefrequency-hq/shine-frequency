@@ -361,7 +361,7 @@ export default function HomePage() {
       <section style={{ padding: '5rem 2rem', background: '#1a1a1a' }}>
         <div style={{ maxWidth: '900px', margin: '0 auto', textAlign: 'center' }}>
           <div style={{ fontSize: '12px', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#1D9E75', marginBottom: '0.75rem', fontWeight: '600' }}>Included With Every Campaign</div>
-          <h2 style={{ fontSize: '32px', fontWeight: '700', color: '#fff', marginBottom: '0.75rem' }}>Shine Frequency</h2>
+          <img src="/frequency-logo.svg" alt="frequency" style={{ height: '40px', filter: 'invert(1)', marginBottom: '0.75rem' }} />
           <p style={{ fontSize: '15px', color: '#888', maxWidth: '520px', margin: '0 auto 2.5rem', lineHeight: 1.7 }}>
             Your dedicated intelligence portal. See exactly what's happening with your music — who's playing it, where it's landing, and how it's performing.
           </p>

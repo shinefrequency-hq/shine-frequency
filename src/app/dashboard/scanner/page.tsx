@@ -65,6 +65,8 @@ export default function ScannerPage() {
   const [scanning, setScanning] = useState(false)
   const [scanType, setScanType] = useState<'release' | 'artist'>('release')
   const [results, setResults] = useState<ScanResults | null>(null)
+  const [saving, setSaving] = useState<Set<string>>(new Set())
+  const [saved, setSaved] = useState<Set<string>>(new Set())
 
   useEffect(() => {
     loadReleases()
@@ -121,6 +123,52 @@ export default function ScannerPage() {
     } finally {
       setScanning(false)
     }
+  }
+
+  async function saveDiscovery(item: any, platform: string) {
+    const key = `${platform}-${item.url || item.title}`
+    setSaving(s => new Set(s).add(key))
+
+    await fetch('/api/scanner', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'save_discovery',
+        release_id: selectedId,
+        discovery: {
+          platform,
+          title: item.title,
+          url: item.url,
+          channel: item.channel || '',
+          views: item.views || '',
+          thumbnail: item.thumbnail || '',
+          duration: item.duration || '',
+          plays: item.plays || 0,
+          favorites: item.favorites || 0,
+          community_want: item.community_want || 0,
+          community_have: item.community_have || 0,
+        },
+      }),
+    })
+
+    setSaving(s => { const n = new Set(s); n.delete(key); return n })
+    setSaved(s => new Set(s).add(key))
+    toast('Saved to artist report')
+  }
+
+  async function saveAll() {
+    if (!results) return
+    toast('Saving all discoveries...', 'info')
+    const all = [
+      ...(results.youtube || []).map((i: any) => ({ ...i, _platform: 'youtube' })),
+      ...(results.mixcloud || []).map((i: any) => ({ ...i, _platform: 'mixcloud' })),
+      ...(results.discogs || []).map((i: any) => ({ ...i, _platform: 'discogs' })),
+      ...(results.tracklists || []).map((i: any) => ({ ...i, _platform: '1001tracklists' })),
+    ]
+    for (const item of all) {
+      await saveDiscovery(item, item._platform)
+    }
+    toast(`Saved ${all.length} discoveries`)
   }
 
   const ytCount = results?.youtube?.length ?? 0
@@ -304,6 +352,15 @@ export default function ScannerPage() {
             ))}
           </div>
 
+          {results && (ytCount + mcCount + dcCount + tlCount) > 0 && (
+            <button onClick={saveAll} style={{
+              padding: '8px 20px', background: '#1D9E75', border: 'none', borderRadius: '8px',
+              color: '#fff', fontSize: '12px', fontWeight: '500', cursor: 'pointer', marginBottom: '1rem',
+            }}>
+              Save all to artist report ({ytCount + mcCount + dcCount + tlCount})
+            </button>
+          )}
+
           {/* YouTube section */}
           <Section title="Found on YouTube" accent="#7ab8f5" empty={ytCount === 0} platform="YouTube">
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
@@ -343,20 +400,28 @@ export default function ScannerPage() {
                       <span>{yt.duration}</span>
                       <span>{yt.published}</span>
                     </div>
-                    <a
-                      href={yt.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        display: 'inline-block',
-                        marginTop: '6px',
-                        fontSize: '11px',
-                        color: '#7ab8f5',
-                        textDecoration: 'none',
-                      }}
-                    >
-                      Open &rarr;
-                    </a>
+                    <div style={{ display: 'flex', gap: '6px', marginTop: '6px', alignItems: 'center' }}>
+                      <a
+                        href={yt.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          fontSize: '11px',
+                          color: '#7ab8f5',
+                          textDecoration: 'none',
+                        }}
+                      >
+                        Open &rarr;
+                      </a>
+                      <button onClick={() => saveDiscovery(yt, 'youtube')} disabled={saved.has(`youtube-${yt.url}`)} style={{
+                        padding: '4px 10px', background: saved.has(`youtube-${yt.url}`) ? '#0a2a1e' : 'transparent',
+                        border: '0.5px solid', borderColor: saved.has(`youtube-${yt.url}`) ? '#1D9E75' : 'var(--border-3)',
+                        borderRadius: '6px', color: saved.has(`youtube-${yt.url}`) ? '#4ecca3' : 'var(--text-3)',
+                        fontSize: '11px', cursor: 'pointer',
+                      }}>
+                        {saving.has(`youtube-${yt.url}`) ? 'Saving...' : saved.has(`youtube-${yt.url}`) ? 'Saved' : 'Save'}
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -388,20 +453,28 @@ export default function ScannerPage() {
                     <span>{mc.favourites?.toLocaleString()} favs</span>
                     <span>{mc.duration}</span>
                   </div>
-                  <a
-                    href={mc.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      display: 'inline-block',
-                      marginTop: '8px',
-                      fontSize: '11px',
-                      color: '#b8b4f0',
-                      textDecoration: 'none',
-                    }}
-                  >
-                    Open &rarr;
-                  </a>
+                  <div style={{ display: 'flex', gap: '6px', marginTop: '8px', alignItems: 'center' }}>
+                    <a
+                      href={mc.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        fontSize: '11px',
+                        color: '#b8b4f0',
+                        textDecoration: 'none',
+                      }}
+                    >
+                      Open &rarr;
+                    </a>
+                    <button onClick={() => saveDiscovery(mc, 'mixcloud')} disabled={saved.has(`mixcloud-${mc.url}`)} style={{
+                      padding: '4px 10px', background: saved.has(`mixcloud-${mc.url}`) ? '#0a2a1e' : 'transparent',
+                      border: '0.5px solid', borderColor: saved.has(`mixcloud-${mc.url}`) ? '#1D9E75' : 'var(--border-3)',
+                      borderRadius: '6px', color: saved.has(`mixcloud-${mc.url}`) ? '#4ecca3' : 'var(--text-3)',
+                      fontSize: '11px', cursor: 'pointer',
+                    }}>
+                      {saving.has(`mixcloud-${mc.url}`) ? 'Saving...' : saved.has(`mixcloud-${mc.url}`) ? 'Saved' : 'Save'}
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -457,6 +530,14 @@ export default function ScannerPage() {
                     >
                       Open &rarr;
                     </a>
+                    <button onClick={() => saveDiscovery(dc, 'discogs')} disabled={saved.has(`discogs-${dc.url}`)} style={{
+                      padding: '4px 10px', background: saved.has(`discogs-${dc.url}`) ? '#0a2a1e' : 'transparent',
+                      border: '0.5px solid', borderColor: saved.has(`discogs-${dc.url}`) ? '#1D9E75' : 'var(--border-3)',
+                      borderRadius: '6px', color: saved.has(`discogs-${dc.url}`) ? '#4ecca3' : 'var(--text-3)',
+                      fontSize: '11px', cursor: 'pointer',
+                    }}>
+                      {saving.has(`discogs-${dc.url}`) ? 'Saving...' : saved.has(`discogs-${dc.url}`) ? 'Saved' : 'Save'}
+                    </button>
                   </div>
                 </div>
               ))}
@@ -479,23 +560,31 @@ export default function ScannerPage() {
                   <div style={{ fontSize: '13px', color: 'var(--text)', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>
                     {tl.title}
                   </div>
-                  <a
-                    href={tl.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{
-                      padding: '5px 12px',
-                      fontSize: '11px',
-                      color: '#ff7043',
-                      border: '0.5px solid #ff7043',
-                      borderRadius: 'var(--radius)',
-                      textDecoration: 'none',
-                      flexShrink: 0,
-                      marginLeft: '12px',
-                    }}
-                  >
-                    Open &rarr;
-                  </a>
+                  <div style={{ display: 'flex', gap: '6px', alignItems: 'center', flexShrink: 0, marginLeft: '12px' }}>
+                    <a
+                      href={tl.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        padding: '5px 12px',
+                        fontSize: '11px',
+                        color: '#ff7043',
+                        border: '0.5px solid #ff7043',
+                        borderRadius: 'var(--radius)',
+                        textDecoration: 'none',
+                      }}
+                    >
+                      Open &rarr;
+                    </a>
+                    <button onClick={() => saveDiscovery(tl, '1001tracklists')} disabled={saved.has(`1001tracklists-${tl.url}`)} style={{
+                      padding: '4px 10px', background: saved.has(`1001tracklists-${tl.url}`) ? '#0a2a1e' : 'transparent',
+                      border: '0.5px solid', borderColor: saved.has(`1001tracklists-${tl.url}`) ? '#1D9E75' : 'var(--border-3)',
+                      borderRadius: '6px', color: saved.has(`1001tracklists-${tl.url}`) ? '#4ecca3' : 'var(--text-3)',
+                      fontSize: '11px', cursor: 'pointer',
+                    }}>
+                      {saving.has(`1001tracklists-${tl.url}`) ? 'Saving...' : saved.has(`1001tracklists-${tl.url}`) ? 'Saved' : 'Save'}
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>

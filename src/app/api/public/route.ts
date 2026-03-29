@@ -276,6 +276,13 @@ export async function POST(req: NextRequest) {
         const { data: socials } = await sb.from('social_posts')
           .select('platform, like_count, comment_count, share_count, reach, published_at')
           .eq('release_id', rel.id)
+
+        // Discoveries (from scanner)
+        const { data: discoveries } = await sb.from('discoveries')
+          .select('*')
+          .eq('release_id', rel.id)
+          .eq('is_approved', true)
+          .order('created_at', { ascending: false })
           .eq('status', 'published')
 
         // Build location breakdown
@@ -363,6 +370,20 @@ export async function POST(req: NextRequest) {
           social_reach: totalReach,
           social_likes: totalLikes,
           social_shares: totalShares,
+          discoveries: (discoveries ?? []).map((d: any) => ({
+            platform: d.platform,
+            title: d.title,
+            url: d.url,
+            channel: d.channel,
+            views: d.views,
+            thumbnail: d.thumbnail,
+            plays: d.plays,
+            community_want: d.community_want,
+            community_have: d.community_have,
+            note: d.note,
+            discovered_at: d.discovered_at,
+          })),
+          discovery_count: (discoveries ?? []).length,
         })
       }
 

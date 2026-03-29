@@ -218,5 +218,33 @@ export async function POST(req: NextRequest) {
     })
   }
 
+  if (action === 'save_discovery') {
+    const { release_id, discovery } = body
+    const { error } = await (supabase as any).from('discoveries').upsert([{
+      release_id,
+      ...discovery,
+      is_approved: true,
+    }], { onConflict: 'id' })
+    if (error) return NextResponse.json({ error: error.message }, { status: 400 })
+    return NextResponse.json({ success: true })
+  }
+
+  if (action === 'get_discoveries') {
+    const { release_id } = body
+    const { data } = await (supabase as any)
+      .from('discoveries')
+      .select('*')
+      .eq('release_id', release_id)
+      .eq('is_approved', true)
+      .order('created_at', { ascending: false })
+    return NextResponse.json({ success: true, discoveries: data ?? [] })
+  }
+
+  if (action === 'add_note') {
+    const { id, note } = body
+    await (supabase as any).from('discoveries').update({ note }).eq('id', id)
+    return NextResponse.json({ success: true })
+  }
+
   return NextResponse.json({ error: 'Unknown action' }, { status: 400 })
 }

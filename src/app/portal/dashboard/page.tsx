@@ -460,6 +460,41 @@ export default function PortalDashboard() {
                   </div>
                 )}
 
+                {/* ─── Discovered Plays ─── */}
+                {selected.discoveries && selected.discoveries.length > 0 && (
+                  <div style={{ ...cardStyle, marginBottom: '1.5rem' }}>
+                    <div style={sectionTitle}>Discovered Plays</div>
+                    <div style={sectionSubtitle}>Found across YouTube, Mixcloud, Discogs and DJ set databases</div>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                      {selected.discoveries.map((d: any, i: number) => (
+                        <a key={i} href={d.url} target="_blank" rel="noreferrer" style={{
+                          display: 'flex', gap: '10px', padding: '10px', background: '#0a0a0a',
+                          borderRadius: '8px', textDecoration: 'none', color: 'inherit',
+                          border: '0.5px solid #1a1a1a', transition: 'border-color 0.15s',
+                        }}>
+                          {d.thumbnail && (
+                            <img src={d.thumbnail} alt="" style={{ width: '60px', height: '45px', borderRadius: '4px', objectFit: 'cover', flexShrink: 0 }} />
+                          )}
+                          <div style={{ minWidth: 0 }}>
+                            <div style={{ fontSize: '11px', fontWeight: '500', color: '#fff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{d.title}</div>
+                            <div style={{ fontSize: '10px', color: '#555', marginTop: '2px' }}>
+                              {d.channel && <span>{d.channel} · </span>}
+                              <span style={{ color: d.platform === 'youtube' ? '#7ab8f5' : d.platform === 'mixcloud' ? '#b8b4f0' : d.platform === 'discogs' ? '#4ecca3' : '#ff7043' }}>
+                                {d.platform}
+                              </span>
+                            </div>
+                            {d.views && <div style={{ fontSize: '10px', color: '#888', marginTop: '2px' }}>{d.views}</div>}
+                            {(d.community_want > 0 || d.community_have > 0) && (
+                              <div style={{ fontSize: '10px', color: '#888', marginTop: '2px' }}>Want: {d.community_want} · Have: {d.community_have}</div>
+                            )}
+                            {d.note && <div style={{ fontSize: '10px', color: '#1D9E75', marginTop: '3px', fontStyle: 'italic' }}>{d.note}</div>}
+                          </div>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 {/* ─── Promo funnel ─── */}
                 {(selected.promo_sent > 0) && (
                   <div style={{ ...cardStyle, marginBottom: '1.5rem' }}>
